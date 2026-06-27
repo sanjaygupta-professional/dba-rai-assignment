@@ -1,0 +1,10 @@
+# Build artifacts / scratch
+tmp/
+*.tmp
+.DS_Store
+
+# Editor
+.vscode/
+.idea/
+
+# Keep version backups out? No — keep ideation.v1.md for audit trail.

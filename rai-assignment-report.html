@@ -1,0 +1,909 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>RAI Assignment 1 — Ideation, Prototype &amp; Evaluation</title>
+<style>
+:root{
+  --bg:#f5f4ed;--bg2:#faf9f5;--bg3:#e8e6dc;--border:#f0eee6;--border-warm:#e8e6dc;
+  --accent:#c96442;--accent2:#d97757;--green:#2a6b42;--yellow:#9a6520;--red:#b53333;
+  --text:#141413;--muted:#5e5d59;--text3:#87867f;--text-light:#b0aea5;--dark:#141413;--dark2:#30302e;}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font:15px/1.6 system-ui,-apple-system,sans-serif;display:flex}
+h1,h2,h3,h4{font-family:Georgia,'Anthropic Serif',serif;font-weight:500;line-height:1.2}
+h1{color:var(--text)}h2{color:var(--accent)}h3{color:var(--muted)}h4{color:var(--yellow)}
+a{color:var(--accent);text-decoration:none}
+/* sidebar */
+#side{position:fixed;top:0;left:0;width:266px;height:100vh;background:var(--dark);color:var(--text-light);
+  padding:30px 22px;overflow-y:auto;display:flex;flex-direction:column;gap:6px}
+#side .brand{font-family:Georgia,serif;color:#faf9f5;font-size:21px;line-height:1.25;margin-bottom:2px}
+#side .sub{color:var(--text-light);font-size:12.5px;margin-bottom:20px}
+#side .grp{color:var(--text3);font-size:11px;text-transform:uppercase;letter-spacing:.08em;margin:18px 0 6px}
+#side nav a{display:block;color:var(--text-light);padding:7px 11px;border-radius:7px;font-size:13.5px;transition:.15s}
+#side nav a:hover{background:var(--dark2);color:#faf9f5}
+#side nav a.active{background:var(--accent);color:#fff}
+#side .meta{margin-top:auto;padding-top:18px;border-top:1px solid #2a2a28;color:var(--text3);font-size:11.5px;line-height:1.5}
+/* main */
+main{margin-left:266px;flex:1;max-width:980px;padding:54px 56px 120px}
+section{margin-bottom:60px;scroll-margin-top:24px}
+.lead{font-size:17px;color:var(--muted);margin:14px 0 4px;max-width:70ch}
+.kicker{color:var(--accent);font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.1em}
+h1.big{font-size:40px;margin:6px 0 4px}
+.card{background:var(--bg2);border:1px solid var(--border-warm);border-radius:14px;padding:22px 24px;
+  box-shadow:rgba(0,0,0,0.05) 0px 4px 24px;margin:16px 0}
+.callout{background:var(--bg3);border-left:3px solid var(--accent);border-radius:8px;padding:14px 18px;margin:16px 0;color:var(--muted)}
+/* process */
+.step{display:flex;gap:16px;padding:15px 0;border-bottom:1px solid var(--border-warm)}
+.step:last-child{border-bottom:none}
+.step .num{flex:none;width:30px;height:30px;border-radius:50%;background:var(--accent);color:#fff;
+  display:grid;place-items:center;font-weight:600;font-size:13px;font-family:Georgia,serif}
+.step h4{color:var(--text);margin-bottom:3px;font-size:16px}
+.step p{color:var(--muted);font-size:14px}
+/* panel cards */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.ev h4{color:var(--accent);font-size:17px;margin-bottom:2px}
+.ev .kq{font-style:italic;color:var(--muted);font-size:13px;margin:6px 0 10px}
+.ev ul{list-style:none;font-size:13.5px}
+.ev li{padding:4px 0;color:var(--text);border-bottom:1px dotted var(--border-warm)}
+.ev li b{color:var(--accent);font-family:Georgia,serif}
+/* score chips */
+.chips{display:flex;flex-wrap:wrap;gap:5px}
+.chip{font-size:11px;font-weight:600;padding:3px 7px;border-radius:6px;display:inline-flex;gap:4px;align-items:center;
+  background:var(--bg3);color:var(--muted);letter-spacing:.02em}
+.chip b{font-family:Georgia,serif;font-size:12px}
+.chip.g{background:#e3efe6;color:var(--green)}
+.chip.a{background:#f3e9d6;color:var(--yellow)}
+.chip.r{background:#f6dede;color:var(--red)}
+.scorecard{padding:18px 20px}
+.schead{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px;flex-wrap:wrap;gap:8px}
+.schead h4{color:var(--text);font-size:17px}
+.delta{font-size:13px;font-weight:600}
+.delta.up{color:var(--green)}.delta.flat{color:var(--text3)}
+.scrow{display:flex;align-items:center;gap:12px;padding:7px 0}
+.scrow .lbl{flex:none;width:74px;color:var(--text3);font-size:12px;text-transform:uppercase;letter-spacing:.05em}
+.scrow .tot{flex:none;margin-left:auto;font-family:Georgia,serif;font-weight:600;color:var(--text)}
+/* matrix table */
+table{border-collapse:collapse;width:100%;margin:14px 0;font-size:13.5px}
+th,td{padding:9px 12px;text-align:left;border-bottom:1px solid var(--border-warm)}
+thead th{background:var(--bg3);color:var(--muted);font-family:system-ui;font-weight:600;font-size:12px;
+  text-transform:uppercase;letter-spacing:.04em}
+tbody tr:hover{background:var(--bg2)}
+td b{color:var(--text)}
+/* final standings */
+.standing{display:flex;align-items:center;gap:20px;padding:18px 22px}
+.standing .rk{font-family:Georgia,serif;font-size:30px;color:var(--accent);flex:none;width:42px}
+.standing.rank1{border-left:4px solid var(--accent)}
+.standing .sd{flex:1}
+.standing .sd h4{color:var(--text);font-size:17px;margin-bottom:2px}
+.standing .sd p{color:var(--muted);font-size:13.5px}
+.standing .fscore{font-family:Georgia,serif;font-size:30px;color:var(--text);flex:none}
+.standing .fscore small{font-size:14px;color:var(--text3)}
+.badge{font-family:system-ui;font-size:10px;font-weight:600;padding:2px 7px;border-radius:5px;text-transform:uppercase;letter-spacing:.05em;vertical-align:middle}
+.badge.hardened{background:#e3efe6;color:var(--green)}
+.badge.v1{background:var(--bg3);color:var(--muted)}
+/* use case reports */
+.ucsec{border-top:1px solid var(--border-warm);padding-top:34px}
+.uctag{display:inline-block;background:var(--bg3);color:var(--muted);font-size:11px;font-weight:600;
+  text-transform:uppercase;letter-spacing:.06em;padding:3px 9px;border-radius:6px;margin-bottom:8px}
+.uctop h2{font-size:25px}
+.ucone{color:var(--muted);font-size:15px;margin:8px 0 4px;max-width:74ch}
+details.report{margin-top:18px;background:var(--bg2);border:1px solid var(--border-warm);border-radius:14px;overflow:hidden}
+details.report>summary{cursor:pointer;padding:14px 22px;font-weight:600;color:var(--accent);
+  font-family:Georgia,serif;background:var(--bg3);list-style:none;user-select:none}
+details.report>summary::-webkit-details-marker{display:none}
+details.report>summary::before{content:'\25B8 ';color:var(--accent)}
+details.report[open]>summary::before{content:'\25BE '}
+.reportbody{padding:10px 30px 26px}
+.reportbody h1,.reportbody h2,.reportbody h3{margin:22px 0 8px}
+.reportbody h2{font-size:21px;color:var(--accent);border-bottom:1px solid var(--border-warm);padding-bottom:5px}
+.reportbody h3{font-size:16px;color:var(--muted)}
+.reportbody p,.reportbody li{font-size:14px;color:var(--text);margin:8px 0}
+.reportbody ul,.reportbody ol{padding-left:22px}
+.reportbody blockquote{border-left:3px solid var(--accent2);background:var(--bg3);margin:12px 0;padding:8px 16px;
+  border-radius:6px;color:var(--muted);font-size:13.5px}
+.reportbody blockquote p{margin:4px 0}
+.reportbody code{background:var(--bg3);padding:1px 5px;border-radius:4px;font-size:12.5px}
+.reportbody pre.mermaid{background:var(--bg2);border:1px solid var(--border-warm);border-radius:10px;
+  padding:16px;text-align:center;overflow-x:auto;margin:16px 0}
+.reportbody table{font-size:12.5px}
+.reportbody strong{color:var(--text)}
+footer{color:var(--text3);font-size:12px;border-top:1px solid var(--border-warm);padding-top:18px;margin-top:50px}
+@media(max-width:880px){#side{display:none}main{margin-left:0;padding:30px 20px}.grid2{grid-template-columns:1fr}}
+</style></head><body>
+<aside id="side">
+<div class="brand">Responsible AI<br>Assignment 1</div>
+<div class="sub">Ideation &middot; Prototype &middot; Data</div>
+<nav>
+<div class="grp">Process</div>
+<a href="#overview">Overview</a>
+<a href="#process">How it was built</a>
+<a href="#panel">Evaluator panel</a>
+<div class="grp">Scores</div>
+<a href="#matrix">Score matrix</a>
+<a href="#standings">Final standings</a>
+<div class="grp">Use-case reports</div>
+<a href="#uc-healthcare">Healthcare</a>
+<a href="#uc-education">Education</a>
+<a href="#uc-finance">Finance</a>
+</nav>
+<div class="meta">DBA 863-adjacent &middot; RAI Cohort 8<br>Dr. Venkatesh Sunkad &middot; DARWIN<br>Group 8 &middot; built 2026-06-26</div>
+</aside>
+<main>
+<section id="overview">
+<div class="kicker">Responsible AI &middot; DARWIN framework</div>
+<h1 class="big">Three AI use cases, built honest.</h1>
+<p class="lead">One shared responsible pattern &mdash; <b>AI prepares, the human owns the adverse decision</b> &mdash; tested across healthcare, education, and finance. Each is a deliberately disposable <i>prototype</i>, not a product, and every one was scored by an adversarial panel, hardened against its findings, then re-scored.</p>
+<div class="card"><table><thead><tr><th>Use case</th><th>Pattern</th><th>The human keeps authority over&hellip;</th><th>RAI surface</th></tr></thead><tbody>
+<tr><td><b>Healthcare</b> &mdash; CareBridge</td><td>Decision-support packet</td><td>denials / partial denials (licensed clinician)</td><td>HIPAA, historical-denial bias</td></tr>
+<tr><td><b>Education</b> &mdash; GradeAssist</td><td>Pre-grade, draft-then-edit</td><td>the final grade (instructor)</td><td>FERPA, ESL/style fairness</td></tr>
+<tr><td><b>Finance</b> &mdash; Credit Co-Pilot</td><td>Risk packet (RPA+ML+LLM)</td><td>the decline (underwriter)</td><td>fair lending, ECOA adverse-action</td></tr>
+</tbody></table></div>
+</section>
+
+<section id="process"><h2>How it was built</h2>
+<p class="lead">A build-then-stress-test loop with a quality ratchet between every milestone.</p>
+<div class="step"><span class="num">1</span><div><h4>Absorb context</h4><p>Read the prior CareBridge product report, this RAI assignment brief, the course outline, and the DARWIN “Responsible Ideation” lecture. Key rubric signal: <b>prototype ≠ product</b> — quick, dirty, disposable, validates the business case not the technology.</p></div></div><div class="step"><span class="num">2</span><div><h4>Design the evaluator panel</h4><p>Built a milestone scoring instrument: <b>Evaluator A “Sunkad”</b> (Prototype Purist) + <b>Evaluator B “Adversarial CFO”</b> (SWAT) + a Gate-0 completeness checklist. Ratchet rule: <b>any dimension &lt; 3 blocks progress</b>. Independent model reserved for the final.</p></div></div><div class="step"><span class="num">3</span><div><h4>Choose 3 domains</h4><p>Healthcare, Education, Finance — all sharing one responsible pattern: <i>AI prepares, the human owns the adverse decision</i>. Each given a distinct prototype shape and a distinct RAI surface (HIPAA / FERPA-bias / fair-lending).</p></div></div><div class="step"><span class="num">4</span><div><h4>Author in parallel</h4><p>Three independent subagents, each blind to the others and pre-loaded with the panel rubric, wrote a full ideation package (Sections 1–4 + Data Document + prototype + metrics + DARWIN-R).</p></div></div><div class="step"><span class="num">5</span><div><h4>Gate-1 adversarial scoring</h4><p>Three harsh, independent evaluators scored each package against the full panel. <b>All three PASSED</b> — but the panel bit: it found circular ROI math, same-measurement metrics, hypothesis bundling, and underpowered kill thresholds.</p></div></div><div class="step"><span class="num">6</span><div><h4>Harden</h4><p>Two parallel revisers fixed Healthcare + Education against the must-fixes — unbundling hypotheses to one powered endpoint, demoting underpowered kills to honest directional flags, and replacing circular numbers with external anchors — <b>without inflating the prototype into a product</b>.</p></div></div><div class="step"><span class="num">7</span><div><h4>Re-score</h4><p>Re-ran the adversarial panel on the hardened docs. Caps cleared on the merits: Healthcare <b>46→48</b>, Education robustness up at 46 (worst weaknesses resolved).</p></div></div><div class="step"><span class="num">8</span><div><h4>Pending</h4><p>Optionally harden Finance; run the Gate-3 independent model (Gemini + Codex, blind); down-select and build the presentation.</p></div></div>
+</section>
+
+<section id="panel"><h2>The evaluator panel</h2>
+<p class="lead">Evaluators mirror exactly what loses points in this rubric &mdash; and at least one is independent of the author, so the work isn&rsquo;t graded by its own writer.</p>
+<div class="grid2">
+<div class="card ev"><h4>Evaluator A &mdash; &ldquo;Sunkad&rdquo;</h4><div class="kq">Prototype Purist &middot; kill-question: &ldquo;Did you build a product and call it a prototype?&rdquo;</div>
+<ul><li><b>A1</b> prototype-not-product</li><li><b>A2</b> right tool (no LLM-overuse)</li><li><b>A3</b> focused 1&ndash;2 hypotheses</li><li><b>A4</b> fail-fast design</li><li><b>A5</b> validates business case, not tech</li></ul></div>
+<div class="card ev"><h4>Evaluator B &mdash; &ldquo;Adversarial CFO&rdquo;</h4><div class="kq">SWAT / So-What &middot; kill-question: &ldquo;If it works perfectly, does the business make money &mdash; and is the number proven?&rdquo;</div>
+<ul><li><b>B1</b> sharp value tied to revenue/cost</li><li><b>B2</b> defensible Fermi ROI</li><li><b>B3</b> distinct business metric</li><li><b>B4</b> precise, reproducible technical metric</li><li><b>B5</b> a specific kill threshold</li></ul></div>
+</div>
+<div class="callout"><b>Gate 0</b> &mdash; a 10-point completeness checklist runs first. &nbsp; <b>The ratchet</b> &mdash; every dimension scored 1&ndash;5; <b>any dimension below 3 blocks progress</b> until remediated and re-scored against the changed artifact. &nbsp; <b>Independent model</b> (Gemini + Codex, blind) reserved for the Gate-3 final.</div>
+</section>
+
+<section id="matrix"><h2>Score matrix &mdash; Gate 1 &rarr; hardened</h2>
+<p class="lead">Every dimension scored 1&ndash;5 by a harsh, independent panel. <span class="chip g">4&ndash;5</span> strong &middot; <span class="chip a">3</span> capped &middot; <span class="chip r">&lt;3</span> blocked. Arrows show movement after hardening.</p>
+<div class="card"><table><thead><tr><th>Dimension</th><th>Healthcare</th><th>Education</th><th>Finance</th></tr></thead><tbody><tr><td><b>A1</b> prototype-not-product</td><td><span class="chip g">5</span></td><td><span class="chip g">5</span></td><td><span class="chip g">5</span></td></tr><tr><td><b>A2</b> right tool</td><td><span class="chip g">5</span></td><td><span class="chip g">5</span></td><td><span class="chip g">5</span></td></tr><tr><td><b>A3</b> focused hypothesis</td><td><span class="chip g">5</span></td><td><span class="chip g">4</span></td><td><span class="chip a">3</span></td></tr><tr><td><b>A4</b> fail-fast</td><td><span class="chip g">5</span></td><td><span class="chip g">4</span></td><td><span class="chip g">4</span></td></tr><tr><td><b>A5</b> validates business case</td><td><span class="chip g">5</span></td><td><span class="chip g">5</span></td><td><span class="chip g">5</span></td></tr><tr><td><b>B1</b> sharp value</td><td><span class="chip g">5</span></td><td><span class="chip g">5</span></td><td><span class="chip g">4</span></td></tr><tr><td><b>B2</b> defensible ROI</td><td><span class="chip a">3</span> &rarr; <span class="chip g">4</span></td><td><span class="chip g">4</span></td><td><span class="chip g">4</span></td></tr><tr><td><b>B3</b> distinct business metric</td><td><span class="chip a">3</span> &rarr; <span class="chip g">4</span></td><td><span class="chip g">5</span> &rarr; <span class="chip g">4</span></td><td><span class="chip g">5</span></td></tr><tr><td><b>B4</b> precise technical metric</td><td><span class="chip g">5</span></td><td><span class="chip g">5</span></td><td><span class="chip g">4</span></td></tr><tr><td><b>B5</b> kill threshold</td><td><span class="chip g">5</span></td><td><span class="chip g">4</span> &rarr; <span class="chip g">5</span></td><td><span class="chip g">5</span></td></tr><tr style="border-top:2px solid var(--accent)"><td><b>TOTAL / 50</b></td><td><b>46 &rarr; 48</b></td><td><b>46 &rarr; 46</b></td><td><b>44</b></td></tr></tbody></table></div>
+<div class="callout">The panel did <b>not</b> rubber-stamp the authors (who wrote <i>to</i> the rubric). It found and capped real holes: Healthcare&rsquo;s circular touch-time ROI and same-measurement metrics (B2/B3=3), Finance&rsquo;s bundled hypothesis (A3=3). Hardening cleared Healthcare&rsquo;s caps on the merits &mdash; <b>46&rarr;48</b> &mdash; and resolved Education&rsquo;s two worst weaknesses (underpowered fairness kill, noisy-gold circularity).</div>
+</section>
+
+<section id="standings"><h2>Final standings</h2>
+<div class="card standing rank1"><div class="rk">#1</div><div class="sd"><h4>Healthcare <span class="badge hardened">hardened</span></h4><p>Top score · Sunkad's straight 5s · best prototype-discipline narrative</p></div><div class="fscore">48<small>/50</small></div></div><div class="card standing rank2"><div class="rk">#2</div><div class="sd"><h4>Education <span class="badge hardened">hardened</span></h4><p>Highest floor · most defensible standalone ROI · fairness as a powered gate</p></div><div class="fscore">46<small>/50</small></div></div><div class="card standing rank3"><div class="rk">#3</div><div class="sd"><h4>Finance <span class="badge v1">v1</span></h4><p>Solid; weakest as written — reverse-engineered cost denominator + scale mismatch</p></div><div class="fscore">44<small>/50</small></div></div>
+<div class="callout"><b>Shared residual &mdash; a feature, not a bug.</b> Both hardened prototypes now say their headline ROI rides on a baseline that must be <i>measured first</i> (a cheap pre-read). A CFO can&rsquo;t quote the final number today &mdash; but measuring the baseline before betting <i>is</i> the prototype mindset. Frame it as discipline in the deck, not a defect.</div>
+</section>
+
+<h2 style="font-size:27px;margin-bottom:4px">The reports</h2>
+<p class="lead" style="margin-bottom:8px">The full ideation packages &mdash; hardened versions, with rendered prototype diagrams. Each is collapsible.</p>
+<section id="uc-healthcare" class="ucsec">
+<div class="uctop"><span class="uctag">Payer prior-authorization</span><h2>Healthcare — CareBridge Reviewer-Packet Lift</h2><p class="ucone">AI assembles an auditable decision packet; a licensed clinician owns every denial. Steps back from the prior CareBridge product to a $35K disposable test that gates the $1.6M build.</p><div class="card scorecard"><div class="schead"><h4>Healthcare</h4><span class="delta up">46 &rarr; 48 (+2)</span></div><div class="scrow"><span class="lbl">Gate 1</span><div class="chips"><span class="chip g" title="A1 prototype-not-product">A1<b>5</b></span><span class="chip g" title="A2 right tool">A2<b>5</b></span><span class="chip g" title="A3 focused hypothesis">A3<b>5</b></span><span class="chip g" title="A4 fail-fast">A4<b>5</b></span><span class="chip g" title="A5 validates business case">A5<b>5</b></span><span class="chip g" title="B1 sharp value">B1<b>5</b></span><span class="chip a" title="B2 defensible ROI">B2<b>3</b></span><span class="chip a" title="B3 distinct business metric">B3<b>3</b></span><span class="chip g" title="B4 precise technical metric">B4<b>5</b></span><span class="chip g" title="B5 kill threshold">B5<b>5</b></span></div><span class="tot">46/50</span></div><div class="scrow"><span class="lbl">Hardened</span><div class="chips"><span class="chip g" title="A1 prototype-not-product">A1<b>5</b></span><span class="chip g" title="A2 right tool">A2<b>5</b></span><span class="chip g" title="A3 focused hypothesis">A3<b>5</b></span><span class="chip g" title="A4 fail-fast">A4<b>5</b></span><span class="chip g" title="A5 validates business case">A5<b>5</b></span><span class="chip g" title="B1 sharp value">B1<b>5</b></span><span class="chip g" title="B2 defensible ROI">B2<b>4</b></span><span class="chip g" title="B3 distinct business metric">B3<b>4</b></span><span class="chip g" title="B4 precise technical metric">B4<b>5</b></span><span class="chip g" title="B5 kill threshold">B5<b>5</b></span></div><span class="tot">48/50</span></div></div></div>
+<details open class="report"><summary>Full ideation package</summary><div class="reportbody"><blockquote>
+<p><strong>Step-back note (explicit, per brief).</strong> Our group's prior submission, <em>CareBridge</em>, is a full seven-agent decision-intelligence <strong>product</strong> with a 3-year $16.8M value model. That document answers "what should we build?" This package deliberately does <strong>not</strong>. It isolates the <em>one</em> assumption the whole <span class="math inline">1.6<em>M</em><em>p</em><em>r</em><em>o</em><em>d</em><em>u</em><em>c</em><em>t</em><em>r</em><em>e</em><em>s</em><em>t</em><em>s</em><em>o</em><em>n</em>—<em>t</em><em>h</em><em>a</em><em>t</em><em>a</em><em>n</em><em>A</em><em>I</em> − <em>a</em><em>s</em><em>s</em><em>e</em><em>m</em><em>b</em><em>l</em><em>e</em><em>d</em><em>p</em><em>a</em><em>c</em><em>k</em><em>e</em><em>t</em><em>a</em><em>c</em><em>t</em><em>u</em><em>a</em><em>l</em><em>l</em><em>y</em><em>m</em><em>a</em><em>k</em><em>e</em><em>s</em><em>a</em><em>h</em><em>u</em><em>m</em><em>a</em><em>n</em><em>r</em><em>e</em><em>v</em><em>i</em><em>e</em><em>w</em><em>e</em><em>r</em><em>f</em><em>a</em><em>s</em><em>t</em><em>e</em><em>r</em><em>w</em><em>i</em><em>t</em><em>h</em><em>o</em><em>u</em><em>t</em><em>m</em><em>a</em><em>k</em><em>i</em><em>n</em><em>g</em><em>t</em><em>h</em><em>e</em><em>m</em><em>l</em><em>e</em><em>s</em><em>s</em><em>s</em><em>a</em><em>f</em><em>e</em>—<em>a</em><em>n</em><em>d</em><em>p</em><em>r</em><em>o</em><em>p</em><em>o</em><em>s</em><em>e</em><em>s</em><em>a</em><em>d</em><em>i</em><em>s</em><em>p</em><em>o</em><em>s</em><em>a</em><em>b</em><em>l</em><em>e</em>3 − 4<em>w</em><em>e</em><em>e</em><em>k</em>, </span>35K test that can kill the program before a single production dollar is committed. If the packet doesn't move reviewer touch-time, every downstream agent, FHIR integration, and ROI line in the product report is moot. We test that hinge first.</p>
+</blockquote>
+<hr />
+<h2 id="section-1-nature-of-the-problem">Section 1: Nature of the Problem</h2>
+<p>This is primarily a <strong>decision-support / augmentation</strong> problem (Section-1 category: <em>expert-judgment augmentation under a human-authority constraint</em>), with a secondary <strong>process-efficiency / cost-reduction</strong> category.</p>
+<p>In one sentence: the core value-add we are testing is <strong>AI</strong> (RAG-grounded LLM reasoning that synthesizes unstructured clinical evidence against medical-necessity criteria into a reviewer-ready narrative) — explicitly <strong>not</strong> Automation (the deterministic eligibility/code/benefit checks are RPA and stay out of scope of this test) and <strong>not</strong> Analytics (no forecasting or BI dashboard is being validated here).</p>
+<hr />
+<h2 id="section-11-business-problem-swat-so-what">Section 1.1: Business Problem (SWAT "So-What")</h2>
+<p><strong>Business goal:</strong> reduce the fully-loaded cost of utilization-management (UM) labor and free clinical reviewer capacity without degrading clinical safety or regulatory standing.</p>
+<p><strong>So-what, sharpened:</strong> A mid-market regional payer adjudicates ~650K PA/yr at a ~$22 blended handling cost. The expensive, slow, and clinically sensitive segment is the human-reviewed tail — the cases a licensed UM nurse must touch. Today the nurse spends most of that touch-time <strong>assembling and reconciling</strong> evidence (pulling notes, finding the applicable policy version, checking which criteria are met) rather than <strong>deciding</strong>. We assert — and must prove — that pre-assembling that packet with AI converts assembly time into decision time and removes 35-45% of touch-time per reviewed case.</p>
+<p><strong>Specific problem framing (falsifiable, scoped, timed):</strong></p>
+<ul>
+<li><strong>Scope:</strong> the human-reviewed PA segment only (estimated ~60% of volume ≈ 390K cases/yr); two service lines for the test (advanced imaging + specialty pharmacy), because they dominate review volume and have stable published criteria.</li>
+<li><strong>One primary, powered success metric:</strong> median reviewer touch-time per case falls <strong>≥35%</strong> versus control. This is the value metric — the only number that converts to money.</li>
+<li><strong>Safety guardrails (hard stops on the primary, <em>not</em> co-equal hypotheses):</strong> packet <strong>groundedness ≥95%</strong> (a hard stop — powered at this N), and the reviewer-disagreement / <strong>overturn proxy stays ≤5%</strong> (a <em>directional</em> safety flag at this N — see Power note for why it cannot be a statistical kill at N=500).</li>
+<li><strong>Failure definition:</strong> primary fails if touch-time reduction <strong>&lt;25%</strong>; the build is independently vetoed if <strong>groundedness &lt; the safety bar</strong>; an overturn-proxy rise is a directional red flag that <strong>triggers a larger powered safety study before any pilot</strong>, not an in-test kill.</li>
+<li><strong>Timeframe:</strong> decision in 4 weeks from data pull.</li>
+<li><strong>Metrics:</strong> touch-time (min/case), reviewer-AI/reviewer-truth concordance, packet groundedness, overturn proxy.</li>
+</ul>
+<hr />
+<h2 id="section-2-end-users--expected-workflow">Section 2: End Users &amp; Expected Workflow</h2>
+<p><strong>Primary user:</strong> the <strong>licensed UM nurse reviewer</strong> (RN). Secondary: the <strong>medical director</strong> (owns all denials/partial denials). Tertiary (read-only): UM operations manager tracking SLA and capacity.</p>
+<p>The reviewer does not consume a "score." They consume a <strong>decision packet</strong> — evidence + the policy criteria checklist with each criterion marked met/unmet/uncertain and cited to source + a recommendation of <em>approve / pend-for-info / route-for-clinical-review</em>. The AI never denies; "route-for-review" is the most adverse action it can take.</p>
+<p><strong>Workflow (numbered):</strong></p>
+<ol type="1">
+<li>PA request lands in the worklist (via X12 278 or portal); deterministic layer (out of test scope) confirms eligibility, codes, network, benefit.</li>
+<li>AI retrieves the patient's relevant evidence and the <strong>applicable, version-pinned</strong> medical-necessity policy.</li>
+<li>AI maps evidence → each policy criterion, citing the exact source span for every assertion.</li>
+<li>AI assembles the packet and assigns a recommendation with rationale.</li>
+<li><strong>Reviewer opens the packet</strong>, verifies citations, confirms or overrides the recommendation. This is the only step whose duration we are trying to compress.</li>
+<li>If recommendation is approve and reviewer agrees → approve. If pend → standardized info request auto-drafted. If route-for-review → escalates to medical director, who owns any denial.</li>
+<li>Every assertion, citation, recommendation, and human action is written to an immutable audit log.</li>
+</ol>
+<p><strong>Example AI-generated packet narrative (specialty-pharmacy case):</strong></p>
+<blockquote>
+<p><strong>Request:</strong> Adalimumab (HCPCS J0135), member age 41, dx moderate-to-severe rheumatoid arthritis (ICD-10 M06.9). <strong>Policy applied:</strong> Plan Medical Policy RX-1142 <strong>v4.2 (effective 2026-01-15)</strong> — biologic DMARD step-therapy. <strong>Criteria assessment:</strong></p>
+<ul>
+<li>✅ <em>Confirmed RA diagnosis by rheumatologist</em> — <strong>Met.</strong> Source: Consult note 2026-03-02, Dr. Rao, "seropositive RA." [note_id 88231, p.1]</li>
+<li>✅ <em>≥3-month trial + inadequate response to ≥1 conventional DMARD (methotrexate)</em> — <strong>Met.</strong> Source: Med history shows methotrexate 2025-09 → 2026-02 (5 mo); progress note 2026-02-18 "persistent synovitis, DAS28 5.1." [rx_claim 7741; note_id 90114]</li>
+<li>⚠️ <em>Negative TB screening within 12 months</em> — <strong>Uncertain.</strong> No QuantiFERON/PPD result located in supplied records. <strong>Recommend PEND for TB screening result.</strong> <strong>Recommendation:</strong> <strong>PEND-FOR-INFO</strong> (single missing item: TB screen). Not a denial. All approval criteria met except one documentation gap. <strong>Confidence:</strong> policy-mapping high; evidence-completeness medium (1 unresolved item).</li>
+</ul>
+</blockquote>
+<p>The value the reviewer perceives: steps 1-4 are already done and <em>traceable</em>; she spends her minute verifying the TB-screen gap, not hunting through five notes to reconstruct the methotrexate trial.</p>
+<hr />
+<h2 id="section-3-business--roi-evaluation">Section 3: Business &amp; ROI Evaluation</h2>
+<p><strong>How it's handled today:</strong> a UM nurse manually opens the chart, locates notes/labs/med history across systems, finds and reads the applicable policy, and reconciles the two by hand before deciding. Current state: median standard TAT ~3.5 business days; first-pass documentation completeness ~62%; appeal-overturn ~5%. There is no standard packaging tool, so evidence assembly is inconsistent reviewer-to-reviewer.</p>
+<p><strong>Current "accuracy":</strong> the human baseline is the gold standard for <em>correctness</em> (the overturn rate of ~5% is the system's error proxy); the deficiency is <em>efficiency and consistency</em>, not decision quality.</p>
+<h3 id="fermi-roi-build-up-every-assumption-stated-this-is-the-value-the-prototype-is-gating">Fermi ROI build-up (every assumption stated; this is the value the prototype is gating)</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Assumption</th>
+<th>Value</th>
+<th>Source / basis</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A</td>
+<td>PA volume / yr</td>
+<td>650,000</td>
+<td>Domain brief</td>
+</tr>
+<tr>
+<td>B</td>
+<td>Share reaching a human UM reviewer</td>
+<td>60% (ranged <strong>50-70%</strong>)</td>
+<td>Assumption (auto-approve/auto-route handles rest); <strong>most sensitive lever — carried as a band, not a point</strong></td>
+</tr>
+<tr>
+<td>C</td>
+<td>Human-reviewed cases / yr (A×B)</td>
+<td>390K (325K-455K)</td>
+<td>Derived</td>
+</tr>
+<tr>
+<td>D</td>
+<td>Baseline reviewer touch-time / case</td>
+<td><strong>14 min — PROVISIONAL</strong></td>
+<td><strong>External anchor required (see note below). The entire $4.10M base, and therefore every ROI figure here, hinges on this single number.</strong></td>
+</tr>
+<tr>
+<td>E</td>
+<td>UM nurse fully-loaded cost</td>
+<td>$45 / hr = $0.75/min</td>
+<td>Mid-market RN loaded rate assumption</td>
+</tr>
+<tr>
+<td>F</td>
+<td>Baseline reviewer labor / case (D×E)</td>
+<td>$10.50</td>
+<td>Derived (provisional with D)</td>
+</tr>
+<tr>
+<td>G</td>
+<td>Annual reviewer labor (C×F, at B=60%)</td>
+<td><strong>$4.10M</strong></td>
+<td>Derived (provisional with D)</td>
+</tr>
+<tr>
+<td>H</td>
+<td>Target touch-time reduction</td>
+<td>35% (low end of 35-45% claim)</td>
+<td>Hypothesis (primary endpoint)</td>
+</tr>
+<tr>
+<td>I</td>
+<td>Gross annual labor saving (G×H)</td>
+<td><strong>$1.43M</strong></td>
+<td>Derived</td>
+</tr>
+<tr>
+<td>J</td>
+<td>Annual run cost after build</td>
+<td><strong>$0.25-0.45M (mid $0.35M)</strong></td>
+<td><strong>Bottom-up decomposition, below — not a prior deck</strong></td>
+</tr>
+<tr>
+<td>K</td>
+<td>Build cost (one-time)</td>
+<td><strong>$1.2-2.0M (mid $1.6M) → $0.40-0.67M/yr amortized over 3 yr</strong></td>
+<td><strong>Bottom-up decomposition, below — not a prior deck</strong></td>
+</tr>
+<tr>
+<td>L</td>
+<td>Net annual value at 35% reduction (I − J − K_amort)</td>
+<td><strong>~<span class="math inline">0.55<em>M</em><em>p</em><em>o</em><em>i</em><em>n</em><em>t</em>(<em>B</em> = 60</span>0.1M-$0.9M</strong></td>
+<td>Derived — see sensitivity</td>
+</tr>
+<tr>
+<td>M</td>
+<td>Net annual value at 45% reduction</td>
+<td><strong>~<span class="math inline">0.96<em>M</em><em>p</em><em>o</em><em>i</em><em>n</em><em>t</em>(<em>B</em> = 60</span>0.4M-$1.5M</strong></td>
+<td>Derived — see sensitivity</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Anchor for D (replaces the earlier circular back-check).</strong> The previous draft "back-checked" D=14 min against the same ~$22 blended handling cost it is supposed to be independent of — D and the $22 figure were each propping up the other, which is circular and inadmissible. We remove that reasoning entirely. D must be set from a source <em>outside</em> the cost model:</p>
+<ul>
+<li><strong>Preferred:</strong> a published UM / utilization-review time-motion basis. We do <strong>not</strong> assert a specific citation here, so we do not claim D=14 as established.</li>
+<li><strong>Therefore, gating step (cheap, fast, runs before the main test):</strong> a <strong>10-case stopwatch PRE-READ</strong> — one analyst times ten real human-reviewed cases end-to-end (worklist-open → decision-submit) to fix D empirically. Cost is ~1 analyst-day, inside the $35K envelope. <strong>Until that pre-read lands, every ROI figure in this section (G, I, L, M) is explicitly PROVISIONAL.</strong> If the pre-read returns D materially below ~11 min, the program is underwater at the low end before the packet test even runs, and we stop there.</li>
+</ul>
+<p><strong>Bottom-up cost decomposition (replaces "Product report Table 21 / midpoint" — a CFO cannot gate a build on the proponent's own prior number).</strong> These are planning-grade ranges to be firmed by a vendor RFP, deliberately independent of the product deck:</p>
+<table>
+<thead>
+<tr>
+<th>Run cost J (annual)</th>
+<th>Range</th>
+<th></th>
+<th>Build cost K (one-time)</th>
+<th>Range</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>On-prem inference compute (PHI-side retrieval/embedding GPU)</td>
+<td>$80-120K</td>
+<td></td>
+<td>RAG+LLM packet-assembly pipeline dev</td>
+<td>$0.4-0.7M</td>
+</tr>
+<tr>
+<td>Managed LLM API (de-identified criterion summaries, ~390K cases)</td>
+<td>$40-80K</td>
+<td></td>
+<td>FHIR/X12 integration + policy version-pinning engine</td>
+<td>$0.4-0.6M</td>
+</tr>
+<tr>
+<td>MLOps + model monitoring (0.5-1.0 loaded FTE)</td>
+<td>$90-180K</td>
+<td></td>
+<td>Clinical-safety validation + HIPAA/compliance</td>
+<td>$0.2-0.4M</td>
+</tr>
+<tr>
+<td>Integration upkeep + immutable audit tooling</td>
+<td>$40-70K</td>
+<td></td>
+<td>PM + contingency</td>
+<td>$0.2-0.3M</td>
+</tr>
+<tr>
+<td><strong>Total run</strong></td>
+<td><strong>$0.25-0.45M</strong></td>
+<td></td>
+<td><strong>Total build</strong></td>
+<td><strong>$1.2-2.0M</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Sensitivity (the honest CFO view).</strong> Net annual value is a <em>band</em>, not a point, driven by three independent uncertainties — the human-touch lever B (50-70%), the cost band (low-high), and D (pending pre-read):</p>
+<table>
+<thead>
+<tr>
+<th>Reduction</th>
+<th>Net @ low cost, B=70%</th>
+<th>Net @ mid cost, B=60%</th>
+<th>Net @ high cost, B=50%</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>35% (kill floor +)</td>
+<td>~$1.07M</td>
+<td>~$0.55M</td>
+<td>~$0.04M</td>
+</tr>
+<tr>
+<td>45% (upside)</td>
+<td>~$1.55M</td>
+<td>~$0.96M</td>
+<td>~$0.36M</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Reading of the model (the punchline for the CFO):</strong> the program is <strong>not</strong> comfortably profitable at the low end — at 35% reduction, mid cost, the net is ~$0.55M/yr, and at the pessimistic corner (high build cost, B=50%) it is roughly break-even. The whole investment case lives in the gap between 35% and 45% and in lever B, and collapses below ~25%. <strong>That is precisely why a $35K prototype must gate a build whose midpoint is $1.6M.</strong> Breakeven touch-time reduction (I = J + K_amort) sits near ~21.5% at the mid case; we set the kill threshold conservatively above it at 25%.</p>
+<hr />
+<h2 id="section-4-data--integration">Section 4: Data &amp; Integration</h2>
+<p><strong>Specific data items (no vague "patient data"):</strong></p>
+<ul>
+<li><strong>Request envelope:</strong> member ID, plan ID, requesting provider NPI, urgency flag, requested service code (CPT/HCPCS), diagnosis (ICD-10-CM), service line.</li>
+<li><strong>Clinical evidence:</strong> physician progress/consult notes (free text), discharge summaries, structured labs (LOINC-coded with value + date), medication/rx-claim history (NDC, fill dates), imaging report text.</li>
+<li><strong>Policy corpus:</strong> the plan's medical-necessity policy documents, <strong>each with version ID and effective date</strong>; CMS NCD/LCD where applicable; step-therapy and AUC criteria as discrete checklist items.</li>
+<li><strong>Outcome labels (for the test only):</strong> the historical final adjudicated decision, any appeal, and any overturn — these are the ground truth the prototype scores against.</li>
+</ul>
+<p><strong>Data cleanliness rating: 3 / 5.</strong> Structured fields (codes, claims, labs) are clean and reliable (~4-5). The two load-bearing inputs are messier: clinical notes are unstructured, abbreviation-heavy, and OCR-contaminated where faxed (~2-3); and the policy corpus suffers <strong>version drift</strong> — multiple overlapping policy editions where pinning the <em>applicable</em> version is itself error-prone (~3). The 3/5 is set by these two, because they are exactly what the AI layer must handle and what could fail silently.</p>
+<p><strong>Deployment model:</strong> <strong>on-prem / VPC-isolated for all PHI.</strong> Retrieval, embedding, and packet assembly over raw PHI run inside the payer boundary on self-hosted compute. Only <strong>de-identified, structured criterion-level summaries</strong> (e.g., "criterion 2: 5-month methotrexate trial documented, inadequate response") are sent to a managed LLM for the reasoning/narrative step. No raw note, name, or MRN ever leaves the boundary.</p>
+<hr />
+<h2 id="data-document">Data Document</h2>
+<p>For the <strong>real test</strong>, the data is the payer's own historical adjudicated PA cases (PHI, on-prem) — ~500 cases, structured + note PDFs, accessed via the data warehouse under a HIPAA limited-data-set agreement; sensitivity: <strong>high (PHI)</strong>, handled on-prem only.</p>
+<p>For <strong>prototype development and any externally shareable demo</strong>, use these named public proxies so no PHI is needed to build the throwaway harness:</p>
+<table>
+<thead>
+<tr>
+<th>Source</th>
+<th>What it proxies</th>
+<th>Volume / format</th>
+<th>Access path</th>
+<th>PII / sensitivity</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>MIMIC-IV</strong> + <strong>MIMIC-IV-Note</strong> (PhysioNet)</td>
+<td>Real de-identified clinical notes, labs, discharge summaries</td>
+<td>~300K admissions; ~2M notes; CSV + text</td>
+<td>PhysioNet credentialed access + CITI training</td>
+<td>De-identified; DUA required; <strong>moderate</strong></td>
+</tr>
+<tr>
+<td><strong>CMS Medicare Coverage Database (NCD/LCD)</strong></td>
+<td>Medical-necessity criteria corpus, version-dated</td>
+<td>Thousands of policies; HTML/XML</td>
+<td>Public, mcd.cms.gov</td>
+<td>None; public</td>
+</tr>
+<tr>
+<td><strong>CMS HCPCS + ICD-10-CM + CPT mappings</strong></td>
+<td>Service/diagnosis code validation</td>
+<td>Full code sets; CSV</td>
+<td>Public CMS downloads (CPT via AMA license)</td>
+<td>None / license</td>
+</tr>
+<tr>
+<td><strong>Synthea (synthetic FHIR)</strong></td>
+<td>End-to-end plumbing + edge cases without any real PHI</td>
+<td>Generate N on demand; FHIR JSON</td>
+<td>Open-source, run locally</td>
+<td>None; synthetic</td>
+</tr>
+<tr>
+<td><strong>X12 278 sample transactions</strong></td>
+<td>PA request/response envelope format</td>
+<td>Sample set; EDI</td>
+<td>WEDI / vendor samples</td>
+<td>None; sample</td>
+</tr>
+</tbody>
+</table>
+<p>Proprietary criteria engines (InterQual, MCG) are intentionally <strong>excluded</strong> — we use open CMS NCD/LCD + AUC as the criteria proxy so the prototype carries no licensing dependency.</p>
+<hr />
+<h2 id="prototype-design">Prototype Design</h2>
+<p><strong>The single primary hypothesis (one powered, falsifiable endpoint):</strong></p>
+<blockquote>
+<p><strong>H (primary):</strong> An AI-assembled decision packet reduces a UM nurse's median touch-time per reviewed case by <strong>≥35%</strong> versus the no-packet control.</p>
+</blockquote>
+<p>That is the value metric and the <em>only</em> co-equal kill clause. Two safety conditions ride alongside it as <strong>guardrails — not as the hypothesis</strong>:</p>
+<blockquote>
+<p><strong>Guardrail 1 (hard stop, powered):</strong> packet <strong>groundedness ≥95%</strong>. Measured per <em>assertion</em> across ~500 packets → thousands of assertions, so it is tightly estimable at this N. A groundedness failure vetoes the build regardless of how good the touch-time number is — speed bought with fabrication is not a tradeoff we are allowed to make. <strong>Guardrail 2 (directional flag, under-powered at this N):</strong> <strong>overturn proxy ≤5%</strong>. At N=500 a rare ~5% event cannot be statistically confirmed non-inferior (see Power note); a rise here is a <strong>red flag that triggers a powered safety study</strong>, not an in-test kill.</p>
+</blockquote>
+<p>This is the unbundling the panel asked for: one statistically-powered value endpoint, with safety demoted to guardrails — one a hard stop because it is powered, one a directional trigger because it is not.</p>
+<h3 id="statistical-power--minimum-detectable-effect-honest-note">Statistical Power / Minimum Detectable Effect (honest note)</h3>
+<p>What N=500 crossover cases / 6 RN reviewers <strong>can</strong> detect:</p>
+<ul>
+<li><strong>Touch-time (primary):</strong> continuous, within-case paired (each case reviewed with and without packet by different reviewers), low residual variance. With ~500 paired observations the design is well-powered to detect a touch-time shift far smaller than the 35% we require — this endpoint is genuinely powered, and the 25% kill line is a confident statistical call.</li>
+<li><strong>Groundedness (Guardrail 1):</strong> unit of analysis is the <em>assertion</em>, not the case; thousands of assertions yield a tight confidence interval around the 95% bar. Powered → kept as a hard stop.</li>
+</ul>
+<p>What this N <strong>cannot</strong> support, and what we do about it:</p>
+<ul>
+<li><strong>Overturn proxy (Guardrail 2):</strong> baseline ~5% is a rare event. Detecting a true rise from 5% → ~8% with adequate power needs <strong>thousands</strong> of cases per arm; at 500 split across arms a handful of flips swamps the estimate. So overturn <strong>cannot be a statistical kill here.</strong> We demote it to a <strong>directional red flag → triggers a powered, prospective non-inferiority safety study (≈3,000-5,000 cases, or shadow-mode) before any pilot.</strong></li>
+<li><strong>Subgroup fairness:</strong> stratifying 500 cases by age band × sex × payer line fragments into small cells, underpowered for a credible differential-quality test. Reported as a <strong>directional flag only → triggers a powered fairness sub-study</strong> in the same follow-up. Honest, and it keeps fail-fast intact: we kill cheaply on the powered metrics and refuse to <em>pretend</em> the cheap test settled the rare-event safety questions.</li>
+</ul>
+<p><strong>The cheap, dirty, disposable test:</strong></p>
+<ul>
+<li><strong>N = ~500</strong> historical, already-adjudicated cases (truth known) from 2 service lines. Retrospective, so zero patient risk.</li>
+<li><strong>Crossover design, 6 RN reviewers:</strong> each case is reviewed once <em>with</em> packet and once <em>without</em> by <strong>different</strong> reviewers, balanced so no reviewer sees the same case twice and each reviewer does both arms. This controls for case difficulty and reviewer speed — the cheapest way to get a clean within-subject signal at small N.</li>
+<li><strong>Wizard-of-Oz where it's cheaper than building:</strong> the deterministic retrieval (eligibility/codes/benefit) is <strong>stubbed or hand-fed</strong>, because it's known-good and not what we're testing. Only the RAG+LLM packet-assembly layer is real, built as a throwaway harness — no UI polish, no EHR integration, notes pasted in, packets rendered as static documents.</li>
+<li><strong>Pre-read first:</strong> the 10-case stopwatch pre-read (Section 3) fixes D <em>before</em> the main run, so the ROI the test gates is anchored, not circular.</li>
+<li><strong>Measure:</strong> (1) timestamped touch-time per case; (2) reviewer's recommendation vs the historical adjudicated truth (concordance, and overturn proxy = reviewer-with-packet flips that historical truth would have overturned); (3) clinician-verified packet groundedness (does every cited assertion check out).</li>
+<li><strong>Fail-fast:</strong> ~3-4 weeks, ~<span class="math inline">35<em>K</em>.<em>A</em><em>n</em><em>u</em><em>l</em><em>l</em><em>o</em><em>r</em><em>n</em><em>e</em><em>g</em><em>a</em><em>t</em><em>i</em><em>v</em><em>e</em><em>t</em><em>o</em><em>u</em><em>c</em><em>h</em> − <em>t</em><em>i</em><em>m</em><em>e</em><em>r</em><em>e</em><em>s</em><em>u</em><em>l</em><em>t</em>, <em>o</em><em>r</em><em>a</em><em>g</em><em>r</em><em>o</em><em>u</em><em>n</em><em>d</em><em>e</em><em>d</em><em>n</em><em>e</em><em>s</em><em>s</em><em>f</em><em>a</em><em>i</em><em>l</em><em>u</em><em>r</em><em>e</em>, * * <em>k</em><em>i</em><em>l</em><em>l</em><em>s</em><em>t</em><em>h</em><em>e</em> </span>1.6M program** at &lt;2.5% of its midpoint build cost. That asymmetry is the whole point.</li>
+</ul>
+<p><strong>Why RAG+LLM here and not rules/RPA (right-tool check):</strong> the deterministic 60-70% of PA work — eligibility, code validity, network status, benefit lookup, policy-version selection — is <strong>better and cheaper as RPA/rules</strong>, and we deliberately keep it out of the LLM and out of this test. The LLM earns its place on exactly one thing: reasoning across <em>unstructured</em> notes to decide whether a <em>narrative</em> criterion ("inadequate response to a conventional DMARD") is met, and articulating that with citations a nurse can verify in seconds. Rules cannot read "persistent synovitis, DAS28 5.1" and map it to a criterion; RPA cannot generate a defensible, cited rationale. If the prototype shows the LLM layer doesn't add touch-time value over the deterministic packet alone, the correct answer is to <strong>not buy the LLM</strong> and ship RPA only — and the prototype is designed to reveal exactly that.</p>
+<pre class="mermaid">flowchart TD
+    A[500 historical adjudicated PA cases&lt;br/&gt;2 service lines, truth known] --&gt; PRE[10-case stopwatch pre-read&lt;br/&gt;fixes baseline touch-time D]
+    PRE --&gt; B{Random split into&lt;br/&gt;balanced crossover blocks}
+    B --&gt; C[Arm A: AI-assembled packet&lt;br/&gt;RAG+LLM, throwaway harness]
+    B --&gt; D[Arm B: Control&lt;br/&gt;raw chart, no packet]
+    C --&gt; E[RN reviewer decides&lt;br/&gt;approve / pend / route]
+    D --&gt; F[RN reviewer decides&lt;br/&gt;approve / pend / route]
+    E --&gt; G[Log: touch-time, recommendation,&lt;br/&gt;citation verification]
+    F --&gt; H[Log: touch-time, recommendation]
+    G --&gt; I[Compare vs historical truth]
+    H --&gt; I
+    I --&gt; J{PRIMARY powered gate:&lt;br/&gt;median touch-time&lt;br/&gt;reduction &gt;=35%?}
+    J --&gt;|No, &lt;25%| L[KILL / redesign:&lt;br/&gt;ship RPA-only or stop]
+    J --&gt;|Yes| GUARD{Guardrail 1 hard stop:&lt;br/&gt;groundedness &gt;=95%?}
+    GUARD --&gt;|No| L
+    GUARD --&gt;|Yes| FLAG[Directional flags:&lt;br/&gt;overturn proxy, subgroup skew]
+    FLAG --&gt; K[PROCEED — but any flag tripped&lt;br/&gt;routes through a powered safety/fairness&lt;br/&gt;follow-up BEFORE scoped pilot]
+</pre>
+<p><strong>WHY THIS IS A PROTOTYPE, NOT A PRODUCT:</strong> it touches no live PA, integrates with no EHR, has no UI, automates no decision, and is thrown away win or lose. It uses retrospective cases with known answers so it can be <em>graded</em>, not <em>deployed</em>. It validates the <strong>business case</strong> (does pre-assembly buy reviewer time safely?) — not the technology (it ignores latency, scaling, MLOps, the other six product agents, and FHIR plumbing). It is built to <strong>fail fast and cheap</strong>: one harness, six reviewers, four weeks, <span class="math inline">35<em>K</em>, <em>a</em><em>g</em><em>a</em><em>i</em><em>n</em><em>s</em><em>t</em><em>a</em> </span>1.6M go/no-go. It deliberately does <strong>not</strong> try to settle the rare-event safety questions it is too small to settle — it flags them for a powered follow-up instead.</p>
+<hr />
+<h2 id="prototype-metrics">Prototype Metrics</h2>
+<p><strong>BUSINESS metric (the decision number — in dollars, distinct from any technical measurement):</strong></p>
+<ul>
+<li><strong>Projected NET ANNUAL VALUE ($) at the observed touch-time reduction</strong>, computed by feeding the test's measured reduction back through the Fermi model, with the sensitive lever <strong>B (human-touch share) carried as a 50-70% band</strong> and the bottom-up cost ranges applied — yielding a value <em>band</em>, not a single figure (Section 3 sensitivity table). This is what a CFO gates the build on. A technically perfect packet that produces a negative net-value band has zero business value, which is why this is a money figure and not minutes.</li>
+<li>Decision rule on this metric: proceed only if the <strong>mid-case net annual value is comfortably positive AND the pessimistic corner (high cost, B=50%) is at least break-even.</strong></li>
+</ul>
+<p><strong>TECHNICAL metrics (precise + reproducible instrumentation, with targets):</strong></p>
+<ul>
+<li><strong>Median touch-time per case (minutes)</strong> — pure instrumentation, from worklist-open timestamp to decision-submit timestamp; reported with IQR; reproducible because it's machine-logged, not self-reported. This feeds the business metric above but is <em>not itself</em> the business claim — it is the raw signal the dollar figure is derived from.</li>
+<li><strong>Packet groundedness / faithfulness:</strong> % of packet assertions whose cited source span a blinded clinician confirms supports the claim. Target <strong>≥95%</strong>; equivalently <strong>hallucination rate ≤5%</strong>, and <strong>zero</strong> fabricated criterion-satisfaction.</li>
+<li><strong>Recommendation concordance with adjudicated truth:</strong> precision/recall of the AI's <em>approve</em> recommendations against historical <em>approve</em> outcomes. Target <strong>approve-precision ≥95%</strong> (an AI "approve" that truth would have pended/denied is the dangerous error).</li>
+<li><strong>Overturn proxy:</strong> rate at which a packet-assisted reviewer reaches a decision that historical appeal data shows would be overturned. Target <strong>≤5%</strong> — measured and reported, but read as a directional flag (see Power note), not a powered result.</li>
+</ul>
+<p><strong>KILL thresholds, correctly tiered:</strong></p>
+<ul>
+<li><strong>Primary kill (powered):</strong> <strong>median touch-time reduction &lt; 25%</strong> ends the idea outright — below the ~21.5% Fermi breakeven plus margin, the build cannot clear its own cost (Section 3). This is a confident statistical call at N=500.</li>
+<li><strong>Guardrail hard stop (powered):</strong> <strong>groundedness &lt; 95%</strong> vetoes the build regardless of the efficiency result — any safety regression on faithfulness voids the program. Powered because the unit is the assertion (thousands), not the case.</li>
+<li><strong>Directional trigger (under-powered, not an in-test kill):</strong> an <strong>overturn-proxy rise &gt; 5%</strong> or a <strong>subgroup-quality skew</strong> does not by itself kill or pass the idea at this N; it <strong>forces a powered prospective safety/fairness study before any pilot dollar is spent.</strong> Calling these "kills" at N=500 would be statistical theatre; this tiering is the honest version and keeps fail-fast intact.</li>
+</ul>
+<hr />
+<h2 id="responsible-ai-surface-darwin-r">Responsible-AI Surface (DARWIN-R)</h2>
+<p><strong>Bias / fairness.</strong> The most dangerous failure is not the model inventing bias — it is the model <em>learning historical denial bias as truth</em>. Because the prototype scores recommendations against past adjudicated outcomes, any demographic skew in historical denials would be silently rewarded as "accuracy." Mitigation: (1) stratify the 500-case sample and report touch-time and concordance <strong>by age band, sex, and payer line (Medicaid vs commercial)</strong> — but treat this as a <strong>directional fairness flag only, because the per-cell N is too small for a powered differential test</strong> (Power note); (2) treat the historical label as the <em>efficiency</em> benchmark only, never as the <em>fairness</em> benchmark; (3) any flag here <strong>triggers the powered fairness sub-study</strong> in the follow-up rather than being waved through or falsely "cleared" by an underpowered prototype.</p>
+<p><strong>Privacy / compliance (HIPAA).</strong> PHI never leaves the on-prem boundary; only de-identified, structured criterion summaries reach the managed LLM. The test uses a HIPAA <strong>limited data set</strong> under DUA; public development uses MIMIC (de-identified, credentialed) and Synthea (synthetic). No raw note, name, or MRN in any LLM prompt. Audit log is immutable and access-controlled.</p>
+<p><strong>Explainability to stakeholders.</strong> Every packet assertion carries a <strong>source citation (note ID + span)</strong> and an explicit met/unmet/uncertain status — a reviewer or auditor can trace any recommendation to evidence in seconds, which is also what makes the touch-time saving real rather than a black-box "trust me" score. For the medical director and compliance, the packet <em>is</em> the explanation.</p>
+<p><strong>Human authority over adverse outcomes.</strong> Hard constraint, enforced by design: the AI's most adverse possible action is <strong>route-for-review</strong> or <strong>pend-for-info</strong>. It cannot deny or partially deny. Every denial and partial denial is owned by a licensed clinician with independent judgment, and the prototype measures whether the packet <em>helps</em> that human decide faster — never whether it can replace them. The groundedness hard stop and the overturn directional trigger exist specifically to guarantee that augmentation never quietly becomes unsafe automation — and we are explicit that the rare-event safety verdict is owed to a powered follow-up, not claimed from a 500-case prototype.</p>
+</div></details>
+</section>
+<section id="uc-education" class="ucsec">
+<div class="uctop"><span class="uctag">Higher-ed rubric grading</span><h2>Education — GradeAssist</h2><p class="ucone">LLM pre-grades essays against a rubric; the instructor owns the final grade. A counterbalanced crossover tests whether draft-then-edit actually saves trustworthy human time.</p><div class="card scorecard"><div class="schead"><h4>Education</h4><span class="delta flat">46 &rarr; 46</span></div><div class="scrow"><span class="lbl">Gate 1</span><div class="chips"><span class="chip g" title="A1 prototype-not-product">A1<b>5</b></span><span class="chip g" title="A2 right tool">A2<b>5</b></span><span class="chip g" title="A3 focused hypothesis">A3<b>4</b></span><span class="chip g" title="A4 fail-fast">A4<b>4</b></span><span class="chip g" title="A5 validates business case">A5<b>5</b></span><span class="chip g" title="B1 sharp value">B1<b>5</b></span><span class="chip g" title="B2 defensible ROI">B2<b>4</b></span><span class="chip g" title="B3 distinct business metric">B3<b>5</b></span><span class="chip g" title="B4 precise technical metric">B4<b>5</b></span><span class="chip g" title="B5 kill threshold">B5<b>4</b></span></div><span class="tot">46/50</span></div><div class="scrow"><span class="lbl">Hardened</span><div class="chips"><span class="chip g" title="A1 prototype-not-product">A1<b>5</b></span><span class="chip g" title="A2 right tool">A2<b>5</b></span><span class="chip g" title="A3 focused hypothesis">A3<b>4</b></span><span class="chip g" title="A4 fail-fast">A4<b>4</b></span><span class="chip g" title="A5 validates business case">A5<b>5</b></span><span class="chip g" title="B1 sharp value">B1<b>5</b></span><span class="chip g" title="B2 defensible ROI">B2<b>4</b></span><span class="chip g" title="B3 distinct business metric">B3<b>4</b></span><span class="chip g" title="B4 precise technical metric">B4<b>5</b></span><span class="chip g" title="B5 kill threshold">B5<b>5</b></span></div><span class="tot">46/50</span></div></div></div>
+<details open class="report"><summary>Full ideation package</summary><div class="reportbody"><h2 id="section-1-nature-of-the-problem">Section 1: Nature of the Problem</h2>
+<p>This sits primarily in the <strong>"Augment expert judgment under volume pressure"</strong> Section-1 category, with a secondary footing in <strong>"Reduce process variance / inconsistency."</strong> It is <strong>AI</strong> in the narrow, correct sense: the core task — reading a free-text essay and mapping it to a multi-dimensional rubric with a defensible rationale — requires natural-language <em>understanding</em> and generation that classical rules and analytics cannot produce. It is explicitly <strong>not</strong> pure Automation (no fixed deterministic logic suffices for open-ended prose) and <strong>not</strong> pure Analytics (we are not aggregating structured numbers; we are interpreting unstructured text against semantic criteria). One sentence: <em>This is an AI problem because the unit of work is "judge unstructured argumentative prose against a qualitative rubric and explain why," which is irreducibly a language-understanding task — but only the pre-grade is AI; the grade decision stays human.</em></p>
+<h2 id="section-11-business-problem-swat-so-what">Section 1.1: Business Problem (SWAT "So-What")</h2>
+<p><strong>Business goal (cost side):</strong> In a large-enrollment program (say a 1,200-student gateway course with 4 written assignments/term), grading is the single largest variable instructional-labor cost and the #1 driver of TA headcount and grade-appeal overhead. <strong>So-what:</strong> if grading throughput per qualified human-hour does not improve, the program either caps enrollment (lost tuition revenue) or degrades feedback quality (lower retention, more appeals, accreditation risk).</p>
+<p><strong>Specific problem:</strong> Human graders (TAs + instructor) currently spend ~12 minutes per essay, disagree with each other meaningfully (inter-rater quadratic-weighted kappa typically 0.55–0.70 in published rubric-grading studies), and under time pressure write thin feedback (often 1–2 generic sentences).</p>
+<ul>
+<li><strong>Success definition (for the <em>business case</em>, tested in prototype):</strong> AI pre-grading lets a human finalize an essay in ≤5 min (≥55% time reduction) — <strong>the primary, powered claim</strong> — while two <em>guardrail</em> conditions hold: provisional scores are <em>non-inferior to a single human rater</em> against the stated-reliability reference, and no directional fairness red flag fires against the ESL slice.</li>
+<li><strong>Failure definition (primary):</strong> time saved &lt;25% (the human still re-reads everything). <strong>Guardrail failures</strong> (agreement below a single human rater; a flagged ESL gap) do not by themselves prove the <em>value</em> false — they gate the path to pilot, as defined in Prototype Metrics.</li>
+<li><strong>Timeframe:</strong> 2-week prototype window; business decision (go/kill) at day 14.</li>
+<li><strong>Scope:</strong> ONE assignment type (argumentative essay, ~500–800 words) in ONE course. Not problem sets, not code, not multi-modal. Deliberately narrow.</li>
+<li><strong>Metrics:</strong> see Prototype Metrics.</li>
+</ul>
+<h2 id="section-2-end-users--expected-workflow">Section 2: End Users &amp; Expected Workflow</h2>
+<p><strong>Primary user:</strong> the <em>grading human</em> — a TA or the instructor. <strong>Secondary user:</strong> the instructor as <em>grade owner and appeal authority</em>. <strong>Tertiary:</strong> the student (receives feedback, can appeal). The AI's output is a <strong>draft the human edits</strong>, never a published grade.</p>
+<p><strong>Workflow (numbered):</strong></p>
+<ol type="1">
+<li>Student submissions land in the LMS (Canvas/Blackboard) assignment.</li>
+<li>System pulls submission text + the instructor's rubric (already authored in the LMS) and de-identifies (strips name, ID).</li>
+<li>AI produces, per submission: a <strong>provisional score per rubric dimension</strong>, an <strong>overall provisional score</strong>, a <strong>rationale tied to specific rubric language</strong>, <strong>2–3 targeted feedback comments</strong>, and a <strong>confidence flag</strong> (low confidence → routed first to human).</li>
+<li>TA opens a side-by-side review screen: submission | AI draft. TA accepts, edits, or overrides any dimension; every change is logged.</li>
+<li>Any score in the bottom band (e.g., fail/low) is <strong>force-routed to the instructor</strong> for sign-off before release — AI never finalizes an adverse grade.</li>
+<li>Instructor batch-approves; grades + feedback publish to LMS.</li>
+<li>Appeals route to instructor with the AI rationale + edit history attached for transparency.</li>
+</ol>
+<p><strong>Example AI-generated output (one submission, rubric dimension = "Use of Evidence", scale 1–6):</strong></p>
+<blockquote>
+<p><strong>Provisional: Evidence = 4/6 (Overall 4/6). Confidence: High.</strong> <em>Rationale:</em> "The essay cites two sources (paragraph 2: the 2019 census figure; paragraph 4: the Smith interview) and ties the census figure directly to the thesis on urban migration — meeting rubric level 4 ('relevant evidence, mostly integrated'). It does not reach level 5–6 because the Smith interview is quoted but not analyzed (rubric requires 'evidence interpreted, not just presented')." <em>Targeted feedback to student:</em> "Strong use of the census data. To push this higher, explain <em>why</em> the Smith interview supports your claim — right now it's stated but not interpreted." <em>Flag for human:</em> none.</p>
+</blockquote>
+<h2 id="section-3-business--roi-evaluation">Section 3: Business &amp; ROI Evaluation</h2>
+<p><strong>How it's done today:</strong> 100% manual. TAs grade against a rubric; the instructor spot-checks ~10% and adjudicates appeals. No AI. <strong>Current performance:</strong> ~12 min/essay; inter-rater QWK ≈ 0.60 (published rubric-grading baselines); feedback length thin and inconsistent; appeal rate ~3–5% of grades.</p>
+<p><strong>Two baseline numbers the ROI rests on are treated as a PRE-READ to establish, not asserted:</strong></p>
+<ul>
+<li><strong>12 min/essay</strong> — basis: (a) published rubric-grading time studies for argumentative essays, and (b) a <strong>1-hour pre-read</strong> in which each participating grader times themselves scratch-grading 5 course essays. We use the <em>measured per-grader</em> baseline, not a literature constant, because grader speed varies (see Prototype Design). Until the pre-read runs, treat 12 min as <em>Likely</em>, not <em>Established</em>.</li>
+<li><strong>$30/hr blended grader cost</strong> — basis: the department's actual TA pay scale plus the instructor-time fraction, fully loaded. Marked <strong>to-confirm from the department budget line</strong> before the ROI is quoted to finance; used here as a placeholder of the right order of magnitude.</li>
+</ul>
+<p><strong>Quantified ROI — explicit Fermi build-up (every assumption stated and labeled):</strong></p>
+<p><em>Cost-savings side (the defensible core):</em></p>
+<ul>
+<li>A1 [assumption]: 1,200 students × 4 written assignments/term = <strong>4,800 essays/term</strong>.</li>
+<li>A2 [pre-read, to measure]: current grading time = <strong>~12 min/essay</strong> → 960 human-hours/term.</li>
+<li>A3 [hypothesis under test — the PRIMARY powered endpoint]: with AI draft, human review = <strong>5 min/essay</strong> → 400 hours/term. <strong>Saved = 560 hours/term</strong>.</li>
+<li>A4 [to-confirm from budget]: blended grader cost = <strong>$30/hr</strong> (TA + instructor mix, fully loaded).</li>
+<li>A5 [derived]: gross labor saving = 560 × <span class="math inline">30 = **</span>16,800/term**, ≈ <strong>$50,400/yr</strong> (3 terms).</li>
+<li>A6 [cost of the tool]: 4,800 essays × ~6,000 tokens round-trip × 3 terms ≈ 86M tokens/yr; at a conservative <strong><span class="math inline">10/1<em>M</em><em>t</em><em>o</em><em>k</em><em>e</em><em>n</em><em>s</em> * *<em>b</em><em>l</em><em>e</em><em>n</em><em>d</em><em>e</em><em>d</em> ≈ **</span>864/yr</strong> in inference. Add ~<span class="math inline">5<em>k</em><em>o</em><em>n</em><em>e</em> − <em>t</em><em>i</em><em>m</em><em>e</em><em>i</em><em>n</em><em>t</em><em>e</em><em>g</em><em>r</em><em>a</em><em>t</em><em>i</em><em>o</em><em>n</em>+ </span>3k/yr maintenance.</li>
+<li>A7 [derived net]: Year-1 net ≈ $50,400 − $864 − $3,000 − <span class="math inline">5, 000 = ** </span>41,500**; steady-state ≈ <strong>~$46,500/yr</strong> for ONE course.</li>
+</ul>
+<p><em>Revenue/strategic side (flagged as softer):</em></p>
+<ul>
+<li>B1 [analysis, Likely]: capacity freed (560 hrs) lets the program raise the per-TA enrollment cap; even one avoided TA line (~$8k/term) compounds the saving.</li>
+<li>B2 [analysis, Speculative]: better/faster feedback is associated with higher persistence; a 1-point retention bump on 1,200 students at ~$3k marginal tuition each is large but <strong>not</strong> claimed as primary justification — flagged speculative because the prototype does not test retention.</li>
+</ul>
+<p><strong>Strongest argument against my own ROI (unprompted counterargument):</strong> The $50k assumes the 5-min review target holds <em>and</em> that it isn't an artifact of who graded. If reviewers, distrusting the AI, still read the full essay <em>plus</em> the AI draft, review time could <em>rise</em> to 13–14 min and ROI goes <strong>negative</strong>. A subtler trap: the prototype's time number could be driven by one fast grader or by graders going faster <em>because they are being timed</em> (Hawthorne). That is exactly why the time endpoint is run as a <strong>counterbalanced within-grader crossover</strong> (Prototype Design), not a 2-person spot check — so the saving is a paired contrast that survives grader-speed variance and treats both arms identically under the timer.</p>
+<h2 id="section-4-data--integration">Section 4: Data &amp; Integration</h2>
+<p><strong>Specific data items (no vague terms):</strong></p>
+<ul>
+<li>Submission text (plain UTF-8, 300–1,200 words).</li>
+<li>The instructor's rubric: dimension names, level descriptors, point ranges (structured JSON).</li>
+<li><strong>Reference ("gold") scores</strong> per dimension + overall (integers, 1–6) for the eval set — <em>plus the two underlying rater scores</em>, retained so the reference's own reliability can be computed and reported (see Data Document).</li>
+<li>Grader identity (TA id, hashed) — for inter-rater variance and for the crossover counterbalancing.</li>
+<li>Optional fairness covariates for the <em>test only</em>: ESL flag (self-declared), section id. <strong>Not</strong> used as model input — used only to slice results.</li>
+</ul>
+<p><strong>Data cleanliness rating: 4/5.</strong> Reason: LMS submission text and rubrics are well-structured and machine-readable; reference scores already exist from real grading and carry their two rater scores. The −1 is because ESL/segment labels are self-reported, sometimes missing (~15%), and rubric wording varies in specificity across instructors.</p>
+<p><strong>Deployment model:</strong> LMS-embedded (LTI 1.3 tool), AI inference via a <strong>business-tier API with zero data-retention / no-training contractual terms</strong> (FERPA-compatible), de-identification at the boundary. Human-in-the-loop UI is the product surface; AI is a stateless pre-grade service. Prototype runs <strong>offline/batch on de-identified exports</strong> — no live LMS write-back.</p>
+<h2 id="data-document">Data Document</h2>
+<p><strong>Primary public proxy (for the prototype, no student PII):</strong></p>
+<ul>
+<li><strong>ASAP-AES (Hewlett "Automated Student Assessment Prize") essay dataset</strong> — Kaggle, <code>asap-aes</code>. <strong>Volume:</strong> ~12,978 essays across 8 prompts; <strong>format:</strong> TSV with essay text + resolved human scores <strong>and the two individual rater scores</strong>. <strong>Access:</strong> public Kaggle download. <strong>PII/sensitivity:</strong> already anonymized (named entities replaced with @PERSON, @LOCATION); <strong>low sensitivity.</strong> Use prompts with a clear analytic rubric (e.g., Set 7/8).</li>
+<li><strong>Secondary proxy:</strong> <strong>ASAP-SAS (Short Answer Scoring)</strong> — ~17k short responses with rubrics; for the short-answer variant.</li>
+<li><strong>Fairness slicing proxy:</strong> ASAP lacks a clean ESL flag, so for the bias slice use a <strong>text-length / readability-band proxy</strong> (Flesch-Kincaid bands as a stand-in for register), and supplement with a small instructor-provided real de-identified set (~20 essays, ~10 ESL / ~10 non-ESL) under IRB/FERPA cover for the directional bias check specifically.</li>
+<li><strong>Internal real data (gated):</strong> 50–100 already-graded essays from the target course, <strong>de-identified</strong>, with reference scores and ESL/section labels. Sensitivity: <strong>high</strong> (FERPA) → de-identify, no retention, instructor-supervised.</li>
+</ul>
+<p><strong>How the gold reference is constructed, and its own reliability (the ruler is not ground truth):</strong></p>
+<ul>
+<li>The reference is <strong>not</strong> treated as truth. For ASAP, the reference = the dataset's <strong>resolved/adjudicated score</strong>; its reliability is the <strong>rater1–rater2 QWK on the exact prompt set we use</strong>, which we <strong>compute and report from the released script</strong> (published values for these sets fall ≈ 0.6–0.7). That number is the noise floor against which all agreement claims are read.</li>
+<li>For the ~20 real course essays, the reference is built by <strong>two independent instructor raters scoring blind, with a third adjudicating disagreements &gt;1 point</strong>; we <strong>report the two raters' QWK</strong> before adjudication. If that QWK is below ~0.6, the reference is too noisy to support any agreement claim and we say so rather than reporting a misleadingly precise number.</li>
+<li>Consequence for interpretation: because the ruler carries ~0.3–0.4 of disagreement, an AI cannot agree with it more tightly than two humans do. So we <strong>do not</strong> ask "does AI match true quality" — we ask "does AI agree with this stated-reliability reference <em>at least as well as a single held-out human rater does</em>." (See Prototype Metrics; this also removes the earlier circular phrase "controlling for true quality" — there is no true quality, only the noisy reference.)</li>
+</ul>
+<h2 id="prototype-design">Prototype Design</h2>
+<p><strong>Primary hypothesis — ONE statistically-powered endpoint (falsifiable):</strong></p>
+<blockquote>
+<p><em>On argumentative essays graded against a fixed rubric, an LLM pre-grade reduces human finalization time to ≤5 min/essay (≥55% vs the measured scratch baseline), in a counterbalanced within-grader crossover that controls for grader-speed variance, Hawthorne, and timer effects.</em></p>
+</blockquote>
+<p>This single endpoint <strong>is</strong> the value/ROI claim. If it fails at threshold, the business case — not the technology — is falsified.</p>
+<p><strong>Guardrail conditions (gate the path to pilot; not co-equal kill clauses):</strong></p>
+<blockquote>
+<p><em>G1 — Agreement non-inferiority:</em> AI-vs-reference QWK on the 80 essays is <strong>not meaningfully below</strong> a single held-out human rater's QWK against the <em>same</em> reference (reliability of that reference reported, per Data Document). <em>G2 — Fairness red flag:</em> the ESL-vs-non-ESL mean-residual gap point estimate stays ≤ 0.3; a larger point estimate is a <strong>directional red flag</strong>, not a kill (the ~20-essay slice cannot statistically support a kill — see Statistical Power note).</p>
+</blockquote>
+<p><strong>Cheap / dirty / disposable test design (fail-fast):</strong></p>
+<ul>
+<li><strong>N = 80 essays</strong> with existing reference scores (60 ASAP public + 20 real de-identified course essays for the bias slice). Small N on purpose.</li>
+<li>LLM grades <strong>blind</strong> (no access to reference, no student identity), via a single rubric-in-prompt call. No fine-tuning, no pipeline, no UI build — a <strong>notebook + spreadsheet</strong>.</li>
+<li><strong>Human-in-the-loop arm — counterbalanced crossover (the fix for "N=2 graders"):</strong> <strong>4 graders</strong>, not 2. Timed time-study runs on a <strong>40-essay subset</strong>; each of those essays is graded <strong>both ways</strong> — scratch and AI-assisted — by <strong>different</strong> graders, with grader×arm and order balanced (Latin-square style) so no grader sees the same essay twice. This yields ~80 <em>paired</em> timed gradings in which the scratch-vs-assisted contrast is <em>within grader and within essay</em>, removing the single-fast-grader and essay-difficulty confounds. Both arms are timed and observed identically, so any Hawthorne/timer effect cancels in the contrast.</li>
+<li><strong>Right-tool check (run as a cheap A/B):</strong> also score the same 80 with a <strong>classical baseline</strong> — TF-IDF + linear/ordinal regression (the published ASAP-era approach). If the classical model matches the LLM on agreement at 1/100th the cost, <strong>we do not use the LLM</strong> for scoring (LLM may still be used only for the free-text feedback). This guards against LLM-overuse.</li>
+<li>Total cost: <strong>&lt;$50 inference + ~10–12 person-hours</strong> (4 graders × ~20 timed gradings each, plus the 1-hour baseline pre-read). Disposable: thrown away whether it passes or fails.</li>
+</ul>
+<pre class="mermaid">flowchart TD
+    A[80 essays w/ stated-reliability reference scores] --&gt; B[De-identify: strip name/ID]
+    B --&gt; C{Two scoring arms}
+    C --&gt;|Arm 1| D[LLM pre-grade vs rubric -&gt; score + rationale + feedback]
+    C --&gt;|Arm 2| E[Classical TF-IDF + ordinal regression baseline]
+    D --&gt; F[Counterbalanced crossover: 4 graders, each essay scratch AND AI-assisted, both timed]
+    E --&gt; G[Score-only, no feedback]
+    F --&gt; H[Agreement: AI-vs-ref QWK vs single-human-rater-vs-ref]
+    G --&gt; H
+    F --&gt; I[PRIMARY: paired finalization-time contrast, AI-assist vs scratch]
+    H --&gt; J[Fairness slice: ESL vs non-ESL residual gap]
+    I --&gt; K{Go / Kill at Day 14 — driven by the powered TIME endpoint}
+    H --&gt; M[Guardrail G1: non-inferiority gate to pilot]
+    J --&gt; L[Directional red flag -&gt; pre-registered powered fairness audit BEFORE any pilot]
+    M --&gt; K
+    L --&gt; K
+</pre>
+<p><strong>WHY THIS IS A PROTOTYPE, NOT A PRODUCT:</strong> It writes to a spreadsheet, not the LMS — no LTI integration, no auth, no roster sync, no grade write-back, no scaling, no UI beyond a side-by-side view, no error handling, no logging beyond the eval. It tests <strong>one assignment type in one course on 80 essays</strong> and is designed to be <strong>deleted on day 14</strong>. It validates the <em>business case</em> ("does a draft-then-edit workflow actually save trustworthy human time?") — not the technology ("can an LLM score essays?", which is already known from ASAP). Going to 4 graders and a crossover is <strong>not</strong> scope inflation — it is the minimum design that lets the <em>one</em> number the ROI depends on survive a confound; it adds graders and a pre-read, not infrastructure. A product would add FERPA-grade integration, appeal workflows, monitoring, and rubric-authoring tooling; the prototype intentionally has none of that.</p>
+<h2 id="prototype-metrics">Prototype Metrics</h2>
+<p><strong>PRIMARY metric — the value claim, and the only statistically-powered hard kill:</strong></p>
+<ul>
+<li><strong>Net human grading time per essay</strong>, as a <strong>paired within-grader contrast</strong> (AI-assisted minus scratch) on the 40-essay timed subset. Target: <strong>≤5 min vs the measured ~12 min baseline (≥55% reduction)</strong>. This, not accuracy, creates the $50k ROI — an accurate model nobody saves time with has zero business value.</li>
+<li>Secondary business metric: <strong>% of AI drafts accepted with ≤1 dimension edited</strong> (proxy for trust/usefulness). Target ≥60%.</li>
+</ul>
+<p><strong>GUARDRAIL metric G1 — agreement, framed as non-inferiority to a single human rater (not "match true quality"):</strong></p>
+<ul>
+<li><strong>Quadratic-weighted kappa (QWK)</strong> between the AI overall score and the <strong>stated-reliability reference</strong>, computed on the 80, <strong>reported with its bootstrap 95% CI</strong> from the released script, alongside a <strong>single held-out human rater's QWK against the same reference</strong>. Read as: <em>is AI non-inferior to one human?</em> — not <em>is AI correct in some absolute sense</em>.</li>
+<li><strong>Within-1-point agreement rate</strong> (1–6 scale), reported with CI. Indicative target: <strong>≥75%</strong>.</li>
+</ul>
+<p><strong>GUARDRAIL metric G2 — fairness, as a directional red flag (see Power note for why it cannot be a kill at N=20):</strong></p>
+<ul>
+<li>Mean AI-vs-reference residual gap between ESL and non-ESL slices, compared <strong>at matched reference-score levels</strong> (so the gap is not an artifact of the two groups sitting at different score bands). Target point estimate: <strong>|gap| ≤ 0.3</strong>; reported <strong>with its 95% CI</strong>.</li>
+</ul>
+<p><strong>Statistical Power / MDE note (added — covers the time metric and the fairness slice):</strong></p>
+<ul>
+<li><strong>Time (primary):</strong> the crossover yields ~80 <em>paired</em> timed gradings across 4 counterbalanced graders. Taking a per-essay grading-time SD ≈ 3 min (to be confirmed in the pre-read), the paired-comparison <strong>MDE at 80% power is ≈ 1.2–1.5 min</strong>. The target effect (~7 min, 12→5) is ~5× the MDE, so this endpoint is <strong>adequately powered to support a hard kill</strong>. If the pre-read shows SD materially above ~5 min, we add graders before committing to the kill line.</li>
+<li><strong>Fairness (guardrail):</strong> ~10 ESL vs ~10 non-ESL. With residual SD ≈ 0.8 pt, the SE of the gap ≈ 0.36 and the <strong>95% CI half-width ≈ ±0.7 pt</strong> — wider than both the 0.3 target and the 0.5 concern line. The slice therefore <strong>cannot reliably distinguish</strong> a real 0.5 gap from zero. Powering a true 0.5-gap kill at 80% power needs **~80/group (~160 essays)** — outside the prototype budget. So fairness is <strong>demoted from a hard kill to a directional red flag</strong>: a flagged gap <strong>triggers a pre-registered, powered fairness audit (~160 matched essays) before any pilot</strong>, and the prototype does not pretend the ~20-essay number can kill or clear the project on its own. This is the more honest design and preserves fail-fast.</li>
+<li><strong>Agreement (guardrail):</strong> N=80 gives a QWK 95% CI of roughly <strong>±0.08–0.12</strong> (bootstrapped). Enough to catch gross non-inferiority failure; reported as a CI, not asserted as a point.</li>
+</ul>
+<p><strong>KILL / GATE thresholds (what each metric is actually allowed to do):</strong></p>
+<ul>
+<li><strong>HARD KILL (powered) — time:</strong> human finalization time <strong>≥ 9 min/essay</strong> in the paired contrast (&lt;25% saving → ROI does not clear A6/A7 costs and overhead). This is the one threshold the design is powered to fire.</li>
+<li><strong>GATE-TO-PILOT (guardrail G1) — agreement:</strong> if AI-vs-reference QWK is <strong>clearly below</strong> the single-human-rater benchmark by more than the reported CI, the draft is a liability, not a starting point → <strong>do not pilot</strong> (redesign or kill), even if time passes.</li>
+<li><strong>DIRECTIONAL RED FLAG (guardrail G2) — fairness:</strong> an ESL residual gap point estimate <strong>&gt; 0.5</strong> does <strong>not</strong> kill at N=20 — it <strong>blocks any pilot until a powered fairness audit clears it</strong>. A passing time endpoint with a flagged gap means <em>proceed to audit</em>, never <em>ship</em>. Net: we <strong>kill cheaply on the time endpoint</strong> (&lt;$50, ~10 person-hours sunk); fairness and agreement gate the road to pilot rather than masquerading as kills the data can't support.</li>
+</ul>
+<h2 id="responsible-ai-surface-darwin-r">Responsible-AI Surface (DARWIN-R)</h2>
+<ul>
+<li><strong>Bias / fairness:</strong> The fairness slice remains <strong>first-class</strong> — but as a <strong>hard gate to pilot</strong>, not a statistically-unsupportable kill at N=20. Honesty about that limit <em>is</em> the responsible move: a flagged ESL/readability gap blocks piloting until a <strong>pre-registered, powered (~160-essay) fairness audit</strong> clears it. Demographic covariates are <strong>never model inputs</strong> (used only to slice results), avoiding proxy discrimination. We also test style bias (readability bands) so the model isn't rewarding fluent prose over correct reasoning.</li>
+<li><strong>Privacy / compliance (FERPA):</strong> De-identification at the boundary; inference under a <strong>zero-retention, no-training</strong> contract; prototype runs on public proxy + de-identified exports only. No student record is sent with identifiers; grader ids are hashed.</li>
+<li><strong>Explainability to stakeholders:</strong> Every provisional score carries a <strong>rationale tied to specific rubric language and specific essay passages</strong> — reproducible and auditable. QWK (with its CI and the <em>reference's own reliability</em>), the paired time saving, and the fairness gap are all computed by a released script so the dean/CFO can re-run the claim and see the uncertainty, not just a point estimate. The grade-appeal packet includes the AI rationale plus the full human edit history.</li>
+<li><strong>Human authority over adverse outcomes:</strong> The AI <strong>never finalizes</strong> a grade. Every grade is human-approved; every <strong>low/failing grade is force-routed to the instructor</strong> for explicit sign-off. The student-facing record shows the <em>human's</em> grade. Over-reliance / learning-harm risk is mitigated by (a) confidence flags that route uncertain cases to humans first, and (b) audit logs that surface "rubber-stamp" behavior (TA accepting 100% unedited) for instructor review — protecting against the failure mode where the human-in-the-loop becomes a human-in-name-only.</li>
+</ul>
+<p><strong>Strongest counterargument to the whole idea (unprompted):</strong> The biggest risk is <em>automation complacency</em> — that humans, handed a plausible draft, stop genuinely judging and the "human-in-the-loop" becomes theater, importing the model's errors and biases at scale with a false veneer of human authority. If true, the fairness and authority safeguards above are cosmetic. This is why the prototype measures <strong>edit rate</strong> and routes low-confidence and adverse grades to humans: if reviewers edit almost nothing AND agreement is only at the single-human-rater floor, that is itself a signal to <strong>redesign, not ship</strong> — and note the demotion above cuts the <em>opposite</em> way too, honestly: with fairness no longer a hard kill, the powered pre-pilot audit is now the <em>real</em> gate, and skipping it would be exactly the kind of complacency this section warns against.</p>
+</div></details>
+</section>
+<section id="uc-finance" class="ucsec">
+<div class="uctop"><span class="uctag">Retail loan adjudication</span><h2>Finance — Credit Decision Co-Pilot</h2><p class="ucone">A hybrid (RPA + ML + LLM, fenced off from the decision) prepares a risk packet; the underwriter owns the decline. Fairness checked against real HMDA segments.</p><div class="card scorecard"><div class="schead"><h4>Finance</h4><span class="delta flat">44/50 (v1, not hardened)</span></div><div class="scrow"><span class="lbl">Gate 1</span><div class="chips"><span class="chip g" title="A1 prototype-not-product">A1<b>5</b></span><span class="chip g" title="A2 right tool">A2<b>5</b></span><span class="chip a" title="A3 focused hypothesis">A3<b>3</b></span><span class="chip g" title="A4 fail-fast">A4<b>4</b></span><span class="chip g" title="A5 validates business case">A5<b>5</b></span><span class="chip g" title="B1 sharp value">B1<b>4</b></span><span class="chip g" title="B2 defensible ROI">B2<b>4</b></span><span class="chip g" title="B3 distinct business metric">B3<b>5</b></span><span class="chip g" title="B4 precise technical metric">B4<b>4</b></span><span class="chip g" title="B5 kill threshold">B5<b>5</b></span></div><span class="tot">44/50</span></div></div></div>
+<details open class="report"><summary>Full ideation package</summary><div class="reportbody"><h2 id="section-1-nature-of-the-problem">Section 1: Nature of the Problem</h2>
+<p>This sits primarily in the <strong>Decision-Support / Knowledge-Work-Augmentation</strong> category (assembling and summarizing fragmented evidence to support a human expert decision), with a secondary <strong>Compliance-Documentation</strong> category (generating audit-grade adverse-action rationale).</p>
+<p>In one sentence: this is a <strong>hybrid — Automation (deterministic ETL + Reg-B credit-policy rules) for the data assembly and threshold checks, Analytics/ML (a calibrated default-risk score) for the quantitative risk signal, and AI/LLM (constrained generation) only for the narrative summarization of bank-statement transactions and the human-readable reason-code prose</strong> — and the LLM is deliberately fenced off from the decision itself.</p>
+<h2 id="section-11-business-problem-swat-so-what">Section 1.1: Business Problem (SWAT "So-What")</h2>
+<p><strong>Business goal:</strong> Cut the fully-loaded cost-per-decision and increase underwriter throughput in a retail lender's manual underwriting queue, without degrading credit-loss performance or triggering fair-lending liability.</p>
+<p><strong>The so-what:</strong> Underwriters spend the majority of their time <em>assembling</em> evidence (downloading bureau pulls, eyeballing 90 days of bank statements for gambling/NSF/undisclosed-debt signals, reconciling stated vs. documented income) rather than <em>judging</em> it. Assembly is low-value, slow, and inconsistent between underwriters — the same file gets different treatment depending on who picks it up.</p>
+<p><strong>Specific problem definition:</strong></p>
+<ul>
+<li><strong>Scope:</strong> Manually-underwritten unsecured personal/auto loans (the "referred" queue that fails auto-decisioning), roughly the 30% of applications that a human touches.</li>
+<li><strong>Success:</strong> ≥30% reduction in median underwriter handling time per file AND no statistically detectable increase in default-misclassification AND adverse-impact ratio held ≥0.80 (4/5ths rule) across protected-class proxies.</li>
+<li><strong>Failure:</strong> Any rise in misclassification of known-bad loans, or any segment's approval ratio dropping below 0.80, or time saving &lt;15%.</li>
+<li><strong>Timeframe:</strong> 6-week retrospective prototype; decision-quality measured against <em>already-known</em> repaid/default outcomes.</li>
+<li><strong>Metrics:</strong> median seconds-per-file, agreement-with-actual-outcome (balanced accuracy), adverse-impact ratio.</li>
+</ul>
+<h2 id="section-2-end-users--expected-workflow">Section 2: End Users &amp; Expected Workflow</h2>
+<p><strong>Primary user:</strong> The manual underwriter (credit analyst) in the referred queue. <strong>Secondary users:</strong> Compliance/fair-lending officer (audits reason codes), underwriting team lead (monitors disparity dashboard).</p>
+<p><strong>How they use the output:</strong> The underwriter opens a file and, instead of a folder of raw PDFs, sees a one-screen <strong>Risk &amp; Affordability Packet</strong> — pre-summarized, with every claim hyperlinked to its source line so it can be verified or dismissed. The underwriter still reads, still judges, and <strong>owns the decline</strong>. The AI never sets the decision field; it pre-populates evidence and a <em>suggested</em> recommendation the human must accept, override, or reject.</p>
+<p><strong>Numbered workflow:</strong></p>
+<ol type="1">
+<li>Application hits the referred queue (auto-decisioner abstained).</li>
+<li>Automation layer pulls and normalizes: bureau file, application form, income docs, 90 days of bank transactions.</li>
+<li>ML model emits a calibrated probability-of-default + top contributing factors (SHAP).</li>
+<li>Rules engine runs deterministic Reg-B policy checks (DTI thresholds, policy knockouts) — these, not the LLM, drive any hard-stop reason codes.</li>
+<li>LLM composes a plain-language packet: evidence summary, flagged signals, reason codes mapped to ECOA-permissible language, and a <em>suggested</em> recommendation with confidence.</li>
+<li>Underwriter reviews on one screen, clicks into any source line to verify, then <strong>decides</strong> (approve/decline/refer-up), optionally editing reason codes.</li>
+<li>Decision + final reason codes logged immutably for the adverse-action notice and audit trail.</li>
+</ol>
+<p><strong>Example AI-generated output (narrative):</strong></p>
+<blockquote>
+<p><strong>Recommendation: REFER — borderline affordability (confidence: Medium, 0.61).</strong> <em>This is a suggestion; the underwriter decides.</em> <strong>Affordability:</strong> Documented net monthly income $4,180 (3 consecutive deposits from "ACME LOGISTICS PAYROLL", [statement p.2 L14–16]). Stated income on application was <span class="math inline">5, 000—<em>a</em> * *</span>820 (16%) overstatement** [app field 7 vs. bank]. Existing obligations <span class="math inline">1, 540/<em>m</em><em>o</em> → <em>b</em><em>a</em><em>c</em><em>k</em> − <em>e</em><em>n</em><em>d</em><em>D</em><em>T</em><em>I</em> * *44 * *<em>R</em><em>i</em><em>s</em><em>k</em><em>s</em><em>i</em><em>g</em><em>n</em><em>a</em><em>l</em><em>s</em> : * * 2<em>N</em><em>S</em><em>F</em><em>f</em><em>e</em><em>e</em><em>s</em><em>i</em><em>n</em>90<em>d</em><em>a</em><em>y</em><em>s</em>[<em>p</em>.1<em>L</em>8, <em>p</em>.3<em>L</em>22]; <em>n</em><em>o</em><em>g</em><em>a</em><em>m</em><em>b</em><em>l</em><em>i</em><em>n</em><em>g</em>/<em>u</em><em>n</em><em>d</em><em>i</em><em>s</em><em>c</em><em>l</em><em>o</em><em>s</em><em>e</em><em>d</em> − <em>l</em><em>o</em><em>a</em><em>n</em><em>p</em><em>a</em><em>t</em><em>t</em><em>e</em><em>r</em><em>n</em><em>s</em><em>d</em><em>e</em><em>t</em><em>e</em><em>c</em><em>t</em><em>e</em><em>d</em>.<em>B</em><em>u</em><em>r</em><em>e</em><em>a</em><em>u</em><em>s</em><em>c</em><em>o</em><em>r</em><em>e</em>662, 1<em>c</em><em>o</em><em>l</em><em>l</em><em>e</em><em>c</em><em>t</em><em>i</em><em>o</em><em>n</em>(</span>310, medical, [bureau seg 4]). <strong>Model:</strong> PD 9.4% (calibrated); top factors: DTI (+), recent NSF (+), thin file (+), 4yr employment tenure (−). <strong>ECOA reason codes if declined:</strong> R-07 "Income insufficient for amount requested"; R-14 "Level of obligations relative to income." <em>(Underwriter must confirm; system will not finalize a decline.)</em></p>
+</blockquote>
+<h2 id="section-3-business--roi-evaluation">Section 3: Business &amp; ROI Evaluation</h2>
+<p><strong>How it's addressed today:</strong> Fully manual assembly. An underwriter opens 4–6 source documents per referred file, manually skims statements, computes DTI in a spreadsheet, and writes free-text notes. No standardized reason-code mapping → compliance does rework on adverse-action notices.</p>
+<p><strong>Current performance:</strong> ~25–35 min median handling time per referred file (industry-typical for manual unsecured underwriting); inter-underwriter inconsistency is high; adverse-action notices are a known compliance-rework source.</p>
+<p><strong>Quantified ROI — explicit Fermi build-up (all assumptions stated, mid-size regional lender):</strong></p>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Assumption</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A</td>
+<td>Total applications/year</td>
+<td>500,000</td>
+</tr>
+<tr>
+<td>B</td>
+<td>Share referred to manual underwriting</td>
+<td>30% → <strong>150,000 files</strong></td>
+</tr>
+<tr>
+<td>C</td>
+<td>Current median handling time</td>
+<td>30 min/file</td>
+</tr>
+<tr>
+<td>D</td>
+<td>Fully-loaded underwriter cost (salary+benefits+overhead)</td>
+<td><span class="math inline">65/<em>h</em><em>r</em> = **</span>1.083/min**</td>
+</tr>
+<tr>
+<td>E</td>
+<td>Current labor cost = B×C×D</td>
+<td>150,000 × 30 × <span class="math inline">1.083 = **</span>4.87M/yr**</td>
+</tr>
+<tr>
+<td>F</td>
+<td>Time reduction from packet (target, conservative)</td>
+<td>30% → saves 9 min/file</td>
+</tr>
+<tr>
+<td>G</td>
+<td>Gross labor savings = B×9×D</td>
+<td>150,000 × 9 × <span class="math inline">1.083 = **</span>1.46M/yr**</td>
+</tr>
+<tr>
+<td>H</td>
+<td>Compliance rework avoided (standardized reason codes): 150k files × 4% notices reworked × 20 min × $1.083</td>
+<td><strong>$0.13M/yr</strong></td>
+</tr>
+<tr>
+<td>I</td>
+<td><strong>Gross annual benefit (G+H)</strong></td>
+<td><strong>≈ $1.59M/yr</strong></td>
+</tr>
+<tr>
+<td>J</td>
+<td>Build + run cost: prototype $40k; if productionized, ML/LLM infra + MLOps + fair-lending monitoring</td>
+<td>~$0.45M/yr</td>
+</tr>
+<tr>
+<td>K</td>
+<td><strong>Net annual benefit (I−J), production</strong></td>
+<td><strong>≈ $1.14M/yr</strong></td>
+</tr>
+<tr>
+<td>L</td>
+<td><strong>Prototype cost to test the whole thesis</strong></td>
+<td><strong>~$40k, 6 weeks</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Traceability note:</strong> The single largest lever is F (time reduction). The prototype exists specifically to falsify F and to prove it doesn't come at the cost of credit quality or fairness. If F is only 15%, gross labor savings halve to ~$0.73M — still positive, but the kill-threshold logic below governs go/no-go.</p>
+<p><strong>Risk-adjusted caveat:</strong> ROI assumes no increase in credit losses. Because manual underwriting decisions a default-loss-bearing book, even a 0.5pp rise in misclassified bad loans could erase the entire labor saving — which is exactly why decision-quality is a gating metric, not a nice-to-have.</p>
+<h2 id="section-4-data--integration">Section 4: Data &amp; Integration</h2>
+<p><strong>Specific data items (no vague terms):</strong></p>
+<ul>
+<li><strong>Application:</strong> requested amount, term, stated gross income, stated employment status/tenure, declared monthly obligations, loan purpose.</li>
+<li><strong>Credit bureau (e.g., TransUnion/Experian pull):</strong> FICO/VantageScore, # tradelines, revolving utilization %, # accounts 30/60/90 DPD, public records, collections (amount + type), inquiries last 6mo, oldest-tradeline age.</li>
+<li><strong>Bank statements (90 days):</strong> per-transaction date, amount, direction, merchant/descriptor string; derived features: count of payroll deposits, mean net monthly inflow, NSF/overdraft count, gambling-merchant txn count, loan-disbursement inflows (undisclosed-debt proxy), end-of-period balance trend.</li>
+<li><strong>Income docs:</strong> YTD gross, pay frequency, employer name (for cross-check against payroll descriptor).</li>
+<li><strong>Outcome label (retrospective only):</strong> loan status repaid / charged-off / default — the ground truth.</li>
+</ul>
+<p><strong>Data cleanliness rating: 3/5.</strong> Bureau and application data are structured and clean (4–5). Bank-statement transaction descriptors are the weak link — free-text, inconsistent merchant strings, OCR noise from scanned PDFs, and no standard taxonomy — which is precisely where the LLM/parser earns its place and where most prototype risk lives.</p>
+<p><strong>Deployment model:</strong> Prototype = offline batch on a secured analyst workstation / VPC notebook over de-identified historical files, human-in-the-loop UI is a lightweight web form. No model touches a live decision. Production (out of scope) would be an internal API behind the LOS (loan-origination system), with the LLM in a private/VPC deployment — no applicant data to external endpoints.</p>
+<h2 id="data-document">Data Document</h2>
+<p><strong>Real, usable sources (public proxies for the prototype — no real applicant data needed to test the thesis):</strong></p>
+<ol type="1">
+<li><strong>Lending Club loan data (2007–2018)</strong> — ~2.2M loans, CSV, ~150 features incl. income, DTI, purpose, FICO range, and <strong>loan_status (Fully Paid / Charged Off)</strong> as the outcome label. Access: Kaggle mirror. PII: none (anonymized). <em>Role: primary — ML default-risk model + outcome ground truth.</em></li>
+<li><strong>HMDA Loan Application Register (CFPB, annual)</strong> — tens of millions of mortgage records, public CSV/API, includes applicant <strong>race, ethnicity, sex, geography, action_taken (approved/denied)</strong>. Access: ffiec.cfpb.gov public files. PII: aggregated, no names. <em>Role: fairness/disparate-impact testing across real protected-class fields — avoids unreliable name/geo proxies.</em></li>
+<li><strong>Statlog German Credit (UCI)</strong> — 1,000 records, 20 attributes, good/bad label. Access: UCI ML repo. PII: none. <em>Role: small, fast smoke-test set for the rules+score+narrative pipeline.</em></li>
+<li><strong>Synthetic bank-statement transaction stream</strong> — generated from templates (payroll descriptors, NSF events, gambling merchants) to exercise the LLM summarizer where no clean public bank-statement corpus exists. PII: none (synthetic). <em>Role: stress-test the narrative/reason-code generator.</em></li>
+</ol>
+<p><strong>Volume for prototype:</strong> N ≈ 300 historical decided files (stratified: approved-repaid, approved-default, declined), enough for a paired time study and a 4/5ths-rule check, small enough to run in days. <strong>Sensitivity:</strong> Protected-class attributes (HMDA) are used <strong>only</strong> for disparity measurement, held in a segregated table, never fed as model features (avoids disparate treatment).</p>
+<h2 id="prototype-design">Prototype Design</h2>
+<p><strong>Single core hypothesis (falsifiable):</strong></p>
+<blockquote>
+<p><em>Providing underwriters an AI-prepared risk &amp; affordability packet reduces median decision time by ≥30% while keeping agreement-with-actual-outcome statistically non-inferior to the control AND maintaining an adverse-impact ratio ≥0.80 across protected segments.</em></p>
+</blockquote>
+<p>If any of the three clauses fails, the hypothesis is falsified.</p>
+<p><strong>The cheap, dirty, disposable test:</strong></p>
+<ul>
+<li><strong>N = 300</strong> historical, already-decided applications with known repaid/default outcomes (Lending Club for risk+outcome; HMDA-style segments for fairness; synthetic statements for narrative).</li>
+<li><strong>Design:</strong> within-subjects A/B. 8–10 real or proxy underwriters each decide a randomized mix of <strong>with-packet</strong> vs <strong>control (raw documents)</strong> files. Counterbalanced so no file is seen twice by the same person.</li>
+<li><strong>Measured:</strong> stopwatch decision time, their approve/decline vs. the known actual outcome, and approval-rate by segment.</li>
+<li><strong>Build:</strong> the "packet" is a half-automated, half-manually-curated mock — rules in a spreadsheet/Python, an off-the-shelf LLM API for summaries, a bare web form. No integration, no LOS, no production ML pipeline. <strong>Human-in-the-loop throughout; AI never finalizes.</strong></li>
+<li><strong>Fail-fast property:</strong> runnable in 6 weeks for ~$40k. If with-packet decisions agree <em>less</em> with actual outcomes, or disparity blows past the 4/5ths line, we kill it before writing a line of production code — the expensive technology was never built.</li>
+</ul>
+<pre class="mermaid">flowchart TD
+    A[300 historical decided files&lt;br/&gt;Lending Club + HMDA segs + synthetic statements] --&gt; B{Randomize per file}
+    B --&gt;|Arm 1| C[Control: raw documents only]
+    B --&gt;|Arm 2| D[Treatment: AI Risk &amp; Affordability Packet]
+    D --&gt; D1[Automation: normalize data]
+    D --&gt; D2[ML: calibrated PD + SHAP]
+    D --&gt; D3[Rules: Reg-B policy checks]
+    D --&gt; D4[LLM: narrative + ECOA reason codes]
+    C --&gt; E[Underwriter decides&lt;br/&gt;HUMAN owns decline]
+    D1 --&gt; E
+    D2 --&gt; E
+    D3 --&gt; E
+    D4 --&gt; E
+    E --&gt; F[Log: decision time, decision, segment]
+    F --&gt; G{Compare arms}
+    G --&gt; H[Business: median time delta]
+    G --&gt; I[Technical: balanced accuracy vs actual outcome]
+    G --&gt; J[Fairness: adverse-impact ratio per segment]
+    H --&gt; K{Pass all 3 thresholds?}
+    I --&gt; K
+    J --&gt; K
+    K --&gt;|No| L[KILL — thesis falsified, no prod build]
+    K --&gt;|Yes| M[Proceed to scoped pilot]
+</pre>
+<p><strong>WHY THIS IS A PROTOTYPE, NOT A PRODUCT:</strong></p>
+<ul>
+<li>It runs on <strong>historical, already-decided</strong> files with <strong>known outcomes</strong> — there is no live applicant, no live decision, no real adverse action issued.</li>
+<li>The packet is a <strong>wizard-of-oz-grade mock</strong>: spreadsheet rules + an API call + a bare form. No LOS integration, no MLOps, no monitoring, no scaling, no retraining loop, none of the hardening a product needs.</li>
+<li>It tests the <strong>business case</strong> ("does the packet make humans faster without hurting credit quality or fairness?"), <strong>not the technology</strong> ("can we build a great LLM pipeline?"). The tech is deliberately disposable — we'd throw all of it away and rebuild for production if the thesis survives.</li>
+<li>It is designed to <strong>fail cheaply</strong>: one bad metric and we stop, having spent ~$40k instead of a multi-quarter build.</li>
+</ul>
+<h2 id="prototype-metrics">Prototype Metrics</h2>
+<p><strong>BUSINESS metric (does it deliver value):</strong></p>
+<ul>
+<li><strong>Median underwriter handling time per file</strong>, with-packet vs. control. <em>Target: ≥30% reduction</em> (e.g., 30 min → ≤21 min). This is the dollar-bearing metric tied directly to Fermi line F/G. Distinct from any technical accuracy number — a model can be accurate and <em>still not save time</em> if the packet is unreadable.</li>
+<li><strong>Secondary:</strong> override rate (how often the underwriter rejects the AI's suggested recommendation) — a usefulness/trust signal; an extreme (near-0% = automation bias, near-100% = packet ignored) is itself a red flag.</li>
+</ul>
+<p><strong>TECHNICAL metrics (precise + reproducible, with targets):</strong></p>
+<ul>
+<li><strong>Decision quality:</strong> balanced accuracy of underwriter decisions vs. the <strong>known actual outcome</strong> (default/repaid), with-packet vs. control. <em>Target: non-inferior — with-packet balanced accuracy ≥ control − 1pp (95% CI).</em> Reproducible: fixed N=300, fixed label set, fixed metric.</li>
+<li><strong>Narrative faithfulness:</strong> % of packet claims that are source-verifiable (every dollar figure / flag traces to a real statement line). <em>Target: ≥95%; hallucinated/unsupported claims ≤5%.</em></li>
+<li><strong>Reason-code validity:</strong> % of generated ECOA reason codes drawn from the approved Reg-B code list and consistent with the cited evidence. <em>Target: 100% from approved list.</em></li>
+</ul>
+<p><strong>KILL THRESHOLD (the specific number that ends the idea):</strong> The idea is <strong>killed</strong> if ANY of:</p>
+<ol type="1">
+<li>With-packet <strong>balanced accuracy drops &gt;1pp</strong> below control (decision quality harmed), OR</li>
+<li><strong>Adverse-impact ratio &lt;0.80</strong> for any protected segment in the with-packet arm (4/5ths-rule fail), OR</li>
+<li><strong>Median time reduction &lt;15%</strong> (value too small to justify the production build + ongoing fair-lending monitoring cost — net ROI no longer defensible), OR</li>
+<li><strong>Narrative faithfulness &lt;90%</strong> (too many unsupported claims → unacceptable for adverse-action/audit).</li>
+</ol>
+<p>Any single trigger stops the program; we do not "iterate our way" past a fairness or decision-quality failure.</p>
+<h2 id="responsible-ai-surface-darwin-r">Responsible-AI Surface (DARWIN-R)</h2>
+<p><strong>Bias / fairness:</strong> Disparate impact is the headline risk. We measure the <strong>adverse-impact ratio (4/5ths rule)</strong> across protected segments using real HMDA protected-class fields (not unreliable name/geo proxies, which themselves introduce bias). Protected attributes are used <strong>only for measurement</strong>, never as model features (avoids disparate <em>treatment</em>). A &lt;0.80 ratio is a hard kill, not a tuning target. We also test for <strong>proxy leakage</strong> (e.g., zip code standing in for race).</p>
+<p><strong>Privacy / compliance:</strong> Prototype uses anonymized/public/synthetic data — no real applicant PII. Protected-class data lives in a segregated table. Production design keeps the LLM in a private/VPC deployment so no applicant data leaves the lender's boundary; GLBA/FCRA data-handling applies. Bank-statement data is minimized to derived features where possible.</p>
+<p><strong>Explainability to stakeholders:</strong> Two audiences. (1) <em>Underwriter/applicant</em> — every adverse-action reason maps to a plain-language, ECOA/Reg-B-permissible code with a cited source line, satisfying the legal requirement to state <em>specific</em> reasons for denial. (2) <em>Compliance/regulator</em> — calibrated PD with SHAP top-factors, deterministic rule traces, and an immutable decision log make each decision reconstructable. The LLM only <em>narrates</em>; it never originates a reason code that isn't backed by a rule or a cited fact.</p>
+<p><strong>Human authority over adverse outcomes:</strong> Non-negotiable and architecturally enforced — <strong>the AI never auto-declines.</strong> It produces a <em>suggested</em> recommendation the underwriter must accept, override, or reject; the decision field is human-set; the final reason codes are human-confirmed before any adverse-action notice issues. We monitor override rate to detect <strong>automation bias</strong> (rubber-stamping). The deterministic rules engine — not the LLM — is the only thing that can raise a hard-stop, and even that routes to a human, never to an automated denial.</p>
+</div></details>
+</section>
+
+<footer>Generated 2026-06-26 &middot; Responsible AI Assignment 1 &middot; Group 8 &middot; Healthcare &amp; Education hardened &amp; re-scored; Finance at v1. Panel: Evaluator A (Prototype Purist) + Evaluator B (Adversarial CFO) + Gate-0, ratchet at &lt;3. Anthropic / Claude parchment design.</footer>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<script>
+try{mermaid.initialize({startOnLoad:true,theme:'base',themeVariables:{
+  primaryColor:'#faf9f5',primaryBorderColor:'#c96442',primaryTextColor:'#141413',
+  lineColor:'#5e5d59',secondaryColor:'#e8e6dc',tertiaryColor:'#f5f4ed',fontFamily:'system-ui',fontSize:'13px'}});}catch(e){}
+// active nav via IntersectionObserver
+const links=[...document.querySelectorAll('#side nav a')];
+const map={};links.forEach(a=>map[a.getAttribute('href').slice(1)]=a);
+const obs=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){
+  links.forEach(l=>l.classList.remove('active'));const a=map[e.target.id];if(a)a.classList.add('active');}});},
+  {rootMargin:'-20% 0px -70% 0px'});
+document.querySelectorAll('section[id]').forEach(s=>obs.observe(s));
+// persist <details> open state
+document.querySelectorAll('details.report').forEach((d,i)=>{
+  const k='rai-rep-'+i;const v=localStorage.getItem(k);if(v==='0')d.open=false;
+  d.addEventListener('toggle',()=>localStorage.setItem(k,d.open?'1':'0'));});
+</script>
+</body></html>
