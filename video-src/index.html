@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+@font-face{font-family:'Source Serif 4';font-style:normal;font-weight:400;font-display:block;src:url('assets/fonts/sourceserif-400.woff2') format('woff2');}
+@font-face{font-family:'Source Serif 4';font-style:normal;font-weight:500;font-display:block;src:url('assets/fonts/sourceserif-500.woff2') format('woff2');}
+@font-face{font-family:'Source Serif 4';font-style:normal;font-weight:600;font-display:block;src:url('assets/fonts/sourceserif-600.woff2') format('woff2');}
+@font-face{font-family:'Space Grotesk';font-style:normal;font-weight:400;font-display:block;src:url('assets/fonts/spacegrotesk-400.woff2') format('woff2');}
+@font-face{font-family:'Space Grotesk';font-style:normal;font-weight:500;font-display:block;src:url('assets/fonts/spacegrotesk-500.woff2') format('woff2');}
+@font-face{font-family:'Space Grotesk';font-style:normal;font-weight:600;font-display:block;src:url('assets/fonts/spacegrotesk-600.woff2') format('woff2');}
+@font-face{font-family:'Space Grotesk';font-style:normal;font-weight:700;font-display:block;src:url('assets/fonts/spacegrotesk-700.woff2') format('woff2');}
+
+      html, body {
+        width: 1920px; height: 1080px; overflow: hidden;
+        background: #f5f4ed;
+        font-family: "Space Grotesk", sans-serif;
+        color: #141413;
+      }
+      :root{
+        --bg:#f5f4ed; --ivory:#faf9f5; --sand:#e8e6dc; --borderw:#e0ddd0;
+        --accent:#c96442; --text:#141413; --muted:#5e5d59; --green:#2a6b42;
+      }
+      .serif{ font-family: "Source Serif 4", serif; font-weight:500; }
+
+      /* persistent background grid */
+      #grid{ position:absolute; inset:0; z-index:0;
+        background:
+          repeating-linear-gradient(to right, transparent 0, transparent 159px, var(--borderw) 159px, var(--borderw) 160px);
+        opacity:.55;
+      }
+      #grid::after{ content:""; position:absolute; left:0; right:0; top:120px; height:1px; background:var(--borderw); }
+      #grid::before{ content:""; position:absolute; left:0; right:0; bottom:120px; height:1px; background:var(--borderw); }
+      #topline{ position:absolute; top:0; left:0; right:0; height:8px; background:var(--accent); z-index:4; }
+
+      /* progress */
+      #progress{ position:absolute; bottom:0; left:0; right:0; height:6px; background:var(--sand); z-index:4; }
+      #progress > div{ height:100%; width:100%; background:var(--accent); transform:scaleX(0); transform-origin:left center; }
+
+      /* scenes */
+      .scene{ position:absolute; inset:0; z-index:2; opacity:0; }
+      .sc-in{ position:absolute; inset:0; display:flex; flex-direction:column; justify-content:center;
+        padding:150px 200px; gap:30px; }
+      .kicker{ font-size:30px; letter-spacing:.22em; text-transform:uppercase; color:var(--accent); font-weight:600; }
+      .step{ position:absolute; top:150px; right:200px; font-size:30px; letter-spacing:.14em; color:var(--muted); font-weight:600; }
+      h1.t{ font-size:150px; line-height:1.04; color:var(--text); max-width:1400px; }
+      .sub{ font-size:46px; color:var(--muted); max-width:1200px; line-height:1.3; }
+
+      .chips{ display:flex; gap:26px; flex-wrap:wrap; max-width:1500px; }
+      .chip{ font-size:40px; padding:20px 38px; background:var(--ivory); border:1px solid var(--borderw);
+        color:var(--text); }
+      .chip.big{ background:var(--accent); color:var(--ivory); border-color:var(--accent); }
+
+      .line2{ font-size:96px; line-height:1.1; color:var(--text); }
+      .line2.acc{ color:var(--accent); }
+
+      .panel{ display:flex; align-items:center; gap:50px; }
+      .ebox{ background:var(--ivory); border:1px solid var(--borderw); padding:40px 50px; min-width:430px; }
+      .ebox .lab{ font-size:44px; font-weight:600; color:var(--text); }
+      .ebox .role{ font-size:30px; color:var(--muted); margin-top:8px; }
+      .arrow{ font-size:80px; color:var(--accent); }
+      .gate{ background:var(--text); color:var(--ivory); padding:48px 56px; font-size:54px; font-weight:600; letter-spacing:.08em; }
+      .note{ font-size:42px; color:var(--text); }
+      .note b{ color:var(--accent); }
+      .tag{ font-size:38px; color:var(--muted); font-style:italic; }
+
+      .cards{ display:flex; gap:34px; }
+      .card{ flex:1; background:var(--ivory); border:1px solid var(--borderw); padding:46px 44px; border-top:6px solid var(--accent); }
+      .card .h{ font-size:52px; font-weight:600; }
+      .card .d{ font-size:34px; color:var(--muted); margin-top:14px; line-height:1.3; }
+
+      .holes{ display:flex; flex-direction:column; gap:24px; }
+      .hole{ font-size:58px; color:var(--text); display:flex; align-items:center; gap:30px; }
+      .hole::before{ content:"\2715"; color:var(--accent); font-size:50px; }
+
+      .counter{ font-family:"Source Serif 4",serif; font-weight:500; font-size:300px; color:var(--text); line-height:1; }
+      .counter .ar{ color:var(--accent); margin:0 40px; }
+      .counter .to{ color:var(--green); }
+
+      .link{ font-size:46px; color:var(--accent); font-weight:600; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="74.5" data-width="1920" data-height="1080">
+
+      <div id="grid"></div>
+      <div id="topline"></div>
+
+      <!-- SCENE 1 -->
+      <div class="scene" id="sc1">
+        <div class="step anim">01 / 08</div>
+        <div class="sc-in">
+          <div class="kicker anim">Responsible AI &middot; Assignment 1</div>
+          <h1 class="t serif anim">The part we skipped.</h1>
+          <div class="sub anim">We compared the options. We never showed how we built them.</div>
+        </div>
+      </div>
+
+      <!-- SCENE 2 -->
+      <div class="scene" id="sc2">
+        <div class="step anim">02 / 08</div>
+        <div class="sc-in">
+          <div class="kicker anim">The discipline</div>
+          <h1 class="t serif anim">Prototype &ne; Product</h1>
+          <div class="chips">
+            <div class="chip anim">Quick</div>
+            <div class="chip anim">Disposable</div>
+            <div class="chip anim">Fail-fast</div>
+            <div class="chip big anim">Validates the business case &mdash; not the tech</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SCENE 3 -->
+      <div class="scene" id="sc3">
+        <div class="step anim">03 / 08</div>
+        <div class="sc-in">
+          <div class="kicker anim">One shared rule</div>
+          <div class="line2 serif anim">The system prepares the work.</div>
+          <div class="line2 serif acc anim">A human owns the adverse decision.</div>
+        </div>
+      </div>
+
+      <!-- SCENE 4 -->
+      <div class="scene" id="sc4">
+        <div class="step anim">04 / 08</div>
+        <div class="sc-in">
+          <div class="kicker anim">The evaluator panel &mdash; built first</div>
+          <div class="panel">
+            <div style="display:flex; flex-direction:column; gap:22px;">
+              <div class="ebox anim"><div class="lab">Prototype Purist</div><div class="role">guards the discipline</div></div>
+              <div class="ebox anim"><div class="lab">Financial Skeptic</div><div class="role">attacks the business case</div></div>
+            </div>
+            <div class="arrow anim">&rarr;</div>
+            <div class="gate anim">GATE</div>
+          </div>
+          <div class="note anim">Ratchet &mdash; any dimension <b>&lt; 3</b> blocks progress.</div>
+          <div class="tag anim">No grading our own homework.</div>
+        </div>
+      </div>
+
+      <!-- SCENE 5 -->
+      <div class="scene" id="sc5">
+        <div class="step anim">05 / 08</div>
+        <div class="sc-in">
+          <div class="kicker anim">Built in parallel</div>
+          <div class="cards">
+            <div class="card anim"><div class="h">Healthcare</div><div class="d">Reviewer-packet lift</div></div>
+            <div class="card anim"><div class="h">Education</div><div class="d">LLM pre-grading</div></div>
+            <div class="card anim"><div class="h">Finance</div><div class="d">Credit decision co-pilot</div></div>
+          </div>
+          <div class="tag anim">Independent &mdash; so they couldn't converge on the same answer.</div>
+        </div>
+      </div>
+
+      <!-- SCENE 6 -->
+      <div class="scene" id="sc6">
+        <div class="step anim">06 / 08</div>
+        <div class="sc-in">
+          <div class="kicker anim">We scored them hard</div>
+          <h1 class="t serif anim" style="font-size:120px;">Not a rubber stamp</h1>
+          <div class="holes">
+            <div class="hole anim">Circular returns</div>
+            <div class="hole anim">Bundled hypotheses</div>
+            <div class="hole anim">Kills with no statistical power</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SCENE 7 -->
+      <div class="scene" id="sc7">
+        <div class="step anim">07 / 08</div>
+        <div class="sc-in" style="align-items:flex-start;">
+          <div class="kicker anim">Harden &middot; re-score</div>
+          <div class="counter anim"><span>46</span><span class="ar">&rarr;</span><span class="to" id="cnt">46</span></div>
+          <div class="sub anim">Healthcare &mdash; earned on the merits, not by inflating numbers.</div>
+        </div>
+      </div>
+
+      <!-- SCENE 8 -->
+      <div class="scene" id="sc8">
+        <div class="step anim">08 / 08</div>
+        <div class="sc-in">
+          <div class="kicker anim">The output</div>
+          <h1 class="t serif anim">A method, not three slides.</h1>
+          <div class="sub anim">Three options that survived their own scrutiny.</div>
+          <div class="link anim">sanjaygupta-professional.github.io/dba-rai-assignment</div>
+        </div>
+      </div>
+
+      <!-- progress bar -->
+      <div id="progress"><div></div></div>
+
+      <!-- NARRATION TRACK -->
+      <audio id="a1" data-start="0.4"  data-duration="6.04" data-track-index="9" src="audio/s1.wav" data-volume="1"></audio>
+      <audio id="a2" data-start="7.2"  data-duration="9.26" data-track-index="9" src="audio/s2.wav" data-volume="1"></audio>
+      <audio id="a3" data-start="17.2" data-duration="7.83" data-track-index="9" src="audio/s3.wav" data-volume="1"></audio>
+      <audio id="a4" data-start="25.8" data-duration="13.33" data-track-index="9" src="audio/s4.wav" data-volume="1"></audio>
+      <audio id="a5" data-start="39.9" data-duration="8.13" data-track-index="9" src="audio/s5.wav" data-volume="1"></audio>
+      <audio id="a6" data-start="48.8" data-duration="7.98" data-track-index="9" src="audio/s6.wav" data-volume="1"></audio>
+      <audio id="a7" data-start="57.5" data-duration="7.36" data-track-index="9" src="audio/s7.wav" data-volume="1"></audio>
+      <audio id="a8" data-start="65.7" data-duration="8.38" data-track-index="9" src="audio/s8.wav" data-volume="1"></audio>
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+
+      const SCENES = [
+        {id:'#sc1', s:0.0,  d:6.8},
+        {id:'#sc2', s:6.8,  d:10.0},
+        {id:'#sc3', s:16.8, d:8.6},
+        {id:'#sc4', s:25.4, d:14.1},
+        {id:'#sc5', s:39.5, d:8.9},
+        {id:'#sc6', s:48.4, d:8.7},
+        {id:'#sc7', s:57.1, d:8.2},
+        {id:'#sc8', s:65.3, d:9.2}
+      ];
+
+      SCENES.forEach((sc) => {
+        tl.fromTo(sc.id, {opacity:0}, {opacity:1, duration:0.35, ease:'power1.out', overwrite:'auto'}, sc.s);
+        tl.from(sc.id + ' .anim', {y:46, opacity:0, duration:0.6, stagger:0.11, ease:'power3.out', overwrite:'auto'}, sc.s + 0.12);
+        tl.to(sc.id, {opacity:0, duration:0.3, ease:'power1.in'}, sc.s + sc.d - 0.3);
+      });
+
+      // score counter on scene 7
+      const o = {v:46};
+      tl.to(o, {v:48, duration:1.6, ease:'power1.inOut', snap:{v:1},
+        onUpdate:() => { document.getElementById('cnt').textContent = Math.round(o.v); }
+      }, 57.1 + 1.4);
+
+      // progress bar across full timeline
+      tl.fromTo('#progress > div', {scaleX:0}, {scaleX:1, duration:74.5, ease:'none'}, 0);
+
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>
