@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CareBridge Reviewer-Packet Lift — RAI Assignment 1</title>
+<style>
+:root{
+  --bg:#f5f4ed; --bg2:#faf9f5; --bg3:#e8e6dc; --border:#f0eee6; --border-warm:#e8e6dc;
+  --accent:#c96442; --accent2:#d97757; --green:#2a6b42; --yellow:#9a6520; --red:#b53333;
+  --text:#141413; --muted:#5e5d59; --text3:#87867f; --text-light:#b0aea5; --dark:#141413; --dark2:#30302e;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,sans-serif;font-size:15px;line-height:1.6}
+h1,h2,h3,h4{font-family:Georgia,'Anthropic Serif',serif;font-weight:500;line-height:1.15}
+.deck{height:100vh;overflow-y:scroll;scroll-snap-type:y mandatory}
+section{min-height:100vh;scroll-snap-align:start;display:flex;flex-direction:column;justify-content:center;
+  padding:6vh 8vw;position:relative;border-bottom:1px solid var(--border)}
+.kicker{font-family:system-ui,sans-serif;font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--accent);margin-bottom:18px}
+h2{font-size:clamp(28px,4vw,46px);color:var(--text);margin-bottom:10px;max-width:20ch}
+.sub{font-size:clamp(16px,1.6vw,20px);color:var(--muted);max-width:60ch;margin-bottom:26px}
+p{max-width:70ch}
+.pagenum{position:absolute;bottom:3vh;right:8vw;font-size:12px;color:var(--text3);font-variant-numeric:tabular-nums}
+.brandfoot{position:absolute;bottom:3vh;left:8vw;font-size:12px;color:var(--text3)}
+.progress{position:fixed;top:0;left:0;height:3px;background:var(--accent);width:0;z-index:50;transition:width .15s ease}
+
+/* dark slides */
+section.dark{background:var(--dark);color:var(--bg)}
+section.dark h2{color:var(--bg)}
+section.dark .sub{color:var(--text-light)}
+section.dark .kicker{color:var(--accent2)}
+section.dark .pagenum,section.dark .brandfoot{color:var(--text-light)}
+
+/* title */
+.title h1{font-size:clamp(40px,6.5vw,84px);color:var(--bg);letter-spacing:-.01em;margin-bottom:16px}
+.title .lead{font-size:clamp(18px,2vw,24px);color:var(--accent2);max-width:40ch;margin-bottom:34px}
+.title .meta{font-size:14px;color:var(--text-light);line-height:1.9}
+.title .meta b{color:var(--bg);font-weight:600}
+
+/* cards / grids */
+.grid{display:grid;gap:16px;margin-top:8px}
+.g2{grid-template-columns:1fr 1fr}
+.g3{grid-template-columns:repeat(3,1fr)}
+.g4{grid-template-columns:repeat(4,1fr)}
+.card{background:var(--bg2);border:1px solid var(--border-warm);border-radius:10px;padding:18px 20px}
+section.dark .card{background:var(--dark2);border-color:#3d3d3a}
+.card h4{font-size:16px;color:var(--accent);margin-bottom:6px}
+section.dark .card h4{color:var(--accent2)}
+.card p,.card li{font-size:13.5px;color:var(--muted);line-height:1.55}
+section.dark .card p,section.dark .card li{color:var(--text-light)}
+.card ul{padding-left:18px;margin-top:4px}
+.card li{margin-bottom:3px}
+
+/* stat */
+.stat{font-family:Georgia,serif;font-size:clamp(30px,3.4vw,44px);color:var(--text);line-height:1}
+.card .stat{color:var(--accent)}
+.statlabel{font-size:12.5px;color:var(--text3);margin-top:6px}
+
+/* metric emphasis */
+.big{font-family:Georgia,serif;font-size:clamp(44px,7vw,90px);color:var(--accent);line-height:1;letter-spacing:-.02em}
+.bigwrap{display:flex;align-items:baseline;gap:20px;flex-wrap:wrap;margin:6px 0 22px}
+.bigsub{font-size:16px;color:var(--muted);max-width:34ch}
+
+/* flow diagram */
+.flow{display:flex;align-items:stretch;gap:0;flex-wrap:wrap;margin-top:14px}
+.node{background:var(--bg2);border:1px solid var(--border-warm);border-radius:8px;padding:11px 13px;font-size:12.5px;
+  color:var(--text);max-width:150px;line-height:1.35}
+.node b{display:block;color:var(--accent);font-size:11px;text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px}
+.node.kill{border-color:var(--red)} .node.kill b{color:var(--red)}
+.node.pass{border-color:var(--green)} .node.pass b{color:var(--green)}
+.arrow{display:flex;align-items:center;color:var(--text3);font-size:20px;padding:0 8px}
+
+/* table-ish rows */
+.rows{margin-top:6px;border-top:1px solid var(--border-warm)}
+.row{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:14px;padding:9px 0;border-bottom:1px solid var(--border-warm);font-size:13.5px}
+.row .l{color:var(--text);font-weight:500}.row .m{color:var(--muted)}
+.rowhead{color:var(--accent);font-weight:700;font-size:11.5px;text-transform:uppercase;letter-spacing:.06em}
+
+.tag{display:inline-block;font-size:11px;font-weight:600;padding:2px 9px;border-radius:20px;background:var(--bg3);color:var(--muted);margin-right:6px}
+.tag.k{background:#f3dcd4;color:var(--accent)}
+.tag.g{background:#d7e6dc;color:var(--green)}
+.hl{color:var(--accent);font-weight:600}
+.note{font-size:12.5px;color:var(--text3);margin-top:14px;max-width:70ch}
+
+.navhint{position:fixed;bottom:3vh;left:50%;transform:translateX(-50%);font-size:11px;color:var(--text3);
+  background:var(--bg2);border:1px solid var(--border-warm);border-radius:20px;padding:5px 14px;z-index:40;opacity:.9}
+
+@media (max-width:760px){.g2,.g3,.g4{grid-template-columns:1fr}.row{grid-template-columns:1fr}}
+
+@media print{
+  @page{size:landscape;margin:0}
+  html,body{height:auto}
+  .deck{height:auto;overflow:visible}
+  section{min-height:0;height:100vh;break-after:page;page-break-after:always;border:none}
+  .progress,.navhint{display:none}
+}
+</style>
+</head>
+<body>
+<div class="progress" id="prog"></div>
+<div class="deck" id="deck">
+
+<!-- 1 TITLE -->
+<section class="dark title">
+  <div class="kicker">Responsible AI · Assignment 1 · Ideation · Prototype · Data</div>
+  <h1>CareBridge<br>Reviewer-Packet Lift</h1>
+  <div class="lead">Can an AI-assembled packet make a human reviewer faster — without making the decision less safe?</div>
+  <div class="meta">
+    <b>Cohort 8 · Group 8</b> — DBA, Golden Gate University via UpGrad<br>
+    Course: Responsible AI (DARWIN) · Instructor: Prof. Dr. Venkatesh Sunkad<br>
+    One business problem · carried into Assignment 2
+  </div>
+  <div class="pagenum">01</div>
+</section>
+
+<!-- 2 BUSINESS PROBLEM -->
+<section>
+  <div class="kicker">The business problem</div>
+  <h2>Reviewers spend their time assembling evidence, not deciding</h2>
+  <div class="sub">A mid-market payer adjudicates ~650K prior-authorizations/yr. The costly, slow, clinically sensitive segment is the human-reviewed tail — where a licensed UM nurse must touch the case.</div>
+  <div class="grid g3">
+    <div class="card"><div class="stat">~390K</div><div class="statlabel">cases/yr reach a human reviewer (≈60% of volume)</div></div>
+    <div class="card"><div class="stat">35–45%</div><div class="statlabel">of touch-time is <b>assembling &amp; reconciling</b> — not judgment</div></div>
+    <div class="card"><div class="stat">~$4.1M</div><div class="statlabel">annual reviewer labor on that segment (provisional)</div></div>
+  </div>
+  <p class="note"><b>So-what:</b> today the nurse pulls notes, finds the applicable policy version, and checks criteria by hand before deciding. We assert — and must prove — that pre-assembling that packet with AI converts assembly time into decision time.</p>
+  <div class="brandfoot">CareBridge · RAI A1</div><div class="pagenum">02</div>
+</section>
+
+<!-- 3 IDEATION SUMMARY -->
+<section>
+  <div class="kicker">Ideation summary</div>
+  <h2>AI prepares — the human owns the adverse decision</h2>
+  <div class="sub">The value we test is <b>AI</b> (RAG-grounded reasoning over unstructured notes vs. medical-necessity criteria) — <b>not</b> Automation (the deterministic eligibility/code/benefit checks stay RPA, out of scope) and <b>not</b> Analytics.</div>
+  <div class="grid g2">
+    <div class="card">
+      <h4>What the reviewer receives</h4>
+      <p>Not a "score" — a <b>decision packet</b>: evidence + the policy checklist with each criterion marked met / unmet / uncertain, cited to source, plus a recommendation: <span class="hl">approve · pend-for-info · route-for-review</span>.</p>
+    </div>
+    <div class="card">
+      <h4>Hard constraint (RAI)</h4>
+      <p>The AI's most adverse possible action is <b>route-for-review</b> or <b>pend</b>. It <b>cannot deny</b>. Every denial is owned by a licensed clinician. Augmentation, never automation of the adverse call.</p>
+    </div>
+  </div>
+  <p class="note">Scope for the test: the human-reviewed segment, two service lines — advanced imaging + specialty pharmacy (high volume, stable published criteria).</p>
+  <div class="brandfoot">CareBridge · RAI A1</div><div class="pagenum">03</div>
+</section>
+
+<!-- 4 THE HYPOTHESIS -->
+<section class="dark">
+  <div class="kicker">The one hypothesis we test</div>
+  <h2>One powered value endpoint. Safety as guardrails.</h2>
+  <div class="bigwrap"><div class="big">≥ 35%</div><div class="bigsub">reduction in median reviewer <b style="color:var(--bg)">touch-time</b> per case vs. no-packet control. The only number that converts to money.</div></div>
+  <div class="grid g2">
+    <div class="card"><h4>Guardrail 1 — hard stop (powered)</h4><p>Packet <b>groundedness ≥ 95%</b>, measured per assertion (thousands). A groundedness failure vetoes the build regardless of the speed gain — speed bought with fabrication is not a trade we may make.</p></div>
+    <div class="card"><h4>Guardrail 2 — directional flag</h4><p>Overturn proxy <b>≤ 5%</b>. At N=500 a ~5% event can't be statistically confirmed; a rise is a <b>red flag that triggers a powered safety study</b>, not an in-test kill. Honest about what the cheap test can't settle.</p></div>
+  </div>
+  <div class="pagenum">04</div>
+</section>
+
+<!-- 5 DATA DOCUMENT SUMMARY -->
+<section>
+  <div class="kicker">Data document · summary</div>
+  <h2>Clean structure, messy where it matters</h2>
+  <div class="sub">~75–80% of the decision-relevant content is <b>unstructured</b> — free-text notes + a version-drifting policy corpus. That is exactly where the AI earns its keep, and where quality risk concentrates.</div>
+  <div class="grid g2">
+    <div class="card">
+      <h4>Sources</h4>
+      <ul>
+        <li><b>Real test:</b> payer's ~500 historical adjudicated PA cases (PHI, on-prem, HIPAA limited-data-set).</li>
+        <li><b>Public proxies</b> (PHI-free harness): MIMIC-IV notes, CMS NCD/LCD criteria, ICD-10/HCPCS/CPT, Synthea (synthetic FHIR), X12 278 samples.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>Cleanliness rating: 3 / 5</h4>
+      <ul>
+        <li>Structured (codes, labs, claims): ~4–5, near-complete.</li>
+        <li>Clinical notes: ~2–3 — abbreviation-heavy, OCR-contaminated where faxed.</li>
+        <li>Policy corpus: ~3 — <b>version drift</b>, picking the applicable edition is itself error-prone.</li>
+      </ul>
+      <p style="margin-top:8px">Rating set by what could <b>fail silently</b>, not the average field.</p>
+    </div>
+  </div>
+  <div class="brandfoot">CareBridge · RAI A1</div><div class="pagenum">05</div>
+</section>
+
+<!-- 6 DATA RIGOR (the four bars) -->
+<section>
+  <div class="kicker">Data rigor · the four checks</div>
+  <h2>Where data quietly breaks a model</h2>
+  <div class="grid g2">
+    <div class="card"><h4>Missing data</h4><p>Impute only below the <b>15–20% ceiling</b>; above it, imputation fabricates. Missing <b>clinical</b> evidence is signal (→ "uncertain / PEND"), <b>never</b> imputed. Structured fields over the ceiling → drop the case.</p></div>
+    <div class="card"><h4>Data leakage — the sharpest risk</h4><p>We score against <b>historical outcomes</b>, so the label must never enter packet assembly. The AI sees only evidence available <b>at decision time</b>; outcome revealed only at scoring. (The elevator-maintenance trap.)</p></div>
+    <div class="card"><h4>Training / historical bias</h4><p>Danger isn't invented bias — it's <b>learning historical denial bias as truth</b>. Label = efficiency benchmark only, never fairness. Stratify by age×sex×payer-line as a directional flag → powered fairness sub-study.</p></div>
+    <div class="card"><h4>Recency / relevance</h4><p>Policy pinned to the edition <b>effective at each case's decision date</b>; code sets pinned to case-year; recent case window. More data isn't better — <b>relevant, current</b> data is.</p></div>
+  </div>
+  <p class="note">These four are the bars raised in the 11-July-prep session — answered explicitly in the standalone data document.</p>
+  <div class="brandfoot">CareBridge · RAI A1</div><div class="pagenum">06</div>
+</section>
+
+<!-- 7 PROTOTYPE DESIGN + DIAGRAM -->
+<section>
+  <div class="kicker">Prototype design</div>
+  <h2>A disposable crossover test — 4 weeks, ~$35K</h2>
+  <div class="sub">500 historical, already-adjudicated cases (truth known → zero patient risk). 6 RN reviewers, crossover: each case reviewed with <b>and</b> without a packet by <b>different</b> reviewers. Deterministic layer stubbed (Wizard-of-Oz); only the RAG+LLM packet layer is real.</div>
+  <div class="flow">
+    <div class="node"><b>Input</b>500 adjudicated cases · 2 service lines</div>
+    <div class="arrow">→</div>
+    <div class="node"><b>Pre-read</b>10-case stopwatch fixes baseline touch-time</div>
+    <div class="arrow">→</div>
+    <div class="node"><b>Crossover</b>Arm A: AI packet · Arm B: raw chart</div>
+    <div class="arrow">→</div>
+    <div class="node"><b>Compare</b>vs. historical truth</div>
+    <div class="arrow">→</div>
+    <div class="node kill"><b>Gate</b>touch-time &lt;25% → KILL / ship RPA-only</div>
+    <div class="arrow">→</div>
+    <div class="node pass"><b>Proceed</b>groundedness ≥95% · flags → powered follow-up</div>
+  </div>
+  <p class="note"><b>Right-tool check:</b> the deterministic 60–70% of PA work is cheaper as RPA and stays out of the LLM. The LLM earns its place on one thing — reasoning over unstructured notes to judge a narrative criterion, with citations a nurse verifies in seconds.</p>
+  <div class="brandfoot">CareBridge · RAI A1</div><div class="pagenum">07</div>
+</section>
+
+<!-- 8 WHY PROTOTYPE NOT PRODUCT -->
+<section class="dark">
+  <div class="kicker">Why this is a prototype — not a product</div>
+  <h2>Built to be graded, then thrown away</h2>
+  <div class="grid g2">
+    <div class="card"><h4>It deliberately is NOT</h4><ul>
+      <li>No live PA, no EHR integration, no UI</li>
+      <li>Automates no decision</li>
+      <li>Ignores latency, scaling, MLOps, FHIR plumbing</li>
+      <li>Thrown away win or lose</li>
+    </ul></div>
+    <div class="card"><h4>It validates the BUSINESS case</h4><ul>
+      <li>Does pre-assembly buy reviewer time <b>safely</b>?</li>
+      <li>Retrospective cases with known answers → gradeable</li>
+      <li>Tests 1 falsifiable hypothesis, not a feature set</li>
+      <li>Fails fast &amp; cheap: 6 reviewers, 4 weeks, $35K</li>
+    </ul></div>
+  </div>
+  <p class="sub" style="margin-top:22px">$35K test gates a <b style="color:var(--bg)">~$1.6M</b> build decision — under <b style="color:var(--bg)">2.5%</b> of its cost. That asymmetry is the whole point.</p>
+  <div class="pagenum">08</div>
+</section>
+
+<!-- 9 METRICS -->
+<section>
+  <div class="kicker">Prototype metrics</div>
+  <h2>One money number. Precise technical instrumentation beneath it.</h2>
+  <div class="rows">
+    <div class="row rowhead"><div>Metric</div><div>Type</div><div>Target / rule</div></div>
+    <div class="row"><div class="l">Net annual value ($ band)</div><div class="m">BUSINESS — the decision number</div><div class="m">mid-case positive AND pessimistic corner ≥ break-even</div></div>
+    <div class="row"><div class="l">Median touch-time / case</div><div class="m">Technical — machine-logged</div><div class="m">feeds the $ figure; reported with IQR</div></div>
+    <div class="row"><div class="l">Packet groundedness</div><div class="m">Technical — per assertion</div><div class="m">≥ 95% (hallucination ≤ 5%)</div></div>
+    <div class="row"><div class="l">Approve-precision vs. truth</div><div class="m">Technical — concordance</div><div class="m">≥ 95%</div></div>
+    <div class="row"><div class="l">Overturn proxy</div><div class="m">Technical — directional</div><div class="m">≤ 5% (flag, not powered kill)</div></div>
+  </div>
+  <p class="note"><span class="tag k">KILL</span>touch-time reduction &lt; 25% ends it · groundedness &lt; 95% vetoes the build &nbsp; <span class="tag g">TRIGGER</span>overturn / subgroup skew → powered safety &amp; fairness study before any pilot</p>
+  <div class="brandfoot">CareBridge · RAI A1</div><div class="pagenum">09</div>
+</section>
+
+<!-- 10 ECONOMICS -->
+<section>
+  <div class="kicker">Economics · the honest CFO view</div>
+  <h2>The case lives between 35% and 45%</h2>
+  <div class="sub">Net annual value is a <b>band</b>, not a point — driven by touch-time reduction, the human-touch share (50–70%), and a bottom-up cost range. Not comfortably profitable at the low end; that is why a cheap test must gate the build.</div>
+  <div class="rows">
+    <div class="row rowhead"><div>Reduction</div><div>Net @ low cost, B=70%</div><div>Net @ high cost, B=50%</div></div>
+    <div class="row"><div class="l">35% (kill floor +)</div><div class="m">~$1.07M</div><div class="m">~$0.04M (≈ break-even)</div></div>
+    <div class="row"><div class="l">45% (upside)</div><div class="m">~$1.55M</div><div class="m">~$0.36M</div></div>
+  </div>
+  <div class="grid g3" style="margin-top:18px">
+    <div class="card"><div class="stat">$1.2–2.0M</div><div class="statlabel">one-time build (mid $1.6M)</div></div>
+    <div class="card"><div class="stat">$0.25–0.45M</div><div class="statlabel">annual run cost</div></div>
+    <div class="card"><div class="stat">~21.5%</div><div class="statlabel">breakeven touch-time reduction → kill set at 25%</div></div>
+  </div>
+  <p class="note">Baseline touch-time (D) is set empirically by the 10-case pre-read <b>before</b> the main run — every ROI figure is provisional until then. No circular anchoring.</p>
+  <div class="brandfoot">CareBridge · RAI A1</div><div class="pagenum">10</div>
+</section>
+
+<!-- 11 RESPONSIBLE AI SURFACE -->
+<section>
+  <div class="kicker">Responsible-AI surface · DARWIN-R</div>
+  <h2>The four questions a leader must be able to answer</h2>
+  <div class="grid g4">
+    <div class="card"><h4>Bias / fairness</h4><p>Don't reward historical denial bias as "accuracy." Stratified reporting → powered fairness sub-study. Label ≠ fairness benchmark.</p></div>
+    <div class="card"><h4>Privacy (HIPAA)</h4><p>PHI never leaves the on-prem boundary; only de-identified criterion summaries reach the managed LLM. No name/MRN in any prompt.</p></div>
+    <div class="card"><h4>Explainability</h4><p>Every assertion carries a source citation + met/unmet status. The packet <b>is</b> the explanation — traceable in seconds.</p></div>
+    <div class="card"><h4>Human authority</h4><p>AI's most adverse action is route/pend. Every denial owned by a licensed clinician. Guardrails keep augmentation from becoming unsafe automation.</p></div>
+  </div>
+  <div class="brandfoot">CareBridge · RAI A1</div><div class="pagenum">11</div>
+</section>
+
+<!-- 12 CLOSE -->
+<section class="dark">
+  <div class="kicker">Decision logic &amp; what comes next</div>
+  <h2>Kill cheap, or earn the build</h2>
+  <div class="grid g2">
+    <div class="card"><h4>The go / no-go</h4><ul>
+      <li><b>KILL</b> if touch-time reduction &lt; 25%, or groundedness &lt; 95%</li>
+      <li><b>PROCEED</b> only if the value band clears cost — flags route to a powered follow-up</li>
+      <li>$35K decides a $1.6M question</li>
+    </ul></div>
+    <div class="card"><h4>Assignment 2 runway</h4><ul>
+      <li>Same problem → <b>infrastructure, economics, scaling</b></li>
+      <li>The prototype becomes the <b>MVP</b>: first customer-facing, integrated, reproducible, measurable version</li>
+      <li>A1 metrics become the MVP's live SLAs</li>
+    </ul></div>
+  </div>
+  <p class="sub" style="margin-top:24px">A prototype is not a product. We test the one assumption the whole program rests on — first, cheaply, honestly.</p>
+  <div class="brandfoot">Cohort 8 · Group 8 · Responsible AI</div><div class="pagenum">12</div>
+</section>
+
+</div>
+<div class="navhint" id="hint">↑ ↓ / Space to navigate · P to print → PDF</div>
+<script>
+var deck=document.getElementById('deck'),prog=document.getElementById('prog'),hint=document.getElementById('hint');
+var slides=Array.prototype.slice.call(document.querySelectorAll('section'));
+function cur(){var h=window.innerHeight;return Math.round(deck.scrollTop/h);}
+function go(i){i=Math.max(0,Math.min(slides.length-1,i));slides[i].scrollIntoView({behavior:'smooth'});}
+document.addEventListener('keydown',function(e){
+  if(e.key==='ArrowDown'||e.key==='PageDown'||e.key===' '){e.preventDefault();go(cur()+1);}
+  else if(e.key==='ArrowUp'||e.key==='PageUp'){e.preventDefault();go(cur()-1);}
+  else if(e.key==='Home'){e.preventDefault();go(0);}
+  else if(e.key==='End'){e.preventDefault();go(slides.length-1);}
+  else if(e.key==='p'||e.key==='P'){window.print();}
+});
+deck.addEventListener('scroll',function(){
+  var max=deck.scrollHeight-deck.clientHeight;
+  prog.style.width=(max>0?(deck.scrollTop/max*100):0)+'%';
+});
+setTimeout(function(){hint.style.transition='opacity 1s';hint.style.opacity='0';},4200);
+</script>
+</body>
+</html>
