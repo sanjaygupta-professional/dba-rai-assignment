@@ -70,3 +70,11 @@ Open `explainer.html` for a visual, scroll-based deep-dive — the middle layer
 between the 75-second video and the full report. Seven frames cover the thesis,
 the prototype discipline, the three use cases, the shared pattern, the build
 process, the evaluator panel, and the final scores.
+
+## Study companion — Explainability
+
+Open `explainability.html` — a study page on the data-based / model-based /
+results-based explainability taxonomy, the techniques inside each, a
+decision guide for picking one, and a worked mapping onto CareBridge's
+DARWIN-R packet. Built ahead of the 18 Jul 26 Explainability lecture; not a
+graded deliverable.
