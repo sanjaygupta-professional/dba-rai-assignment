@@ -88,7 +88,7 @@ body.shownotes .pnotes{display:block;position:fixed;left:0;right:0;bottom:0;back
 <h1 style="font-size:52px">CareBridge</h1>
 <p style="font-size:22px;color:var(--text-light);max-width:56ch">The AI prepares. The human decides. Assignment 2: infrastructure, security &amp; responsibility, explainability, metrics &amp; estimation — for the prototype Assignment 1 justified.</p>
 <p style="margin-top:38px;color:var(--text3)">Cohort 8 · Group 8 · 1 Aug 2026<br>
-Presenting: <strong style="color:var(--bg2)">Sanjay</strong> (Explainability) · <strong style="color:var(--bg2)">Thejas</strong> (Infrastructure) · <strong style="color:var(--bg2)">Ashish</strong> (Responsible AI)</p>
+<strong style="color:var(--bg2)">Sanjay · Thejas · Ashish · Mike · Ravi</strong></p>
 <div class="pnotes"><div class="pn"><div><b>This slide answers:</b> who we are, which application continues from A1, who presents what.<div style="margin-top:5px"><b>Class concepts on this slide:</b><br><span class="chip">DARWIN framework</span><span class="chip">Augmentation, not automation</span><span class="chip">A1→A2 continuity</span></div><div style="margin-top:5px"><b>Segue:</b> “Before any detail — here is the one slide a board would need to approve this.”</div></div><div><b>Leadership questions to expect:</b><div class="qa">Q: Why carry the same problem into A2? <em>→ the brief mandates it — and we chose CareBridge in A1 partly FOR its A2 runway: infrastructure, economics and scaling stories all exist</em></div><b>Concept questions to expect:</b><div class="qa">Q: What does “putting it together” mean? <em>→ the prototype→MVP transition — the same application examined through all six lenses: infra, security, responsibility, explainability, metrics, estimation</em></div></div></div></div>
 </section>
 
@@ -207,9 +207,9 @@ Presenting: <strong style="color:var(--bg2)">Sanjay</strong> (Explainability) ·
 <h2>360° — how CareBridge answers every A2 topic</h2>
 <table>
 <tr><th>Topic</th><th>The one-line answer</th><th>Depth</th></tr>
-<tr><td><strong>Explainability</strong></td><td>The packet <em>is</em> the explanation — every assertion cited, statused, auditable per stakeholder.</td><td class="ok">Deep-dive · Sanjay</td></tr>
-<tr><td><strong>Infrastructure</strong></td><td>CPU/batch prototype; hybrid MVP (on-prem GPU for PHI retrieval, managed LLM for de-identified reasoning); latency budget is hours, not ms.</td><td class="ok">Deep-dive · Thejas</td></tr>
-<tr><td><strong>Responsible AI</strong></td><td>Capacity release not replacement; per-stakeholder responsibility grid; AI structurally cannot deny.</td><td class="ok">Deep-dive · Ashish</td></tr>
+<tr><td><strong>Explainability</strong></td><td>The packet <em>is</em> the explanation — every assertion cited, statused, auditable per stakeholder.</td><td class="ok">Deep-dive</td></tr>
+<tr><td><strong>Infrastructure</strong></td><td>CPU/batch prototype; hybrid MVP (on-prem GPU for PHI retrieval, managed LLM for de-identified reasoning); latency budget is hours, not ms.</td><td class="ok">Deep-dive</td></tr>
+<tr><td><strong>Responsible AI</strong></td><td>Capacity release not replacement; per-stakeholder responsibility grid; AI structurally cannot deny.</td><td class="ok">Deep-dive</td></tr>
 <tr><td>Security</td><td>Monitor hallucination (groundedness), drift, prompt-injection, bias spikes, traffic anomalies.</td><td>Covered · slide 15</td></tr>
 <tr><td>Performance metrics</td><td>Touch-time ($ via Fermi), groundedness ≥95%, approve-precision ≥95%, overturn ≤5% — each linked to a business goal.</td><td>Covered · slide 15</td></tr>
 <tr><td>Estimation</td><td>Fermi: 390K cases/yr → 63M tokens/day → ~$60–75K/yr API + ~1 mostly-idle GPU; build $1.2–2.0M, 2–3 quarters.</td><td>Covered · slide 12</td></tr>
@@ -219,7 +219,6 @@ Presenting: <strong style="color:var(--bg2)">Sanjay</strong> (Explainability) ·
 
 <!-- 8 · EXPLAINABILITY 1 -->
 <section class="slide">
-<div class="owner">Deep-dive · Sanjay</div>
 <div class="kicker">Explainability · 1 of 3</div>
 <h2>Explainability is stakeholder-specific — one system, five different "why"s</h2>
 <table>
@@ -235,7 +234,6 @@ Presenting: <strong style="color:var(--bg2)">Sanjay</strong> (Explainability) ·
 
 <!-- 9 · EXPLAINABILITY 2 -->
 <section class="slide">
-<div class="owner">Deep-dive · Sanjay</div>
 <div class="kicker">Explainability · 2 of 3</div>
 <h2>Where CareBridge sits in the explainability taxonomy</h2>
 <div class="grid3">
@@ -249,7 +247,6 @@ Presenting: <strong style="color:var(--bg2)">Sanjay</strong> (Explainability) ·
 
 <!-- 10 · EXPLAINABILITY 3 + DEMO -->
 <section class="slide">
-<div class="owner">Deep-dive · Sanjay</div>
 <div class="kicker">Explainability · 3 of 3 · live demo</div>
 <h2>Demo: the packet is the explanation</h2>
 <div class="steps">
@@ -264,7 +261,6 @@ Presenting: <strong style="color:var(--bg2)">Sanjay</strong> (Explainability) ·
 
 <!-- 11 · INFRASTRUCTURE 1 -->
 <section class="slide">
-<div class="owner">Deep-dive · Thejas</div>
 <div class="kicker">Infrastructure · 1 of 2</div>
 <h2>CPU or GPU? The latency budget decides — and it's hours, not milliseconds</h2>
 <div class="card"><h4>The latency budget, to scale</h4>
@@ -284,7 +280,6 @@ Presenting: <strong style="color:var(--bg2)">Sanjay</strong> (Explainability) ·
 
 <!-- 12 · INFRASTRUCTURE 2 · FERMI -->
 <section class="slide">
-<div class="owner">Deep-dive · Thejas</div>
 <div class="kicker">Infrastructure · 2 of 2 · Fermi estimation</div>
 <h2>Fermi sizing — done aloud</h2>
 <div class="grid2">
@@ -315,7 +310,6 @@ Presenting: <strong style="color:var(--bg2)">Sanjay</strong> (Explainability) ·
 
 <!-- 13 · RAI 1 -->
 <section class="slide">
-<div class="owner">Deep-dive · Ashish</div>
 <div class="kicker">Responsible AI · 1 of 2</div>
 <h2>Productivity gain without replacement — the engagement design</h2>
 <div class="card"><h4>Touch-time per reviewed case (minutes)</h4>
@@ -334,7 +328,6 @@ Presenting: <strong style="color:var(--bg2)">Sanjay</strong> (Explainability) ·
 
 <!-- 14 · RAI 2 -->
 <section class="slide">
-<div class="owner">Deep-dive · Ashish</div>
 <div class="kicker">Responsible AI · 2 of 2 · the Tonality pattern, applied</div>
 <h2>Responsibility, per stakeholder</h2>
 <table style="font-size:13.5px">
