@@ -34,6 +34,9 @@ li{margin:5px 0}
 .pill{display:inline-block;background:var(--bg3);border-radius:20px;padding:2px 12px;font-size:12.5px;color:var(--muted);margin:0 6px 6px 0}
 .owner{position:absolute;top:18px;right:26px;font-size:12px;color:var(--text3);text-transform:uppercase;letter-spacing:.1em}
 #hud{position:fixed;bottom:14px;right:20px;font-size:12px;color:var(--text3);z-index:9;background:rgba(245,244,237,.88);padding:3px 10px;border-radius:12px}
+#navlinks{position:fixed;top:14px;right:20px;font-size:11.5px;color:var(--text3);z-index:10;background:rgba(245,244,237,.88);padding:3px 10px;border-radius:12px}
+#navlinks a{color:var(--muted);text-decoration:none;margin-left:10px}
+#navlinks a:hover{color:var(--accent)}
 small{color:var(--text3)}
 /* charts */
 .hchart{margin:10px 0}
@@ -392,8 +395,10 @@ body.shownotes .pnotes{display:block;position:fixed;left:0;right:0;bottom:0;back
 </section>
 
 <div id="hud">1 / 17 · ← → keys · N = presenter notes</div>
+<div id="navlinks"><a href="prototype/index.html" target="_blank" rel="noopener">Prototype ↗</a><a href="video.html" target="_blank" rel="noopener">Demo video ▶</a></div>
 <script>
 const slides=[...document.querySelectorAll('.slide')];let i=0;
+document.getElementById('navlinks').addEventListener('click',e=>e.stopPropagation());
 const hud=document.getElementById('hud');
 function show(n){slides[i].classList.remove('active');i=(n+slides.length)%slides.length;slides[i].classList.add('active');hud.textContent=(i+1)+' / '+slides.length+' · ← → keys · N = presenter notes';}
 addEventListener('keydown',e=>{
