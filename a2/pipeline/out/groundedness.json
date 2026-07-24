@@ -1,0 +1,119 @@
+{
+ "run": "2026-07-23T20:14:12",
+ "cases": 5,
+ "assertions": 22,
+ "grounded": 22,
+ "groundedness_pct": 100.0,
+ "checks": [
+  {
+   "crit": "A1. Confirmed RA diagnosis by rheumatologist",
+   "q": "Assessment: moderate-to-severe rheumatoid arthritis",
+   "ok": true
+  },
+  {
+   "crit": "A2. 3+ month conventional DMARD trial, inadequate response/intolerance",
+   "q": "Tolerating methotrexate without adverse effects but response inadequate",
+   "ok": true
+  },
+  {
+   "crit": "A2. 3+ month conventional DMARD trial, inadequate response/intolerance",
+   "q": "methotrexate 20 mg weekly since September 2025",
+   "ok": true
+  },
+  {
+   "crit": "A2. 3+ month conventional DMARD trial, inadequate response/intolerance",
+   "q": "2025-09-14, 2025-10-12, 2025-11-09, 2025-12-07, 2026-01-04, 2026-02-01",
+   "ok": true
+  },
+  {
+   "crit": "A3. Negative TB screening within 12 months",
+   "q": "No tuberculosis screening result on file",
+   "ok": true
+  },
+  {
+   "crit": "6+ wks conservative therapy, failed",
+   "q": "8 wks PT completed, pain unchanged 7/10",
+   "ok": true
+  },
+  {
+   "crit": "6+ wks conservative therapy, failed",
+   "q": "NSAIDs used throughout course with minimal relief",
+   "ok": true
+  },
+  {
+   "crit": "Objective neuro deficit/radicular signs",
+   "q": "SLR positive at 40 degrees, decreased sensation L5 dermatome left foot",
+   "ok": true
+  },
+  {
+   "crit": "No red flags (urgent workup)",
+   "q": "Review of systems negative for fever, weight loss, trauma, or history of malignancy",
+   "ok": true
+  },
+  {
+   "crit": "No red flags (urgent workup)",
+   "q": "No bowel or bladder dysfunction",
+   "ok": true
+  },
+  {
+   "crit": "B1: Confirmed PsA diagnosis (CASPAR) by rheumatologist",
+   "q": "Meets CASPAR criteria, dactylitis present, nail pitting",
+   "ok": true
+  },
+  {
+   "crit": "B2: 3-month conventional DMARD trial, inadequate response, verifiable in medication/claims history",
+   "q": "tolerated sulfasalazine x4 months from an outside provider with inadequate response",
+   "ok": true
+  },
+  {
+   "crit": "B2: 3-month conventional DMARD trial, inadequate response, verifiable in medication/claims history",
+   "q": "No sulfasalazine claims found 2024-2026",
+   "ok": true
+  },
+  {
+   "crit": "B3: Negative TB screening within 12 months preceding request",
+   "q": "QuantiFERON-TB Gold 2026-04-11: negative",
+   "ok": true
+  },
+  {
+   "crit": "Nodule documented on prior imaging",
+   "q": "7 mm solid nodule right upper lobe, incidentally noted",
+   "ok": true
+  },
+  {
+   "crit": "Nodule documented on prior imaging",
+   "q": "7 mm nodule seen on chest radiograph December 2025",
+   "ok": true
+  },
+  {
+   "crit": "Follow-up interval per Fleischner guidance",
+   "q": "Per Fleischner guidance for a 6-8 mm solid nodule in a high-risk patient, CT follow-up at 6-12 months is indicated; now at 7 months",
+   "ok": true
+  },
+  {
+   "crit": "No duplicate chest CT within 3 months",
+   "q": "No chest CT on record 2023-2026",
+   "ok": true
+  },
+  {
+   "crit": "C1 Confirmed moderate-to-severe Crohn's dx by GI",
+   "q": "moderate-to-severe Crohn's disease, SES-CD 12 on colonoscopy 2026-06-10",
+   "ok": true
+  },
+  {
+   "crit": "C2 3mo conventional therapy inadequate response",
+   "q": "On azathioprine since January 2026 with partial improvement; symptoms persist",
+   "ok": true
+  },
+  {
+   "crit": "C2 3mo conventional therapy inadequate response",
+   "q": "azathioprine 100 mg daily: fills 2026-01-20, 2026-02-17, 2026-03-17, 2026-04-14, 2026-05-12, 2026-06-09 (5 months continuous)",
+   "ok": true
+  },
+  {
+   "crit": "C3 Negative TB screening within 12mo",
+   "q": "QuantiFERON-TB Gold 2026-05-02: negative",
+   "ok": true
+  }
+ ]
+}
