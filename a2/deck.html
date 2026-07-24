@@ -38,6 +38,19 @@ li{margin:5px 0}
 #hud{position:fixed;bottom:14px;right:20px;font-size:12px;color:var(--text3);z-index:9;background:rgba(245,244,237,.85);padding:3px 10px;border-radius:12px}
 .notes{display:none}
 small{color:var(--text3)}
+
+.arch{margin:16px 0}
+.lane{background:var(--bg3);border-radius:12px;padding:12px 14px;margin:0}
+.lane.demo{background:var(--bg2);border:1px solid var(--border-warm)}
+.lanelabel{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:8px;font-weight:600}
+.flow{display:flex;align-items:stretch}
+.abox{flex:1;background:var(--bg2);border:1px solid var(--border-warm);border-radius:8px;padding:8px 10px;font-size:12.5px;line-height:1.4}
+.abox b{display:block;font-size:12.5px}
+.abox small{color:var(--text3);font-size:11px}
+.lane.demo .abox{background:var(--bg)}
+.gate{border-color:var(--green);box-shadow:0 0 0 1px var(--green)}
+.aarr{align-self:center;color:var(--accent);padding:0 7px;font-size:17px;font-weight:600}
+.adown{text-align:center;font-size:20px;color:var(--accent);margin:3px 0;line-height:1}
 </style>
 </head>
 <body>
@@ -97,12 +110,33 @@ Presenting: <strong style="color:var(--bg2)">Sanjay</strong> (Explainability) ·
 <section class="slide">
 <div class="kicker">Mandatory · prototype architecture</div>
 <h2>Architecture — precomputed-real: the pipeline is genuine, the demo cannot fail</h2>
-<div class="grid2">
-<div class="card"><h4>Offline pipeline (real AI, runs before demo day)</h4>Synthetic cases (Synthea-style) + public policy corpus (CMS NCD/LCD proxies) → retrieval → LLM criterion-mapping with span citations → groundedness check → <strong>packet JSON</strong>.</div>
-<div class="card"><h4>Demo surface (static, zero live dependency)</h4>Three-persona web app renders those genuine packets: nurse flow, exceptions flow, executive dashboard. GitHub Pages. No auth, no backend, no network dependency in the room.</div>
+<div class="arch">
+<div class="lane">
+<div class="lanelabel">Offline pipeline — real AI, runs before demo day</div>
+<div class="flow">
+<div class="abox"><b>Inputs</b>5 synthetic cases (notes, claims, labs) + policy corpus<br><small>version-pinned: v4.2 chosen over superseded v3.9 by effective date</small></div>
+<div class="aarr">&#8594;</div>
+<div class="abox"><b>Retrieval</b>patient evidence + applicable policy section</div>
+<div class="aarr">&#8594;</div>
+<div class="abox"><b>LLM criterion-mapping</b>met / unmet / uncertain / conflict, verbatim span citations<br><small>hard rule: can never output DENY</small></div>
+<div class="aarr">&#8594;</div>
+<div class="abox gate"><b>Groundedness gate &#8805;95%</b>every quote verified verbatim against source docs<br><small>this run: 22/22 assertions — 100%</small></div>
+<div class="aarr">&#8594;</div>
+<div class="abox"><b>Packet JSON</b>recommendation + rationale + audit events</div>
 </div>
-<div class="callout"><strong>MVP boundary (the A2 story):</strong> all PHI-side retrieval/embedding on-prem/VPC; only de-identified criterion summaries reach the managed LLM; FHIR/X12 integration + policy version-pinning engine + immutable audit are the build items the $1.2–2.0M estimate covers.</div>
-<p><small>Diagram placeholder — architecture visual to be inserted (pipeline → packet store → 3-persona demo; PHI boundary drawn explicitly).</small></p>
+</div>
+<div class="adown">&#8595;</div>
+<div class="lane demo">
+<div class="lanelabel">Static demo surface — GitHub Pages · no backend, no keys, no network dependency in the room</div>
+<div class="flow">
+<div class="abox"><b>&#128105;&#8205;&#9877;&#65039; Nurse</b>worklist &#8594; packet &#8594; verify citations &#8594; decide</div>
+<div class="aarr">&#183;</div>
+<div class="abox"><b>&#9878;&#65039; Exceptions / MD</b>routed conflicts; human owns every denial</div>
+<div class="aarr">&#183;</div>
+<div class="abox"><b>&#128202; Executive</b>touch-time, groundedness, overturn, Fermi value</div>
+</div>
+</div>
+</div>
 </section>
 
 <!-- 6 · DATA REQUIREMENTS -->
