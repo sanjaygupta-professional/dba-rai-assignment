@@ -1,4 +1,4 @@
-# Infrastructure worksheet — owner: Tejas (edit every number you disagree with)
+# Infrastructure worksheet — owner: Thejas (edit every number you disagree with)
 
 Defaults below come from the A1 Fermi model (`usecases/healthcare/ideation.md` §3) and the
 professor's A2 brief. Your job: **edit, not create.** Anything you leave untouched you must

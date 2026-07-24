@@ -84,6 +84,6 @@ graded deliverable.
 `a2/plan.html` — one-page build plan for the Sun 26 Jul alignment meeting.
 `a2/deck.html` — HTML presentation skeleton (17 slides, drafted).
 `a2/prototype/` — fresh 3-persona prototype v0 (nurse / exceptions / executive).
-`a2/worksheets/` — Tejas (infrastructure) + Ashish (responsible AI) review sheets.
+`a2/worksheets/` — Thejas (infrastructure) + Ashish (responsible AI) review sheets.
 `a2/pipeline/` — offline precomputed-real packet pipeline (runs 27–28 Jul).
 Presentation: Sat 1 Aug 2026, Day 1.
