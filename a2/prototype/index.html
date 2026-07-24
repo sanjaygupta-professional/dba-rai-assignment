@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CareBridge — UM Prototype (Demo · Synthetic Data)</title>
+<style>
+:root{--bg:#f5f4ed;--bg2:#faf9f5;--bg3:#e8e6dc;--border:#f0eee6;--border-warm:#e8e6dc;--accent:#c96442;--accent2:#d97757;--green:#2a6b42;--yellow:#9a6520;--red:#b53333;--text:#141413;--muted:#5e5d59;--text3:#87867f;--text-light:#b0aea5;--dark:#141413;--dark2:#30302e}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font:14.5px/1.55 system-ui,-apple-system,sans-serif;min-height:100vh}
+header{background:var(--dark);color:var(--text-light);padding:10px 22px;display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+header .brand{font-family:Georgia,serif;font-size:18px;color:var(--bg2)}
+header .brand b{color:var(--accent2)}
+.demo-badge{background:var(--dark2);border:1px solid #4a4a46;color:var(--text-light);font-size:11px;padding:2px 10px;border-radius:12px;letter-spacing:.06em}
+.personas{margin-left:auto;display:flex;gap:6px}
+.personas button{background:var(--dark2);color:var(--text-light);border:1px solid #4a4a46;border-radius:8px;padding:6px 14px;cursor:pointer;font-size:13px}
+.personas button.active{background:var(--accent);border-color:var(--accent);color:#fff}
+main{max-width:1180px;margin:0 auto;padding:26px 22px}
+h1,h2,h3{font-family:Georgia,'Anthropic Serif',serif;font-weight:500}
+h1{font-size:24px;margin-bottom:4px}
+h2{font-size:19px;color:var(--accent);margin:18px 0 10px}
+h3{font-size:15px;color:var(--muted);margin:12px 0 6px}
+.sub{color:var(--text3);font-size:13px;margin-bottom:18px}
+table{border-collapse:collapse;width:100%;background:var(--bg2);font-size:13.5px}
+th{background:var(--bg3);text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+th,td{padding:8px 11px;border:1px solid var(--border-warm)}
+tr.row{cursor:pointer}
+tr.row:hover td{background:var(--bg3)}
+.pill{display:inline-block;border-radius:20px;padding:1px 10px;font-size:11.5px;font-weight:600}
+.p-high{background:#f3ded7;color:var(--red)}.p-med{background:#efe6d0;color:var(--yellow)}.p-low{background:#dde7de;color:var(--green)}
+.p-pend{background:#efe6d0;color:var(--yellow)}.p-route{background:#f3ded7;color:var(--red)}.p-appr{background:#dde7de;color:var(--green)}
+.grid{display:grid;gap:16px}.g2{grid-template-columns:1fr 1fr}.g3{grid-template-columns:1fr 1fr 1fr}.g4{grid-template-columns:repeat(4,1fr)}
+.card{background:var(--bg2);border:1px solid var(--border-warm);border-radius:10px;padding:14px 16px;box-shadow:rgba(0,0,0,.05) 0 4px 24px}
+.card h4{font-size:11.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--text3);margin-bottom:4px;font-weight:600}
+.kpi{font-family:Georgia,serif;font-size:28px}
+.kpi small{font-size:13px;color:var(--text3);font-family:system-ui}
+.crit{border:1px solid var(--border-warm);border-radius:10px;background:var(--bg2);margin:10px 0;overflow:hidden}
+.crit .head{display:flex;gap:10px;align-items:center;padding:10px 14px;cursor:pointer}
+.crit .head:hover{background:var(--bg3)}
+.crit .st{font-size:18px;width:24px;text-align:center}
+.crit .body{display:none;border-top:1px solid var(--border-warm);padding:10px 14px;background:var(--bg)}
+.crit.open .body{display:block}
+.src{border-left:3px solid var(--accent);background:var(--bg2);padding:8px 12px;margin:8px 0;border-radius:0 8px 8px 0;font-size:13px}
+.src .ref{color:var(--text3);font-size:11.5px;margin-top:3px}
+.actions{display:flex;gap:10px;margin:16px 0}
+.btn{border:1px solid var(--border-warm);background:var(--bg2);border-radius:8px;padding:9px 18px;cursor:pointer;font-size:14px}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn:hover{box-shadow:0 0 0 1px var(--accent)}
+.note{border-left:3px solid var(--yellow);background:var(--bg2);padding:9px 13px;margin:12px 0;border-radius:0 8px 8px 0;font-size:13px;color:var(--muted)}
+.audit{font-size:12.5px;color:var(--muted);background:var(--bg2);border:1px solid var(--border-warm);border-radius:10px;padding:10px 14px}
+.audit div{padding:3px 0;border-bottom:1px dashed var(--border-warm)}
+.audit div:last-child{border-bottom:0}
+.back{color:var(--accent);cursor:pointer;font-size:13px;margin-bottom:10px;display:inline-block}
+.bar{height:8px;background:var(--bg3);border-radius:4px;overflow:hidden;margin-top:6px}
+.bar i{display:block;height:100%;background:var(--green)}
+.spark{display:flex;align-items:flex-end;gap:3px;height:52px;margin-top:8px}
+.spark i{flex:1;background:var(--accent2);border-radius:2px 2px 0 0;opacity:.85}
+footer{max-width:1180px;margin:10px auto 30px;padding:0 22px;color:var(--text3);font-size:12px}
+@media(max-width:860px){.g2,.g3,.g4{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header>
+<span class="brand">Care<b>Bridge</b> UM</span>
+<span class="demo-badge">DEMO MODE · SYNTHETIC DATA ONLY · PACKETS ARE REAL PIPELINE OUTPUT</span>
+<nav class="personas">
+<button data-p="nurse" class="active">👩‍⚕️ Nurse — Maya Patel, RN</button>
+<button data-p="exceptions">⚖️ Exceptions — Dr. Chen, MD</button>
+<button data-p="exec">📊 Executive — R. Iyer, VP UM</button>
+</nav>
+</header>
+<main id="app"></main>
+<footer>CareBridge prototype v0 · Group 8, Cohort 8 · Responsible AI A2 · The AI prepares — the human decides. AI's most adverse action is pend/route; every denial is owned by a licensed clinician. Packet content will be regenerated by the offline retrieval+LLM pipeline before 1 Aug (current packets: seeded samples in identical schema).</footer>
+
+<script>
+// ── Packet store. Schema identical to pipeline output; pipeline regenerates this file. ──
+const CASES=[
+ {id:"PA-88231",member:"Jordan Blake",age:41,service:"Adalimumab (J0135)",dx:"Rheumatoid arthritis (M06.9)",line:"Specialty pharmacy",provider:"Dr. Rao, Rheumatology",due:"42 min",risk:"high",rec:"PEND",policy:"RX-1142 v4.2 (eff 2026-01-15) — biologic DMARD step-therapy",confidence:{policy:"high",evidence:"medium (1 unresolved item)"},
+  criteria:[
+   {t:"Confirmed RA diagnosis by rheumatologist",s:"met",why:"Seropositive RA documented by treating rheumatologist.",src:[{q:"“seropositive RA, active disease”",r:"Consult note 2026-03-02 · Dr. Rao · note_id 88231, p.1"}]},
+   {t:"≥3-month trial + inadequate response to ≥1 conventional DMARD",s:"met",why:"Methotrexate 5-month trial with persistent disease activity.",src:[{q:"methotrexate fills 2025-09 → 2026-02 (5 mo)",r:"rx_claim 7741"},{q:"“persistent synovitis, DAS28 5.1”",r:"Progress note 2026-02-18 · note_id 90114"}]},
+   {t:"Negative TB screening within 12 months",s:"uncertain",why:"No QuantiFERON/PPD result located in supplied records.",src:[{q:"— no source span found —",r:"Retrieval searched labs + notes, 0 hits for TB screen"}]}
+  ],
+  rationale:"All approval criteria met except one documentation gap. Recommend PEND-FOR-INFO for TB screening result. Not a denial."},
+ {id:"PA-90447",member:"Amara Lewis",age:57,service:"MRI lumbar spine (72148)",dx:"Radiculopathy (M54.16)",line:"Advanced imaging",provider:"Dr. Okafor, Ortho",due:"2.1 h",risk:"med",rec:"APPROVE",policy:"IMG-0221 v2.1 (eff 2025-11-01) — lumbar MRI medical necessity",confidence:{policy:"high",evidence:"high"},
+  criteria:[
+   {t:"≥6 weeks conservative therapy failed",s:"met",why:"PT course 8 weeks documented with persistent symptoms.",src:[{q:"“8 wks PT completed, pain unchanged 7/10”",r:"PT discharge summary 2026-06-12 · note_id 91520"}]},
+   {t:"Neurological deficit or radicular signs",s:"met",why:"Positive straight-leg raise, L5 dermatome sensory loss.",src:[{q:"“SLR positive at 40°, decreased sensation L5”",r:"Exam note 2026-06-20 · Dr. Okafor · note_id 91877"}]},
+   {t:"No red flags requiring urgent workup",s:"met",why:"No fever, trauma, cancer history in record.",src:[{q:"negative review of systems",r:"Exam note 2026-06-20 · note_id 91877, p.2"}]}
+  ],
+  rationale:"All criteria met with high evidence completeness. Recommend APPROVE."},
+ {id:"PA-90512",member:"Sam Ortiz",age:66,service:"Etanercept (J1438)",dx:"Psoriatic arthritis (L40.52)",line:"Specialty pharmacy",provider:"Dr. Mehta, Rheumatology",due:"5.4 h",risk:"high",rec:"ROUTE",policy:"RX-1142 v4.2 (eff 2026-01-15)",confidence:{policy:"high",evidence:"low (conflicting sources)"},
+  criteria:[
+   {t:"≥3-month conventional DMARD trial",s:"conflict",why:"Sources conflict: consult note states sulfasalazine 4 months; med history shows no fills.",src:[{q:"“tolerated sulfasalazine ×4 months”",r:"Consult note 2026-05-30 · note_id 93001"},{q:"no sulfasalazine claims found 2025–2026",r:"rx_claim search · 0 records"}]},
+   {t:"Confirmed PsA diagnosis",s:"met",why:"CASPAR criteria documented.",src:[{q:"“meets CASPAR, dactylitis present”",r:"Consult note 2026-05-30 · note_id 93001"}]}
+  ],
+  rationale:"Evidence conflict on the step-therapy criterion (note vs claims). ROUTE-FOR-REVIEW to medical director. The AI does not resolve conflicts in the member's disfavor."}
+];
+const WORKLIST_EXTRA=[
+ {id:"PA-90533",member:"L. Nguyen",service:"CT chest (71260)",due:"6.0 h",risk:"low",rec:"APPROVE"},
+ {id:"PA-90561",member:"P. Kaur",service:"Infliximab (J1745)",due:"1.2 d",risk:"med",rec:"PEND"}
+];
+const AUDIT=[
+ "09:02:14 · PA-88231 · packet generated · pipeline run #47 · groundedness 100% (6/6 assertions verified)",
+ "09:02:14 · PA-88231 · policy pinned RX-1142 v4.2 · retrieval: 14 chunks, 3 cited",
+ "09:41:22 · PA-90447 · packet generated · groundedness 100% (5/5)",
+ "10:15:03 · PA-90512 · evidence conflict detected → auto ROUTE · MD queue",
+ "10:22:47 · PA-90447 · M. Patel RN APPROVED · concordant with AI recommendation",
+];
+const app=document.getElementById('app');
+const stIcon={met:"✅",uncertain:"⚠️",unmet:"❌",conflict:"🔀"};
+const recPill=r=>({APPROVE:"p-appr",PEND:"p-pend",ROUTE:"p-route"})[r]||"p-pend";
+const riskPill=r=>({high:"p-high",med:"p-med",low:"p-low"})[r];
+
+function nurseList(){
+ const rows=[...CASES.map(c=>({id:c.id,member:c.member,service:c.service,due:c.due,risk:c.risk,rec:c.rec,open:true})),...WORKLIST_EXTRA];
+ app.innerHTML=`<h1>My Worklist</h1><p class="sub">Signed in as Maya Patel, RN · UM Clinical Reviewer · ${rows.length} cases · packets pre-assembled by pipeline (queue-ahead)</p>
+ <div class="grid g4" style="margin-bottom:18px">
+ <div class="card"><h4>Needs review</h4><div class="kpi">${rows.length}</div></div>
+ <div class="card"><h4>Due today</h4><div class="kpi">3</div></div>
+ <div class="card"><h4>Packet groundedness</h4><div class="kpi">100<small>%</small></div><div class="bar"><i style="width:100%"></i></div></div>
+ <div class="card"><h4>SLA met</h4><div class="kpi">91<small>%</small></div><div class="bar"><i style="width:91%"></i></div></div>
+ </div>
+ <table><tr><th>Case</th><th>Member</th><th>Service</th><th>AI recommendation</th><th>Risk</th><th>Due</th></tr>
+ ${rows.map(r=>`<tr class="row" ${r.open?`onclick="caseView('${r.id}')"`:""}><td>${r.id}</td><td>${r.member}</td><td>${r.service}</td><td><span class="pill ${recPill(r.rec)}">${r.rec}</span></td><td><span class="pill ${riskPill(r.risk||'low')}">${r.risk||'low'}</span></td><td>${r.due}</td></tr>`).join("")}
+ </table>
+ <p class="note">Deterministic checks (eligibility · codes · network · benefit) already passed upstream — rules engine, not AI.</p>`;
+}
+window.caseView=function(id,persona){
+ const c=CASES.find(x=>x.id===id);if(!c)return;
+ app.innerHTML=`<span class="back" onclick="${persona==='md'?'mdQueue()':'nurseList()'}">← back to ${persona==='md'?'exceptions queue':'worklist'}</span>
+ <h1>${c.id} — ${c.member}, ${c.age}</h1>
+ <p class="sub">${c.service} · ${c.dx} · ${c.provider} · ${c.line} · due in ${c.due}</p>
+ <div class="grid g2">
+ <div>
+  <h2>AI Decision Packet <span class="pill ${recPill(c.rec)}">${c.rec==="PEND"?"PEND-FOR-INFO":c.rec==="ROUTE"?"ROUTE-FOR-REVIEW":"RECOMMEND APPROVE"}</span></h2>
+  <p style="font-size:13px;color:var(--muted)">Policy applied: <strong>${c.policy}</strong></p>
+  ${c.criteria.map((k,i)=>`<div class="crit" id="cr${i}"><div class="head" onclick="this.parentNode.classList.toggle('open')">
+   <span class="st">${stIcon[k.s]}</span><div><strong>${k.t}</strong><div style="font-size:12px;color:var(--text3)">${k.s.toUpperCase()} — click to inspect evidence</div></div></div>
+   <div class="body"><p>${k.why}</p>${k.src.map(s=>`<div class="src">${s.q}<div class="ref">Source: ${s.r}</div></div>`).join("")}</div></div>`).join("")}
+  <div class="note"><strong>Rationale:</strong> ${c.rationale}<br><strong>Confidence:</strong> policy-mapping ${c.confidence.policy} · evidence-completeness ${c.confidence.evidence}</div>
+ </div>
+ <div>
+  <h2>${persona==='md'?'Medical Director decision':'Reviewer decision'}</h2>
+  <p style="font-size:13px;color:var(--muted)">${persona==='md'?'You own this decision. The AI routed it because it will not resolve evidence conflicts against the member.':'Verify the citations, then decide. The AI cannot deny — you can.'}</p>
+  <div class="actions">
+  ${persona==='md'
+   ?`<button class="btn primary" onclick="decide('${c.id}','APPROVED')">Approve</button><button class="btn" onclick="decide('${c.id}','DENIED (MD-owned)')">Deny — MD authority</button><button class="btn" onclick="decide('${c.id}','INFO REQUESTED')">Request info</button>`
+   :`<button class="btn primary" onclick="decide('${c.id}','APPROVED')">Approve</button><button class="btn" onclick="decide('${c.id}','PENDED — info requested')">Pend for info</button><button class="btn" onclick="decide('${c.id}','ROUTED to MD')">Route to medical director</button>`}
+  </div>
+  <div id="decision"></div>
+  <h3>Why you can trust this packet</h3>
+  <ul style="font-size:13px;margin-left:18px">
+  <li>Every assertion cites its exact source span — verify in one click.</li>
+  <li>Statuses are honest: <em>uncertain</em> and <em>conflict</em> are surfaced, never smoothed over.</li>
+  <li>Groundedness checked per assertion before the packet reached you.</li>
+  </ul>
+  <h3>Audit trail (immutable)</h3>
+  <div class="audit">${AUDIT.filter(a=>a.includes(c.id)).map(a=>`<div>${a}</div>`).join("")||"<div>No events yet.</div>"}</div>
+ </div></div>`;
+};
+window.decide=function(id,verdict){
+ document.getElementById('decision').innerHTML=`<div class="note" style="border-color:var(--green)"><strong>${verdict}</strong> · ${id} · logged to immutable audit · ${new Date().toLocaleTimeString()} · decision owner: human</div>`;
+};
+window.mdQueue=function(){
+ const routed=CASES.filter(c=>c.rec==="ROUTE");
+ app.innerHTML=`<h1>Exceptions Queue</h1><p class="sub">Signed in as Dr. Chen, MD · Medical Director · cases the AI refused to decide</p>
+ <div class="grid g3" style="margin-bottom:18px">
+ <div class="card"><h4>Routed to you</h4><div class="kpi">${routed.length}</div></div>
+ <div class="card"><h4>Pends awaiting info</h4><div class="kpi">2</div></div>
+ <div class="card"><h4>Denials this week — all human-owned</h4><div class="kpi">4<small> / 4</small></div></div>
+ </div>
+ <table><tr><th>Case</th><th>Member</th><th>Service</th><th>Why routed</th><th>Due</th></tr>
+ ${routed.map(c=>`<tr class="row" onclick="caseView('${c.id}','md')"><td>${c.id}</td><td>${c.member}</td><td>${c.service}</td><td>Evidence conflict — AI will not resolve against member</td><td>${c.due}</td></tr>`).join("")}
+ </table>
+ <p class="note"><strong>Design constraint, not policy:</strong> the AI's most adverse possible action is pend/route. Every denial in this system is made — and owned — by a licensed clinician.</p>`;
+};
+function execView(){
+ const days=[34,41,38,45,52,48,57];
+ app.innerHTML=`<h1>Executive Dashboard</h1><p class="sub">Signed in as R. Iyer, VP Utilization Management · population-level view</p>
+ <div class="grid g4" style="margin-bottom:18px">
+ <div class="card"><h4>Median touch-time / case</h4><div class="kpi">8.6<small> min</small></div><div style="font-size:12px;color:var(--green)">▼ 38% vs 14-min baseline (pre-read anchored)</div></div>
+ <div class="card"><h4>Packet groundedness</h4><div class="kpi">99.2<small>%</small></div><div style="font-size:12px;color:var(--muted)">hard stop at 95% — veto power</div></div>
+ <div class="card"><h4>Overturn proxy</h4><div class="kpi">3.8<small>%</small></div><div style="font-size:12px;color:var(--muted)">guardrail ≤5% · directional</div></div>
+ <div class="card"><h4>Reviewer concordance</h4><div class="kpi">96.4<small>%</small></div><div style="font-size:12px;color:var(--muted)">approve-precision target ≥95%</div></div>
+ </div>
+ <div class="grid g2">
+ <div class="card"><h4>Authorizations completed / day (7-day)</h4><div class="spark">${days.map(d=>`<i style="height:${d}%"></i>`).join("")}</div></div>
+ <div class="card"><h4>Capacity released</h4><div class="kpi">31<small>%</small></div><p style="font-size:13px;color:var(--muted)">Assembly minutes converted to judgment minutes. Redeployed to complex cases &amp; appeals — not headcount reduction.</p></div>
+ </div>
+ <div class="grid g2" style="margin-top:16px">
+ <div class="card"><h4>Fairness watch (directional at current N)</h4><p style="font-size:13px;color:var(--muted)">Concordance by age band / sex / payer line — no cell deviates &gt;2pts. Flags trigger the powered fairness sub-study before pilot expansion.</p></div>
+ <div class="card"><h4>Value model (Fermi, live)</h4><p style="font-size:13px;color:var(--muted)">At observed −38% touch-time: net annual value ≈ <strong>$0.7M</strong> (mid cost, B=60%); pessimistic corner positive. AI cost/case $0.17 vs $10.50 labor.</p></div>
+ </div>`;
+}
+document.querySelectorAll('.personas button').forEach(b=>b.addEventListener('click',()=>{
+ document.querySelectorAll('.personas button').forEach(x=>x.classList.remove('active'));b.classList.add('active');
+ ({nurse:nurseList,exceptions:window.mdQueue,exec:execView})[b.dataset.p]();
+}));
+nurseList();
+</script>
+</body>
+</html>

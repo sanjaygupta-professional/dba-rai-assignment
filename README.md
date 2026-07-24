@@ -78,3 +78,12 @@ results-based explainability taxonomy, the techniques inside each, a
 decision guide for picking one, and a worked mapping onto CareBridge's
 DARWIN-R packet. Built ahead of the 18 Jul 26 Explainability lecture; not a
 graded deliverable.
+
+## Assignment 2 — meeting pack (in progress)
+
+`a2/plan.html` — one-page build plan for the Sun 26 Jul alignment meeting.
+`a2/deck.html` — HTML presentation skeleton (17 slides, drafted).
+`a2/prototype/` — fresh 3-persona prototype v0 (nurse / exceptions / executive).
+`a2/worksheets/` — Tejas (infrastructure) + Ashish (responsible AI) review sheets.
+`a2/pipeline/` — offline precomputed-real packet pipeline (runs 27–28 Jul).
+Presentation: Sat 1 Aug 2026, Day 1.

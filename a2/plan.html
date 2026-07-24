@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A2 Build Plan — CareBridge · Group 8</title>
+<style>
+:root{--bg:#f5f4ed;--bg2:#faf9f5;--bg3:#e8e6dc;--border:#f0eee6;--border-warm:#e8e6dc;--accent:#c96442;--accent2:#d97757;--green:#2a6b42;--yellow:#9a6520;--red:#b53333;--text:#141413;--muted:#5e5d59;--text3:#87867f;--text-light:#b0aea5;--dark:#141413;--dark2:#30302e}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font:15px/1.6 system-ui,-apple-system,sans-serif;max-width:880px;margin:0 auto;padding:48px 28px}
+h1,h2,h3{font-family:Georgia,'Anthropic Serif',serif;font-weight:500}
+h1{font-size:30px;line-height:1.15;margin-bottom:6px}
+h2{color:var(--accent);font-size:21px;margin:36px 0 12px}
+h3{color:var(--muted);font-size:17px;margin:20px 0 8px}
+.kicker{text-transform:uppercase;letter-spacing:.14em;font-size:11px;color:var(--text3);margin-bottom:10px}
+.lead{color:var(--muted);font-size:16px;margin-bottom:8px}
+table{border-collapse:collapse;width:100%;margin:12px 0;background:var(--bg2)}
+th{background:var(--bg3);text-align:left;font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+th,td{padding:8px 12px;border:1px solid var(--border-warm);vertical-align:top}
+.card{background:var(--bg2);border:1px solid var(--border-warm);border-radius:10px;padding:16px 18px;margin:12px 0;box-shadow:rgba(0,0,0,.05) 0 4px 24px}
+.callout{border-left:3px solid var(--accent);background:var(--bg2);padding:12px 16px;margin:14px 0;border-radius:0 8px 8px 0}
+ul,ol{margin:8px 0 8px 22px}
+li{margin:4px 0}
+.tag{display:inline-block;background:var(--bg3);border-radius:20px;padding:2px 10px;font-size:12px;color:var(--muted);margin-right:6px}
+.ok{color:var(--green);font-weight:600}.warn{color:var(--yellow);font-weight:600}.risk{color:var(--red);font-weight:600}
+strong{font-weight:600}
+.meta{color:var(--text3);font-size:13px;margin-top:40px;border-top:1px solid var(--border-warm);padding-top:12px}
+</style>
+</head>
+<body>
+<div class="kicker">Responsible AI · Assignment 2 · Cohort 8 Group 8 · Sunday alignment meeting</div>
+<h1>CareBridge A2 — Build Plan</h1>
+<p class="lead">One page. Scope, owners, dates. Presentation: <strong>Sat 1 Aug 2026, Day 1</strong> (groups 10→6). 25 min + 5 min Q&amp;A. Same business problem as A1 (mandated): CareBridge reviewer-packet lift.</p>
+
+<h2>1 · What we ship</h2>
+<div class="card">
+<strong>A — HTML presentation deck</strong> (the spine of the 25 minutes)
+<ul>
+<li>Slide 1: <strong>boardroom executive summary</strong> — complete on its own; a leader reading only this slide could approve.</li>
+<li>Slide 2: <strong>continuation from A1</strong> — one slide, the essence of the funnel + hypothesis + kill thresholds.</li>
+<li>Mandatory per brief: 1–2 slide app summary · 1 slide prototype architecture · 1 slide data requirements.</li>
+<li>One <strong>360° slide</strong>: all six professor topics, one line each on how CareBridge answers it.</li>
+<li>Three deep-dives: <strong>Explainability (Sanjay) · Infrastructure (Tejas) · Responsible AI (Ashish)</strong>.</li>
+<li>One defense slide: <em>why this is still a prototype, not a product.</em></li>
+</ul>
+</div>
+<div class="card">
+<strong>B — Fresh prototype</strong> (Ravi's site = reference; rebuild is pure workflow, no assignment pages in nav)
+<ul>
+<li><strong>Two flows deep:</strong> ① UM nurse — worklist → case → AI decision packet with cited criteria → decide. ② Exceptions — pend/route queue → medical-director escalation (human owns the denial).</li>
+<li><strong>Plus executive dashboard</strong> — SLA, touch-time trend, groundedness, capacity (engages the leaders in the room).</li>
+<li><strong>Precomputed-real ("option C"):</strong> an offline pipeline (synthetic cases + public policy corpus → real LLM + retrieval) generates the packets <em>before</em> Aug 1; the demo site is fully static. Every packet, citation and met/unmet/uncertain status is genuine AI output — but nothing can fail live.</li>
+<li>Hosting: our GitHub Pages. Fallback: 60-second screen recording of the golden path.</li>
+</ul>
+</div>
+
+<h2>2 · Who owns what</h2>
+<table>
+<tr><th>Owner</th><th>Presents</th><th>Reviews &amp; rehearses</th></tr>
+<tr><td><strong>Sanjay</strong></td><td>Explainability deep-dive + demo (packet = the explanation; stakeholder-specific explainability; corner cases)</td><td>Whole deck; authors all sections; builds prototype + pipeline</td></tr>
+<tr><td><strong>Tejas</strong></td><td>Infrastructure (CPU vs GPU justification, cost–latency trade-off, LLM vs small-model strategy, Fermi sizing)</td><td>Infra worksheet — edit numbers, own the answers</td></tr>
+<tr><td><strong>Ashish</strong></td><td>Responsible AI (productivity gain, enabler-not-replacer, stakeholder responsibility grid)</td><td>RAI worksheet — edit grid, own the answers</td></tr>
+<tr><td>Ravi + rest</td><td>—</td><td>Review; Ravi's v1 prototype credited as the workflow validation that shaped the rebuild</td></tr>
+</table>
+<div class="callout"><strong>Rule from the brief:</strong> those who did not present in A1 must present in A2. Confirm at the meeting the trio satisfies this.</div>
+
+<h2>3 · Dates (9 days)</h2>
+<table>
+<tr><th>Date</th><th>Milestone</th></tr>
+<tr><td>Sun 26 Jul</td><td>This meeting: ratify scope, owners, dates. Book rehearsal <em>now</em>.</td></tr>
+<tr><td>Mon 27 – Tue 28</td><td>Pipeline runs (≈5 synthetic cases → real packets). Prototype flows wired to real packet JSON.</td></tr>
+<tr><td>Wed 29 Jul</td><td><span class="warn">Checkpoint:</span> Tejas + Ashish return worksheets edited. Deck content-complete.</td></tr>
+<tr><td>Thu 30 Jul</td><td>Rehearsal 1 (timed, 25:00 hard). Q&amp;A cards drilled — presenters answer aloud, no slides.</td></tr>
+<tr><td>Fri 31 Jul</td><td>Fixes + rehearsal 2. Record demo fallback video.</td></tr>
+<tr><td><strong>Sat 1 Aug</strong></td><td>Present. Day 1, groups 10→6 — we are Group 8, slot ~2nd or 3rd.</td></tr>
+</table>
+
+<h2>4 · Risks we already accepted</h2>
+<ul>
+<li><span class="risk">Reviewed ≠ owned.</span> Sections are authored centrally; Q&amp;A lands on the presenter. Mitigation: 5 anticipated-question cards per deep-dive, drilled at rehearsal.</li>
+<li><span class="warn">"Is this a product?"</span> — Sunkad's likely kill-shot given A1's prototype≠product thesis. Mitigation: defense slide — vibe-coded, synthetic data, no auth, no persistence, disposable; fidelity lives in the <em>explanation surface</em>.</li>
+<li><span class="warn">Time.</span> 3 deep-dives × ~6 min + mandatory slides + demo = tight. Demo is embedded inside the Explainability section, not a separate act.</li>
+</ul>
+
+<h2>5 · Decisions needed from this meeting</h2>
+<ol>
+<li>Ratify scope above (2 flows + exec dashboard, precomputed-real).</li>
+<li>Confirm presenter trio satisfies the must-present rule.</li>
+<li>Commit Wed 29 worksheet returns + Thu 30 rehearsal slot, out loud, with times.</li>
+<li>Topic subset for the 25 min: 3 deep + 360° coverage slide (recommended) — or fewer.</li>
+</ol>
+
+<div class="meta">Group 8 · Responsible AI (Prof. Dr. Venkatesh Sunkad) · GGU/UpGrad DBA · prepared 23 Jul 2026 · companions: <a href="deck.html">deck skeleton</a> · <a href="prototype/">prototype v0</a> · worksheets in <code>a2/worksheets/</code></div>
+</body>
+</html>
