@@ -1,0 +1,684 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>RAI Assignment 1 — Explainer</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&family=Inter:wght@400;500;600;700&display=swap');
+
+:root{
+  --bg:#f5f4ed;
+  --bg2:#faf9f5;
+  --bg3:#e8e6dc;
+  --border:#e0ddd0;
+  --accent:#c96442;
+  --accent-light:#e8836f;
+  --accent-dark:#a84e30;
+  --green:#2a6b42;
+  --green-light:#e3efe6;
+  --yellow:#9a6520;
+  --yellow-light:#f3e9d6;
+  --red:#b53333;
+  --red-light:#f6dede;
+  --text:#141413;
+  --muted:#5e5d59;
+  --text3:#87867f;
+  --dark:#1a1a18;
+  --dark2:#2a2a28;
+  --serif:'Source Serif 4',Georgia,'Times New Roman',serif;
+  --sans:'Inter',system-ui,-apple-system,sans-serif;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:var(--sans);
+  font-size:16px;
+  line-height:1.65;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+
+h1,h2,h3,h4{font-family:var(--serif);font-weight:500;line-height:1.15;letter-spacing:-0.01em}
+a{color:var(--accent);text-decoration:none;transition:color .2s}
+a:hover{color:var(--accent-dark)}
+
+/* ─── PROGRESS BAR ─── */
+#progress{position:fixed;top:0;left:0;right:0;height:4px;background:var(--bg3);z-index:200}
+#progress-bar{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent-light));transition:width .15s ease-out}
+
+/* ─── NAV ─── */
+nav{
+  position:fixed;top:4px;left:0;right:0;z-index:100;
+  background:rgba(245,244,237,.85);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);
+  padding:14px 32px;
+  display:flex;align-items:center;gap:24px;
+}
+nav .brand{font-family:var(--serif);font-size:16px;font-weight:600;color:var(--text);white-space:nowrap}
+nav .brand .dot{color:var(--accent);margin:0 6px}
+nav .links{display:flex;gap:2px;margin-left:auto;flex-wrap:wrap}
+nav .links a{
+  font-size:13px;font-weight:500;color:var(--muted);
+  padding:6px 14px;border-radius:8px;transition:all .2s;white-space:nowrap;
+}
+nav .links a:hover{background:var(--bg3);color:var(--text)}
+nav .links a.active{background:var(--accent);color:#fff}
+
+/* ─── LAYOUT ─── */
+section{padding:100px 32px 60px;max-width:1080px;margin:0 auto;scroll-margin-top:70px}
+
+/* ─── HERO ─── */
+#hero{
+  min-height:100vh;
+  display:flex;flex-direction:column;justify-content:center;
+  padding-top:100px;padding-bottom:60px;
+  position:relative;
+}
+#hero::before{
+  content:'';position:absolute;top:120px;right:-100px;
+  width:500px;height:500px;
+  background:radial-gradient(circle,rgba(201,100,66,.06) 0%,transparent 70%);
+  border-radius:50%;pointer-events:none;
+}
+.kicker{
+  font-family:var(--sans);
+  color:var(--accent);font-size:12px;font-weight:700;
+  text-transform:uppercase;letter-spacing:.14em;
+  margin-bottom:20px;
+  display:inline-flex;align-items:center;gap:10px;
+}
+.kicker::before{content:'';width:32px;height:2px;background:var(--accent)}
+#hero h1{
+  font-size:clamp(40px,7vw,72px);
+  line-height:1.05;
+  max-width:900px;
+  margin-bottom:24px;
+  letter-spacing:-0.02em;
+}
+#hero h1 em{color:var(--accent);font-style:normal;font-weight:600}
+#hero .lead{
+  font-size:clamp(18px,2.2vw,22px);
+  color:var(--muted);
+  max-width:660px;
+  margin-bottom:36px;
+  line-height:1.55;
+}
+#hero .lead strong{color:var(--text);font-weight:600}
+.hero-actions{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:56px}
+.btn{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:14px 28px;border-radius:10px;
+  font-family:var(--sans);font-size:15px;font-weight:600;
+  transition:all .2s;cursor:pointer;border:none;
+  text-decoration:none;
+}
+.btn-primary{background:var(--accent);color:#fff;box-shadow:0 4px 14px rgba(201,100,66,.25)}
+.btn-primary:hover{background:var(--accent-dark);color:#fff;transform:translateY(-1px);box-shadow:0 6px 20px rgba(201,100,66,.3)}
+.btn-ghost{background:var(--bg2);color:var(--text);border:1px solid var(--border)}
+.btn-ghost:hover{background:var(--bg3);color:var(--text);transform:translateY(-1px)}
+
+.hero-stats{display:flex;gap:48px;flex-wrap:wrap}
+.hero-stat .num{font-family:var(--serif);font-size:42px;font-weight:600;color:var(--accent);line-height:1}
+.hero-stat .lbl{font-size:12px;color:var(--muted);margin-top:6px;text-transform:uppercase;letter-spacing:.06em;font-weight:500}
+
+/* ─── SECTION HEADER ─── */
+.sec-header{margin-bottom:40px}
+.sec-header .kicker{margin-bottom:12px}
+.sec-header h2{font-size:clamp(28px,4vw,40px);color:var(--text);margin-bottom:12px;letter-spacing:-0.02em}
+.sec-header .sub{font-size:18px;color:var(--muted);max-width:680px;line-height:1.5}
+.sec-header .sub strong{color:var(--text);font-weight:600}
+
+/* ─── DISCIPLINE ─── */
+.chips-row{display:flex;gap:14px;flex-wrap:wrap;margin:32px 0}
+.chip{
+  font-size:15px;font-weight:600;
+  padding:14px 24px;border-radius:12px;
+  background:var(--bg2);border:1px solid var(--border);
+  color:var(--text);
+  display:inline-flex;align-items:center;gap:10px;
+  transition:transform .2s,box-shadow .2s;
+}
+.chip:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(0,0,0,.06)}
+.chip .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);flex:none}
+.chip.big{background:var(--accent);color:#fff;border-color:var(--accent)}
+.chip.big .dot{background:#fff}
+
+.pattern-banner{
+  background:var(--dark);
+  background:linear-gradient(135deg,#1a1a18 0%,#2a2a28 100%);
+  color:var(--bg2);
+  border-radius:20px;
+  padding:48px 48px;
+  margin:40px 0;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+}
+.pattern-banner::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,var(--accent),var(--accent-light),var(--accent));
+}
+.pattern-banner .label{
+  font-size:11px;text-transform:uppercase;letter-spacing:.16em;
+  color:var(--text3);margin-bottom:18px;font-weight:600;
+}
+.pattern-banner .rule{
+  font-family:var(--serif);font-size:clamp(24px,3.5vw,34px);
+  line-height:1.4;font-weight:500;
+}
+.pattern-banner .rule .prep{color:var(--bg2)}
+.pattern-banner .rule .owns{color:var(--accent-light);font-weight:600}
+
+/* ─── USE CASE CARDS ─── */
+.uc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:36px}
+.uc-card{
+  background:var(--bg2);
+  border:1px solid var(--border);
+  border-radius:16px;
+  overflow:hidden;
+  transition:transform .25s,box-shadow .25s;
+  display:flex;flex-direction:column;
+}
+.uc-card:hover{transform:translateY(-6px);box-shadow:0 16px 40px rgba(0,0,0,.08)}
+.uc-card .uc-head{padding:28px 26px 18px;position:relative}
+.uc-card .uc-head::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:5px;
+  background:var(--accent);
+}
+.uc-card .uc-tag{
+  font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;
+  color:var(--muted);margin-bottom:8px;
+}
+.uc-card .uc-name{font-family:var(--serif);font-size:24px;font-weight:600;color:var(--text)}
+.uc-card .uc-prod{font-size:14px;color:var(--accent);font-weight:600;margin-top:4px}
+.uc-card .uc-body{padding:0 26px 22px;flex:1}
+.uc-card .uc-row{padding:14px 0;border-bottom:1px solid var(--border)}
+.uc-card .uc-row:last-child{border-bottom:none}
+.uc-card .uc-lbl{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--text3);margin-bottom:4px;font-weight:600}
+.uc-card .uc-val{font-size:14px;color:var(--text);line-height:1.5}
+.uc-card .uc-val strong{color:var(--accent);font-weight:600}
+.uc-card .uc-foot{
+  padding:18px 26px;background:var(--bg3);
+  display:flex;justify-content:space-between;align-items:center;
+}
+.uc-card .uc-score-lbl{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;font-weight:600}
+.uc-card .uc-score{font-family:var(--serif);font-size:28px;font-weight:600;color:var(--text);line-height:1}
+.uc-card .uc-score small{font-size:14px;color:var(--text3);font-weight:400}
+.uc-card .uc-delta{font-size:12px;font-weight:600;color:var(--green)}
+.uc-card .uc-delta.v1{color:var(--text3)}
+
+/* ─── PATTERN DIAGRAM ─── */
+.pattern-diagram{
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:20px;padding:48px 36px;margin-top:36px;
+}
+.pattern-flow{display:flex;align-items:stretch;gap:0;flex-wrap:wrap;justify-content:center}
+.pf-node{
+  flex:1;min-width:200px;max-width:280px;
+  text-align:center;padding:32px 20px;
+  border-radius:14px;background:var(--bg3);
+  border:1px solid var(--border);
+  position:relative;
+  transition:transform .25s;
+}
+.pf-node:hover{transform:translateY(-4px)}
+.pf-node.ai{border-top:4px solid var(--accent)}
+.pf-node.human{border-top:4px solid var(--green)}
+.pf-node.adverse{border-top:4px solid var(--red)}
+.pf-node .pf-icon{font-size:36px;margin-bottom:12px;line-height:1}
+.pf-node .pf-title{font-family:var(--serif);font-size:18px;font-weight:600;color:var(--text);margin-bottom:6px}
+.pf-node .pf-desc{font-size:13px;color:var(--muted);line-height:1.45}
+.pf-arrow{
+  display:flex;align-items:center;justify-content:center;
+  font-size:32px;color:var(--accent);
+  padding:0 12px;min-width:50px;font-weight:300;
+}
+.pf-domains{display:flex;gap:14px;justify-content:center;margin-top:32px;flex-wrap:wrap}
+.pf-domain{
+  font-size:13px;padding:10px 20px;border-radius:10px;
+  background:var(--bg3);color:var(--muted);
+  border:1px solid var(--border);font-weight:500;
+}
+.pf-domain strong{color:var(--text);font-weight:600}
+
+/* ─── TIMELINE ─── */
+.timeline{position:relative;margin-top:40px;padding-left:48px}
+.timeline::before{
+  content:'';position:absolute;left:15px;top:8px;bottom:8px;
+  width:2px;background:linear-gradient(to bottom,var(--accent),var(--border));
+}
+.tl-step{position:relative;padding-bottom:32px}
+.tl-step:last-child{padding-bottom:0}
+.tl-step .tl-dot{
+  position:absolute;left:-41px;top:0;
+  width:32px;height:32px;border-radius:50%;
+  background:var(--accent);color:#fff;
+  display:grid;place-items:center;
+  font-weight:700;font-size:14px;font-family:var(--serif);
+  border:4px solid var(--bg);
+  box-shadow:0 2px 8px rgba(201,100,66,.3);
+}
+.tl-step .tl-title{font-size:18px;font-weight:600;color:var(--text);margin-bottom:4px;font-family:var(--sans)}
+.tl-step .tl-desc{font-size:14px;color:var(--muted);line-height:1.55}
+.tl-step .tl-desc strong{color:var(--text);font-weight:600}
+
+/* ─── EVALUATOR PANEL ─── */
+.ev-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:36px}
+.ev-card{
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:16px;padding:32px;
+  position:relative;overflow:hidden;
+}
+.ev-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:4px;
+  background:var(--accent);
+}
+.ev-card .ev-name{font-family:var(--serif);font-size:22px;font-weight:600;color:var(--accent);margin-bottom:4px}
+.ev-card .ev-role{font-size:13px;color:var(--muted);font-style:italic;margin-bottom:18px}
+.ev-card .ev-kill{
+  background:var(--bg3);border-left:3px solid var(--accent);
+  border-radius:8px;padding:14px 18px;
+  font-size:14px;color:var(--text);margin-bottom:20px;line-height:1.45;
+}
+.ev-card .ev-kill strong{color:var(--accent);font-weight:600}
+.ev-card .ev-dims{display:flex;flex-direction:column;gap:8px}
+.ev-dim{display:flex;align-items:center;gap:12px;font-size:14px;padding:4px 0}
+.ev-dim .ev-code{
+  font-family:var(--serif);font-weight:700;color:var(--accent);
+  min-width:32px;font-size:15px;
+}
+.ev-dim .ev-text{color:var(--text)}
+
+.gate-callout{
+  background:var(--bg3);border-left:4px solid var(--accent);
+  border-radius:10px;padding:20px 24px;margin-top:28px;
+  font-size:15px;color:var(--muted);line-height:1.65;
+}
+.gate-callout strong{color:var(--text);font-weight:600}
+
+/* ─── SCORES ─── */
+.score-table-wrap{
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:16px;padding:28px;margin-top:28px;
+  overflow-x:auto;
+}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{padding:12px 16px;text-align:left;border-bottom:1px solid var(--border)}
+thead th{
+  background:var(--bg3);color:var(--muted);
+  font-family:var(--sans);font-weight:600;font-size:11px;
+  text-transform:uppercase;letter-spacing:.06em;
+}
+tbody tr:hover{background:var(--bg3)}
+td strong{color:var(--text);font-weight:600}
+.sc{
+  display:inline-block;font-size:13px;font-weight:700;
+  padding:4px 12px;border-radius:7px;min-width:36px;text-align:center;
+  font-family:var(--serif);
+}
+.sc.g{background:var(--green-light);color:var(--green)}
+.sc.a{background:var(--yellow-light);color:var(--yellow)}
+.sc.r{background:var(--red-light);color:var(--red)}
+
+.standings{display:flex;flex-direction:column;gap:16px;margin-top:32px}
+.standing{
+  display:flex;align-items:center;gap:24px;
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:16px;padding:24px 28px;
+  transition:transform .2s,box-shadow .2s;
+}
+.standing:hover{transform:translateX(4px);box-shadow:0 8px 24px rgba(0,0,0,.06)}
+.standing.rank1{border-left:5px solid var(--accent)}
+.standing .rk{font-family:var(--serif);font-size:32px;font-weight:600;color:var(--accent);flex:none;width:48px}
+.standing .sd{flex:1}
+.standing .sd h4{color:var(--text);font-size:20px;margin-bottom:4px;font-weight:600}
+.standing .sd p{color:var(--muted);font-size:14px}
+.standing .fscore{font-family:var(--serif);font-size:32px;font-weight:600;color:var(--text);flex:none}
+.standing .fscore small{font-size:16px;color:var(--text3);font-weight:400}
+.badge{
+  font-family:var(--sans);font-size:10px;font-weight:700;
+  padding:3px 9px;border-radius:6px;
+  text-transform:uppercase;letter-spacing:.06em;
+  vertical-align:middle;margin-left:8px;
+}
+.badge.hardened{background:var(--green-light);color:var(--green)}
+.badge.v1{background:var(--bg3);color:var(--muted)}
+
+.residual{
+  background:var(--bg3);border-left:4px solid var(--accent-light);
+  border-radius:10px;padding:20px 24px;margin-top:28px;
+  font-size:15px;color:var(--muted);line-height:1.65;
+}
+.residual strong{color:var(--text);font-weight:600}
+
+/* ─── FOOTER ─── */
+footer{
+  border-top:1px solid var(--border);
+  padding:48px 32px;text-align:center;
+  color:var(--text3);font-size:13px;margin-top:60px;
+}
+footer a{color:var(--accent);font-weight:600}
+.footer-links{display:flex;gap:24px;justify-content:center;margin-bottom:16px;flex-wrap:wrap}
+
+/* ─── ANIMATION (progressive enhancement — content always visible) ─── */
+@media(prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+}
+
+@media(max-width:860px){
+  .uc-grid{grid-template-columns:1fr}
+  .ev-grid{grid-template-columns:1fr}
+  .pf-arrow{transform:rotate(90deg);padding:10px 0}
+  nav .links{display:none}
+  section{padding:80px 20px 40px}
+  .pattern-banner{padding:32px 24px}
+  .pattern-diagram{padding:32px 20px}
+}
+</style>
+</head>
+<body>
+
+<div id="progress"><div id="progress-bar"></div></div>
+
+<nav>
+  <div class="brand">RAI <span class="dot">·</span> Assignment 1</div>
+  <div class="links">
+    <a href="#hero">Overview</a>
+    <a href="#discipline">Discipline</a>
+    <a href="#usecases">Use Cases</a>
+    <a href="#pattern">Pattern</a>
+    <a href="#process">Process</a>
+    <a href="#panel">Panel</a>
+    <a href="#scores">Scores</a>
+  </div>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<section id="hero">
+  <div class="kicker">Responsible AI · DARWIN Framework · Cohort 8, Group 5</div>
+  <h1>Three AI use cases,<br><em>built honest.</em></h1>
+  <p class="lead fade-in stagger-2">One shared responsible pattern — <strong>AI prepares, the human owns the adverse decision</strong> — tested across healthcare, education, and finance. Each is a deliberately disposable <em>prototype</em>, not a product, scored by an adversarial panel, hardened against its findings, then re-scored.</p>
+  <div class="hero-actions fade-in stagger-3">
+    <a class="btn btn-primary" href="rai-assignment-report.html">Full Report &rarr;</a>
+    <a class="btn btn-ghost" href="assets/rai-explainer.mp4">&#9658; 75-sec Video</a>
+  </div>
+  <div class="hero-stats fade-in stagger-4">
+    <div class="hero-stat"><div class="num">3</div><div class="lbl">Use Cases</div></div>
+    <div class="hero-stat"><div class="num">48/50</div><div class="lbl">Top Score</div></div>
+    <div class="hero-stat"><div class="num">$35K</div><div class="lbl">Prototype Cost</div></div>
+    <div class="hero-stat"><div class="num">8</div><div class="lbl">Build Steps</div></div>
+  </div>
+</section>
+
+<!-- ═══ DISCIPLINE ═══ -->
+<section id="discipline">
+  <div class="sec-header">
+    <div class="kicker">The discipline the course grades on</div>
+    <h2>A prototype is not a product.</h2>
+    <p class="sub">The central idea: quick, disposable, fail-fast. It validates the <strong>business case</strong> — not the technology — and tests 1–2 falsifiable hypotheses with reproducible measurement.</p>
+  </div>
+  <div class="chips-row">
+    <div class="chip"><span class="dot"></span>Quick</div>
+    <div class="chip"><span class="dot"></span>Disposable</div>
+    <div class="chip"><span class="dot"></span>Fail-fast</div>
+    <div class="chip big"><span class="dot"></span>Validates the business case — not the tech</div>
+  </div>
+  <div class="pattern-banner">
+    <div class="label">One shared rule across all three domains</div>
+    <div class="rule"><span class="prep">The system prepares the work.</span><br><span class="owns">A human owns the adverse decision.</span></div>
+  </div>
+</section>
+
+<!-- ═══ USE CASES ═══ -->
+<section id="usecases">
+  <div class="sec-header">
+    <div class="kicker">The three use cases</div>
+    <h2>Three domains, one pattern.</h2>
+    <p class="sub">Each use case shares the same responsible-AI discipline but tests a distinct RAI surface — HIPAA, FERPA fairness, or fair lending.</p>
+  </div>
+  <div class="uc-grid">
+    <div class="uc-card">
+      <div class="uc-head">
+        <div class="uc-tag">Payer prior-authorization</div>
+        <div class="uc-name">Healthcare</div>
+        <div class="uc-prod">CareBridge — Reviewer-Packet Lift</div>
+      </div>
+      <div class="uc-body">
+        <div class="uc-row"><div class="uc-lbl">Problem</div><div class="uc-val">UM nurses spend most touch-time <strong>assembling</strong> evidence, not deciding. AI pre-assembles an auditable packet.</div></div>
+        <div class="uc-row"><div class="uc-lbl">Human owns</div><div class="uc-val">Denials & partial denials <strong>(licensed clinician)</strong></div></div>
+        <div class="uc-row"><div class="uc-lbl">RAI surface</div><div class="uc-val">HIPAA, historical-denial bias</div></div>
+        <div class="uc-row"><div class="uc-lbl">Hypothesis</div><div class="uc-val">AI packet cuts reviewer touch-time <strong>&ge;35%</strong></div></div>
+        <div class="uc-row"><div class="uc-lbl">Prototype cost</div><div class="uc-val"><strong>$35K</strong> · 4 weeks · gates a $1.6M build</div></div>
+      </div>
+      <div class="uc-foot">
+        <div><div class="uc-score-lbl">Score</div><div class="uc-score">48<small>/50</small></div></div>
+        <div class="uc-delta">46 &rarr; 48 hardened</div>
+      </div>
+    </div>
+
+    <div class="uc-card">
+      <div class="uc-head">
+        <div class="uc-tag">Higher-ed rubric grading</div>
+        <div class="uc-name">Education</div>
+        <div class="uc-prod">GradeAssist — LLM Pre-Grading</div>
+      </div>
+      <div class="uc-body">
+        <div class="uc-row"><div class="uc-lbl">Problem</div><div class="uc-val">Grading is the largest variable instructional-labor cost. LLM pre-grades; human finalizes in a draft-then-edit flow.</div></div>
+        <div class="uc-row"><div class="uc-lbl">Human owns</div><div class="uc-val">The final grade <strong>(instructor)</strong></div></div>
+        <div class="uc-row"><div class="uc-lbl">RAI surface</div><div class="uc-val">FERPA, ESL / style fairness</div></div>
+        <div class="uc-row"><div class="uc-lbl">Hypothesis</div><div class="uc-val">AI draft cuts finalization to <strong>&le;5 min</strong> (&ge;55% reduction)</div></div>
+        <div class="uc-row"><div class="uc-lbl">Prototype cost</div><div class="uc-val"><strong>&lt;$50</strong> inference · 2 weeks · 80 essays</div></div>
+      </div>
+      <div class="uc-foot">
+        <div><div class="uc-score-lbl">Score</div><div class="uc-score">46<small>/50</small></div></div>
+        <div class="uc-delta">46 &rarr; 46 hardened</div>
+      </div>
+    </div>
+
+    <div class="uc-card">
+      <div class="uc-head">
+        <div class="uc-tag">Retail loan adjudication</div>
+        <div class="uc-name">Finance</div>
+        <div class="uc-prod">Credit Decision Co-Pilot</div>
+      </div>
+      <div class="uc-body">
+        <div class="uc-row"><div class="uc-lbl">Problem</div><div class="uc-val">Underwriters spend most time <strong>assembling</strong> evidence from PDFs. A hybrid RPA+ML+LLM packet pre-summarizes it.</div></div>
+        <div class="uc-row"><div class="uc-lbl">Human owns</div><div class="uc-val">The decline <strong>(underwriter)</strong></div></div>
+        <div class="uc-row"><div class="uc-lbl">RAI surface</div><div class="uc-val">Fair lending, ECOA adverse-action</div></div>
+        <div class="uc-row"><div class="uc-lbl">Hypothesis</div><div class="uc-val">Packet cuts handling time <strong>&ge;30%</strong> with no quality or fairness regression</div></div>
+        <div class="uc-row"><div class="uc-lbl">Prototype cost</div><div class="uc-val"><strong>~$40K</strong> · 6 weeks · 300 historical files</div></div>
+      </div>
+      <div class="uc-foot">
+        <div><div class="uc-score-lbl">Score</div><div class="uc-score">44<small>/50</small></div></div>
+        <div class="uc-delta v1">v1 — not yet hardened</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SHARED PATTERN ═══ -->
+<section id="pattern">
+  <div class="sec-header">
+    <div class="kicker">The shared responsible pattern</div>
+    <h2>AI prepares. Human decides. Human owns the adverse call.</h2>
+    <p class="sub">In every domain, the AI's most adverse action is to <strong>route for review</strong> or <strong>pend for info</strong>. It never denies, never fails a student, never declines a loan. The human always owns that call.</p>
+  </div>
+  <div class="pattern-diagram">
+    <div class="pattern-flow">
+      <div class="pf-node ai">
+        <div class="pf-icon">&#9881;</div>
+        <div class="pf-title">AI prepares</div>
+        <div class="pf-desc">Assembles evidence, maps criteria, drafts a recommendation with citations</div>
+      </div>
+      <div class="pf-arrow">&rarr;</div>
+      <div class="pf-node human">
+        <div class="pf-icon">&#9878;</div>
+        <div class="pf-title">Human decides</div>
+        <div class="pf-desc">Reviews, verifies citations, confirms or overrides — the only step we compress</div>
+      </div>
+      <div class="pf-arrow">&rarr;</div>
+      <div class="pf-node adverse">
+        <div class="pf-icon">&#9873;</div>
+        <div class="pf-title">Human owns the adverse call</div>
+        <div class="pf-desc">Every denial, failing grade, or decline is made by a licensed human with independent judgment</div>
+      </div>
+    </div>
+    <div class="pf-domains">
+      <div class="pf-domain"><strong>Healthcare:</strong> clinician owns the denial</div>
+      <div class="pf-domain"><strong>Education:</strong> instructor owns the grade</div>
+      <div class="pf-domain"><strong>Finance:</strong> underwriter owns the decline</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PROCESS ═══ -->
+<section id="process">
+  <div class="sec-header">
+    <div class="kicker">How it was built</div>
+    <h2>A build-then-stress-test loop.</h2>
+    <p class="sub">A quality ratchet between every milestone — any dimension scoring below 3 blocks progress until remediated.</p>
+  </div>
+  <div class="timeline">
+    <div class="tl-step"><div class="tl-dot">1</div><div class="tl-title">Absorb context</div><div class="tl-desc">Read the assignment brief, course outline, and DARWIN lecture. Key signal: <strong>prototype &ne; product</strong> — validates the business case, not the technology.</div></div>
+    <div class="tl-step"><div class="tl-dot">2</div><div class="tl-title">Design the evaluator panel</div><div class="tl-desc">Built a scoring instrument: <strong>Evaluator A "Sunkad"</strong> (Prototype Purist) + <strong>Evaluator B "Adversarial CFO"</strong> (SWAT) + Gate-0 checklist. Ratchet: any dimension < 3 blocks progress.</div></div>
+    <div class="tl-step"><div class="tl-dot">3</div><div class="tl-title">Choose 3 domains</div><div class="tl-desc">Healthcare, Education, Finance — all sharing one responsible pattern, each with a distinct prototype shape and RAI surface.</div></div>
+    <div class="tl-step"><div class="tl-dot">4</div><div class="tl-title">Author in parallel</div><div class="tl-desc">Three independent subagents, each blind to the others and pre-loaded with the panel rubric, wrote a full ideation package.</div></div>
+    <div class="tl-step"><div class="tl-dot">5</div><div class="tl-title">Gate-1 adversarial scoring</div><div class="tl-desc">Three harsh, independent evaluators scored each package. <strong>All three passed</strong> — but the panel found circular ROI math, bundled hypotheses, and underpowered kill thresholds.</div></div>
+    <div class="tl-step"><div class="tl-dot">6</div><div class="tl-title">Harden</div><div class="tl-desc">Two parallel revisers fixed Healthcare + Education — unbundling hypotheses, demoting underpowered kills to directional flags, replacing circular numbers with external anchors — <strong>without inflating the prototype into a product</strong>.</div></div>
+    <div class="tl-step"><div class="tl-dot">7</div><div class="tl-title">Re-score</div><div class="tl-desc">Re-ran the adversarial panel. Healthcare <strong>46&rarr;48</strong>, Education robust at 46 with worst weaknesses resolved.</div></div>
+    <div class="tl-step"><div class="tl-dot">8</div><div class="tl-title">Pending</div><div class="tl-desc">Optionally harden Finance; run the Gate-3 independent model (Gemini + Codex, blind); down-select and build the presentation.</div></div>
+  </div>
+</section>
+
+<!-- ═══ PANEL ═══ -->
+<section id="panel">
+  <div class="sec-header">
+    <div class="kicker">The evaluator panel</div>
+    <h2>Built first, so the work wasn't graded by its own writer.</h2>
+    <p class="sub">Two standing evaluators mirror exactly what loses points in the rubric. At least one is always independent of the author.</p>
+  </div>
+  <div class="ev-grid">
+    <div class="ev-card">
+      <div class="ev-name">Evaluator A — "Sunkad"</div>
+      <div class="ev-role">Prototype Purist</div>
+      <div class="ev-kill"><strong>Kill question:</strong> "Did you build a product and call it a prototype?"</div>
+      <div class="ev-dims">
+        <div class="ev-dim"><span class="ev-code">A1</span><span class="ev-text">Prototype-not-product</span></div>
+        <div class="ev-dim"><span class="ev-code">A2</span><span class="ev-text">Right tool (no LLM-overuse)</span></div>
+        <div class="ev-dim"><span class="ev-code">A3</span><span class="ev-text">Focused 1–2 hypotheses</span></div>
+        <div class="ev-dim"><span class="ev-code">A4</span><span class="ev-text">Fail-fast design</span></div>
+        <div class="ev-dim"><span class="ev-code">A5</span><span class="ev-text">Validates business case, not tech</span></div>
+      </div>
+    </div>
+    <div class="ev-card">
+      <div class="ev-name">Evaluator B — "Adversarial CFO"</div>
+      <div class="ev-role">SWAT / So-What</div>
+      <div class="ev-kill"><strong>Kill question:</strong> "If it works perfectly, does the business make money — and is the number proven?"</div>
+      <div class="ev-dims">
+        <div class="ev-dim"><span class="ev-code">B1</span><span class="ev-text">Sharp value tied to revenue/cost</span></div>
+        <div class="ev-dim"><span class="ev-code">B2</span><span class="ev-text">Defensible Fermi ROI</span></div>
+        <div class="ev-dim"><span class="ev-code">B3</span><span class="ev-text">Distinct business metric</span></div>
+        <div class="ev-dim"><span class="ev-code">B4</span><span class="ev-text">Precise, reproducible technical metric</span></div>
+        <div class="ev-dim"><span class="ev-code">B5</span><span class="ev-text">A specific kill threshold</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="gate-callout">
+    <strong>Gate 0</strong> — a 10-point completeness checklist runs first. &nbsp; <strong>The ratchet</strong> — every dimension scored 1–5; <strong>any dimension below 3 blocks progress</strong> until remediated and re-scored. &nbsp; <strong>Independent model</strong> (Gemini + Codex, blind) reserved for the Gate-3 final.
+  </div>
+</section>
+
+<!-- ═══ SCORES ═══ -->
+<section id="scores">
+  <div class="sec-header">
+    <div class="kicker">The results</div>
+    <h2>Score matrix — Gate 1 &rarr; hardened.</h2>
+    <p class="sub">Every dimension scored 1–5 by a harsh, independent panel. <span class="sc g">4–5</span> strong · <span class="sc a">3</span> capped · <span class="sc r"><3</span> blocked.</p>
+  </div>
+  <div class="score-table-wrap">
+    <table>
+      <thead><tr><th>Dimension</th><th>Healthcare</th><th>Education</th><th>Finance</th></tr></thead>
+      <tbody>
+        <tr><td><strong>A1</strong> prototype-not-product</td><td><span class="sc g">5</span></td><td><span class="sc g">5</span></td><td><span class="sc g">5</span></td></tr>
+        <tr><td><strong>A2</strong> right tool</td><td><span class="sc g">5</span></td><td><span class="sc g">5</span></td><td><span class="sc g">5</span></td></tr>
+        <tr><td><strong>A3</strong> focused hypothesis</td><td><span class="sc g">5</span></td><td><span class="sc g">4</span></td><td><span class="sc a">3</span></td></tr>
+        <tr><td><strong>A4</strong> fail-fast</td><td><span class="sc g">5</span></td><td><span class="sc g">4</span></td><td><span class="sc g">4</span></td></tr>
+        <tr><td><strong>A5</strong> validates business case</td><td><span class="sc g">5</span></td><td><span class="sc g">5</span></td><td><span class="sc g">5</span></td></tr>
+        <tr><td><strong>B1</strong> sharp value</td><td><span class="sc g">5</span></td><td><span class="sc g">5</span></td><td><span class="sc g">4</span></td></tr>
+        <tr><td><strong>B2</strong> defensible ROI</td><td><span class="sc a">3</span> &rarr; <span class="sc g">4</span></td><td><span class="sc g">4</span></td><td><span class="sc g">4</span></td></tr>
+        <tr><td><strong>B3</strong> distinct business metric</td><td><span class="sc a">3</span> &rarr; <span class="sc g">4</span></td><td><span class="sc g">5</span> &rarr; <span class="sc g">4</span></td><td><span class="sc g">5</span></td></tr>
+        <tr><td><strong>B4</strong> precise technical metric</td><td><span class="sc g">5</span></td><td><span class="sc g">5</span></td><td><span class="sc g">4</span></td></tr>
+        <tr><td><strong>B5</strong> kill threshold</td><td><span class="sc g">5</span></td><td><span class="sc g">4</span> &rarr; <span class="sc g">5</span></td><td><span class="sc g">5</span></td></tr>
+        <tr style="border-top:2px solid var(--accent)"><td><strong>TOTAL / 50</strong></td><td><strong>46 &rarr; 48</strong></td><td><strong>46 &rarr; 46</strong></td><td><strong>44</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="standings">
+    <div class="standing rank1">
+      <div class="rk">#1</div>
+      <div class="sd"><h4>Healthcare <span class="badge hardened">hardened</span></h4><p>Top score · Sunkad's straight 5s · best prototype-discipline narrative</p></div>
+      <div class="fscore">48<small>/50</small></div>
+    </div>
+    <div class="standing">
+      <div class="rk">#2</div>
+      <div class="sd"><h4>Education <span class="badge hardened">hardened</span></h4><p>Highest floor · most defensible standalone ROI · fairness as a powered gate</p></div>
+      <div class="fscore">46<small>/50</small></div>
+    </div>
+    <div class="standing">
+      <div class="rk">#3</div>
+      <div class="sd"><h4>Finance <span class="badge v1">v1</span></h4><p>Solid; weakest as written — reverse-engineered cost denominator + scale mismatch</p></div>
+      <div class="fscore">44<small>/50</small></div>
+    </div>
+  </div>
+
+  <div class="residual">
+    <strong>Shared residual — a feature, not a bug.</strong> Both hardened prototypes now say their headline ROI rides on a baseline that must be <em>measured first</em> (a cheap pre-read). A CFO can't quote the final number today — but measuring the baseline before betting <em>is</em> the prototype mindset. Frame it as discipline in the deck, not a defect.
+  </div>
+</section>
+
+<footer>
+  <div class="footer-links">
+    <a href="rai-assignment-report.html">Full Report</a>
+    <a href="assets/rai-explainer.mp4">Explainer Video</a>
+    <a href="SCORECARD-GATE1.md">Scorecard</a>
+    <a href="EVALUATORS.md">Evaluator Panel</a>
+  </div>
+  Responsible AI Assignment 1 · Cohort 8, Group 5 · Dr. Venkatesh Sunkad · DARWIN Framework · Built 2026-06-26
+</footer>
+
+<script>
+// Progress bar — progressive enhancement only
+(function(){
+  var bar = document.getElementById('progress-bar');
+  function updateBar(){
+    var h = document.documentElement.scrollHeight - window.innerHeight;
+    if(h > 0) bar.style.width = (window.scrollY / h * 100) + '%';
+  }
+  window.addEventListener('scroll', updateBar, {passive:true});
+  updateBar();
+
+  // Active nav highlighting
+  var links = Array.prototype.slice.call(document.querySelectorAll('nav .links a'));
+  var navMap = {};
+  links.forEach(function(a){ navMap[a.getAttribute('href').slice(1)] = a; });
+  var navObs = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        links.forEach(function(l){ l.classList.remove('active'); });
+        var a = navMap[e.target.id];
+        if(a) a.classList.add('active');
+      }
+    });
+  }, {rootMargin:'-30% 0px -60% 0px'});
+  Array.prototype.slice.call(document.querySelectorAll('section[id]')).forEach(function(s){ navObs.observe(s); });
+})();
+</script>
+</body>
+</html>

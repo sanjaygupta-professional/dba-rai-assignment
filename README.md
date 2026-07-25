@@ -1,6 +1,6 @@
 # Responsible AI — Assignment 1 (Ideation, Prototype & Data)
 
-DBA / Golden Gate University via UpGrad · **Cohort 8, Group 8**
+DBA / Golden Gate University via UpGrad · **Cohort 8, Group 5**
 Course: *Responsible AI — Building AI Systems That Truly Deliver Value* (DARWIN framework)
 Instructor: Prof. Dr. Venkatesh Sunkad
 
@@ -86,4 +86,4 @@ graded deliverable.
 `a2/prototype/` — fresh 3-persona prototype v0 (nurse / exceptions / executive).
 `a2/worksheets/` — Thejas (infrastructure) + Ashish (responsible AI) review sheets.
 `a2/pipeline/` — offline precomputed-real packet pipeline (runs 27–28 Jul).
-Presentation: Sat 1 Aug 2026, Day 1.
+Presentation: Sun 2 Aug 2026, Day 2 (groups 5→1 — Group 5 goes first).

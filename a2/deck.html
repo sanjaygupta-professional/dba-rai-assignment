@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CareBridge A2 — Putting It Together · Group 8</title>
+<title>CareBridge A2 — Putting It Together · Group 5</title>
 <style>
 :root{--bg:#f5f4ed;--bg2:#faf9f5;--bg3:#e8e6dc;--border:#f0eee6;--border-warm:#e8e6dc;--accent:#c96442;--accent2:#d97757;--green:#2a6b42;--yellow:#9a6520;--red:#b53333;--text:#141413;--muted:#5e5d59;--text3:#87867f;--text-light:#b0aea5;--dark:#141413;--dark2:#30302e}
 *{box-sizing:border-box;margin:0;padding:0}
@@ -90,7 +90,7 @@ body.shownotes .pnotes{display:block;position:fixed;left:0;right:0;bottom:0;back
 <div class="kicker">Responsible AI · Assignment 2 · Putting It Together</div>
 <h1 style="font-size:52px">CareBridge</h1>
 <p style="font-size:22px;color:var(--text-light);max-width:56ch">The AI prepares. The human decides. Assignment 2: infrastructure, security &amp; responsibility, explainability, metrics &amp; estimation — for the prototype Assignment 1 justified.</p>
-<p style="margin-top:38px;color:var(--text3)">Cohort 8 · Group 8 · 1 Aug 2026<br>
+<p style="margin-top:38px;color:var(--text3)">Cohort 8 · Group 5 · 2 Aug 2026<br>
 <strong style="color:var(--bg2)">Sanjay · Thejas · Ashish · Mike · Ravi</strong></p>
 <div class="pnotes"><div class="pn"><div><b>This slide answers:</b> who we are, which application continues from A1, who presents what.<div style="margin-top:5px"><b>Class concepts on this slide:</b><br><span class="chip">DARWIN framework</span><span class="chip">Augmentation, not automation</span><span class="chip">A1→A2 continuity</span></div><div style="margin-top:5px"><b>Segue:</b> “Before any detail — here is the one slide a board would need to approve this.”</div></div><div><b>Leadership questions to expect:</b><div class="qa">Q: Why carry the same problem into A2? <em>→ the brief mandates it — and we chose CareBridge in A1 partly FOR its A2 runway: infrastructure, economics and scaling stories all exist</em></div><b>Concept questions to expect:</b><div class="qa">Q: What does “putting it together” mean? <em>→ the prototype→MVP transition — the same application examined through all six lenses: infra, security, responsibility, explainability, metrics, estimation</em></div></div></div></div>
 </section>
@@ -413,7 +413,7 @@ body.shownotes .pnotes{display:block;position:fixed;left:0;right:0;bottom:0;back
 <small><strong>~10% utilized, 90% idle</strong> → right-size or share; small-model self-hosting only when API spend &gt; MLOps FTE (~$90–180K/yr).</small></div>
 </div>
 </div>
-<div class="pnotes"><div class="pn"><div><b>This slide answers:</b> the brief's estimation demand: Fermi sizing, LLM vs small model, development time.<div style="margin-top:5px"><b>Class concepts on this slide:</b><br><span class="chip">Fermi estimation (class method)</span><span class="chip">Distillation & quantization</span><span class="chip">Small-model breakeven</span><span class="chip">Development estimation</span></div><div style="margin-top:5px"><b>Segue:</b> “Cheap to run. Now — is it responsible to run? Ashish.”</div></div><div><b>Leadership questions to expect:</b><div class="qa">Q: How confident are you in these numbers? <em>→ order-of-magnitude by design — Fermi picks the direction, the vendor RFP firms the price; the decisions (CPU-first, hybrid, one shared GPU) are robust anywhere inside the band, which is what makes it a safe leadership call</em></div><b>Concept questions to expect:</b><div class="qa">Q: Walk me through 63M tokens/day. <em>→ 1,500 cases/day × ~42K tokens — practice saying it without the slide</em></div><div class="qa">Q: Distillation vs quantization? <em>→ distill = train a small model on the big model's outputs (capability transfer); quantize = lower numeric precision of weights (same model, cheaper inference); brief also mentions “FORM” — Thejas: confirm its meaning from the lecture notes BEFORE Saturday, don't improvise in Q&A</em></div></div></div></div>
+<div class="pnotes"><div class="pn"><div><b>This slide answers:</b> the brief's estimation demand: Fermi sizing, LLM vs small model, development time.<div style="margin-top:5px"><b>Class concepts on this slide:</b><br><span class="chip">Fermi estimation (class method)</span><span class="chip">Distillation & quantization</span><span class="chip">Small-model breakeven</span><span class="chip">Development estimation</span></div><div style="margin-top:5px"><b>Segue:</b> “Cheap to run. Now — is it responsible to run? Ashish.”</div></div><div><b>Leadership questions to expect:</b><div class="qa">Q: How confident are you in these numbers? <em>→ order-of-magnitude by design — Fermi picks the direction, the vendor RFP firms the price; the decisions (CPU-first, hybrid, one shared GPU) are robust anywhere inside the band, which is what makes it a safe leadership call</em></div><b>Concept questions to expect:</b><div class="qa">Q: Walk me through 63M tokens/day. <em>→ 1,500 cases/day × ~42K tokens — practice saying it without the slide</em></div><div class="qa">Q: Distillation vs quantization? <em>→ distill = train a small model on the big model's outputs (capability transfer); quantize = lower numeric precision of weights (same model, cheaper inference); brief also mentions “FORM” — Thejas: confirm its meaning from the lecture notes BEFORE Sunday, don't improvise in Q&A</em></div></div></div></div>
 </section>
 
 <!-- 12b · DEPLOYMENT ARCHITECTURE -->
@@ -598,7 +598,7 @@ body.shownotes .pnotes{display:block;position:fixed;left:0;right:0;bottom:0;back
 <div class="kicker">Close</div>
 <h1>The packet is the explanation.<br>The human owns the decision.<br>The prototype gates the money.</h1>
 <p style="color:var(--text-light);margin-top:26px;font-size:18px">Asks: approve MVP scoping conditional on prototype gates · powered safety/fairness follow-up before pilot · vendor RFP to firm the $1.2–2.0M band.</p>
-<p style="margin-top:40px;color:var(--text3)">Group 8 · Q&amp;A</p>
+<p style="margin-top:40px;color:var(--text3)">Group 5 · Q&amp;A</p>
 <div class="pnotes"><div class="pn"><div><b>This slide answers:</b> what we want from the room — the three asks. Then stop talking.<div style="margin-top:5px"><b>Class concepts on this slide:</b><br><span class="chip">Decision asks</span><span class="chip">Q&A ownership</span></div><div style="margin-top:5px"><b>Segue:</b> Q&A.</div></div><div><b>Leadership questions to expect:</b><div class="qa">Q: Prof: “What did you learn as LEADERS from this? <em>→ we learned to pre-commit our kill criteria — the discipline of writing down, before any result, the number at which we walk away; everything else (Fermi, guardrails, staging) is that one principle applied</em></div><b>Concept questions to expect:</b><div class="qa">Q: Q&A routing: <em>→ explainability/demo → Sanjay · GPU/cost/scale → Thejas · bias/stakeholders/jobs → Ashish · economics & prototype-discipline → anyone</em></div></div></div></div>
 </section>
 
