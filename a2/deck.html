@@ -318,11 +318,11 @@ body.shownotes .pnotes{display:block;position:fixed;left:0;right:0;bottom:0;back
 <tr><td><strong>Explainability</strong></td><td>The packet <em>is</em> the explanation — every assertion cited, statused, auditable per stakeholder.</td><td class="ok">Deep-dive</td></tr>
 <tr><td><strong>Infrastructure</strong></td><td>CPU/batch prototype; hybrid MVP (on-prem GPU for PHI retrieval, managed LLM for de-identified reasoning); latency budget is hours, not ms.</td><td class="ok">Deep-dive</td></tr>
 <tr><td><strong>Responsible AI</strong></td><td>Capacity release not replacement; per-stakeholder responsibility grid; AI structurally cannot deny.</td><td class="ok">Deep-dive</td></tr>
-<tr><td>Security</td><td>Monitor hallucination (groundedness), drift, prompt-injection, bias spikes, traffic anomalies.</td><td>Covered · slide 19</td></tr>
-<tr><td>Performance metrics</td><td>Touch-time ($ via Fermi), groundedness ≥95%, approve-precision ≥95%, overturn ≤5% — each linked to a business goal.</td><td>Covered · slide 19</td></tr>
+<tr><td>Security</td><td>Monitor hallucination (groundedness), drift, prompt-injection, bias spikes, traffic anomalies.</td><td>Covered · slide 20</td></tr>
+<tr><td>Performance metrics</td><td>Touch-time ($ via Fermi), groundedness ≥95%, approve-precision ≥95%, overturn ≤5% — each linked to a business goal.</td><td>Covered · slide 20</td></tr>
 <tr><td>Estimation</td><td>Fermi: 390K cases/yr → 63M tokens/day → ~$60–75K/yr API + ~1 mostly-idle GPU; build $1.2–2.0M, 2–3 quarters.</td><td>Covered · slide 14</td></tr>
 </table>
-<div class="pnotes"><div class="pn"><div><b>This slide answers:</b> “did you cover everything?” — yes, all six, with pointers. 60–90 seconds max.<div style="margin-top:5px"><b>Class concepts on this slide:</b><br><span class="chip">All six A2 lenses</span><span class="chip">Depth-vs-coverage decision</span></div><div style="margin-top:5px"><b>Segue:</b> “First deep-dive — explainability. Sanjay.”</div></div><div><b>Leadership questions to expect:</b><div class="qa">Q: Why deep-dive these three and not the others? <em>→ we went deep where THIS application's risk concentrates — trust (explainability), cost (infrastructure), people (responsible AI); security, metrics and estimation are fully covered but their answers here are more conventional</em></div><b>Concept questions to expect:</b><div class="qa">Q: Be ready to expand ANY row in 30 seconds. <em>→ each row's one-liner is the thesis; slides 13–19 are the expansions — know which slide answers which row</em></div></div></div></div>
+<div class="pnotes"><div class="pn"><div><b>This slide answers:</b> “did you cover everything?” — yes, all six, with pointers. 60–90 seconds max.<div style="margin-top:5px"><b>Class concepts on this slide:</b><br><span class="chip">All six A2 lenses</span><span class="chip">Depth-vs-coverage decision</span></div><div style="margin-top:5px"><b>Segue:</b> “First deep-dive — explainability. Sanjay.”</div></div><div><b>Leadership questions to expect:</b><div class="qa">Q: Why deep-dive these three and not the others? <em>→ we went deep where THIS application's risk concentrates — trust (explainability), cost (infrastructure), people (responsible AI); security, metrics and estimation are fully covered but their answers here are more conventional</em></div><b>Concept questions to expect:</b><div class="qa">Q: Be ready to expand ANY row in 30 seconds. <em>→ each row's one-liner is the thesis; slides 13–20 are the expansions — know which slide answers which row</em></div></div></div></div>
 </section>
 
 <!-- 8 · EXPLAINABILITY 1 -->
@@ -457,6 +457,122 @@ body.shownotes .pnotes{display:block;position:fixed;left:0;right:0;bottom:0;back
 <div class="pnotes"><div class="pn"><div><b>This slide answers:</b> the CPU/GPU answer as a map — where the single GPU lives and why.<div style="margin-top:5px"><b>Class concepts on this slide:</b><br><span class="chip">Hybrid approach</span><span class="chip">Cost–latency trade-off</span><span class="chip">Delayed / queue-ahead processing</span><span class="chip">PHI boundary</span></div><div style="margin-top:5px"><b>Segue:</b> "Cheap to run. Is it responsible to run? — Ashish."</div></div><div><b>Leadership questions to expect:</b><div class="qa">Q: Isn't one GPU a single point of failure? <em>→ at ~10% utilization with an hours-long latency budget, queue-ahead tolerates a full workday of downtime — the SLA is 3.5 days.</em></div><b>Concept questions to expect:</b><div class="qa">Q: Why does the PHI zone need a GPU at all? <em>→ embedding/retrieval runs over raw notes that cannot leave; only de-identified criterion summaries cross the boundary.</em></div></div></div></div>
 </section>
 
+<section class="slide">
+<div class="kicker">Infrastructure &#183; deployment architecture &#8212; engineering detail</div>
+<h2>Same two zones, at engineering resolution</h2>
+<svg viewBox="0 0 1360 700" width="100%" style="max-height:76vh" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<marker id="arrA" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#c96442"/></marker>
+<marker id="arrAmb" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#9a6520"/></marker>
+<marker id="arrGrn" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#2a6b42"/></marker>
+<marker id="arrRed" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#b53333"/></marker>
+</defs>
+<rect x="20" y="30" width="615" height="430" rx="16" fill="rgba(42,107,66,0.05)" stroke="#2a6b42" stroke-width="1.3"/>
+<rect x="700" y="30" width="640" height="430" rx="16" fill="#faf9f5" stroke="#e8e6dc" stroke-width="1"/>
+<text x="327.5" y="52" font-family="Georgia,'Anthropic Serif',serif" font-size="17" fill="#141413" text-anchor="middle" font-weight="500">PAYER ON-PREM &#183; PHI ZONE</text>
+<text x="1020.0" y="52" font-family="Georgia,'Anthropic Serif',serif" font-size="17" fill="#141413" text-anchor="middle" font-weight="500">MANAGED CLOUD &#183; NO-PHI ZONE</text>
+<line x1="667.5" y1="20" x2="667.5" y2="460" stroke="#9a6520" stroke-width="2" stroke-dasharray="6,5"/>
+<text x="667.5" y="16" font-family="system-ui,-apple-system,sans-serif" font-size="12.5" fill="#9a6520" text-anchor="middle" font-weight="600">DE-IDENTIFICATION BOUNDARY</text>
+<text x="667.5" y="200" font-family="system-ui,-apple-system,sans-serif" font-size="11" fill="#9a6520" text-anchor="middle" font-weight="600" transform="rotate(-90 667.5 200)">de-identified summaries only &#8594;</text>
+<text x="667.5" y="340" font-family="system-ui,-apple-system,sans-serif" font-size="11" fill="#9a6520" text-anchor="middle" font-weight="600" transform="rotate(-90 667.5 340)">no PHI ever crosses</text>
+<line x1="700" y1="418" x2="636" y2="418" stroke="#b53333" stroke-width="1.6" stroke-dasharray="3,3" marker-end="url(#arrRed)"/>
+<text x="667.5" y="422" font-family="system-ui,-apple-system,sans-serif" font-size="12" fill="#b53333" text-anchor="middle" font-weight="700">&#10005;</text>
+<text x="667.5" y="440" font-family="system-ui,-apple-system,sans-serif" font-size="10.3" fill="#b53333" text-anchor="middle">no inbound &#8212; cloud never writes into the PHI zone</text>
+<rect x="40" y="76" width="575" height="68" rx="10" fill="#faf9f5" stroke="#e8e6dc" stroke-width="1"/>
+<text x="327.5" y="106.4" font-family="Georgia,'Anthropic Serif',serif" font-size="17" fill="#141413" text-anchor="middle" font-weight="normal">Intake Gateway</text>
+<text x="327.5" y="126.9" font-family="system-ui,-apple-system,sans-serif" font-size="12" fill="#5e5d59" text-anchor="middle">FHIR R4 / X12 278</text>
+<rect x="202.5" y="134" width="250" height="22" rx="11" fill="rgba(154,101,32,0.10)" stroke="#9a6520" stroke-width="1"/>
+<text x="327.5" y="149" font-family="system-ui,-apple-system,sans-serif" font-size="10.5" fill="#9a6520" text-anchor="middle" font-weight="600">prompt-injection screen pinned</text>
+<rect x="40" y="174" width="575" height="68" rx="10" fill="#faf9f5" stroke="#e8e6dc" stroke-width="1"/>
+<text x="327.5" y="204.4" font-family="Georgia,'Anthropic Serif',serif" font-size="17" fill="#141413" text-anchor="middle" font-weight="normal">Case Store</text>
+<text x="327.5" y="224.9" font-family="system-ui,-apple-system,sans-serif" font-size="12" fill="#5e5d59" text-anchor="middle">PHI · encrypted at rest (AES-256)</text>
+<rect x="40" y="256" width="380" height="68" rx="10" fill="#faf9f5" stroke="#e8e6dc" stroke-width="1"/>
+<text x="230.0" y="286.4" font-family="Georgia,'Anthropic Serif',serif" font-size="17" fill="#141413" text-anchor="middle" font-weight="normal">PHI Masking Service</text>
+<text x="230.0" y="306.9" font-family="system-ui,-apple-system,sans-serif" font-size="12" fill="#5e5d59" text-anchor="middle">NER + rules</text>
+<rect x="430" y="256" width="185" height="68" rx="10" fill="#faf9f5" stroke="#e8e6dc" stroke-width="1"/>
+<text x="522.5" y="278.1" font-family="Georgia,'Anthropic Serif',serif" font-size="17" fill="#141413" text-anchor="middle" font-weight="normal">Token Vault</text>
+<text x="522.5" y="298.6" font-family="system-ui,-apple-system,sans-serif" font-size="12" fill="#5e5d59" text-anchor="middle">re-ID map</text>
+<text x="522.5" y="315.1" font-family="system-ui,-apple-system,sans-serif" font-size="12" fill="#5e5d59" text-anchor="middle">never leaves zone</text>
+<rect x="40" y="338" width="575" height="68" rx="10" fill="#faf9f5" stroke="#e8e6dc" stroke-width="1"/>
+<text x="327.5" y="360.1" font-family="Georgia,'Anthropic Serif',serif" font-size="17" fill="#141413" text-anchor="middle" font-weight="normal">Embedding + Retrieval</text>
+<text x="327.5" y="380.6" font-family="system-ui,-apple-system,sans-serif" font-size="12" fill="#5e5d59" text-anchor="middle">1 GPU, ~10% util</text>
+<text x="327.5" y="397.1" font-family="system-ui,-apple-system,sans-serif" font-size="12" fill="#5e5d59" text-anchor="middle">policy index</text>
+<circle cx="40" cy="76" r="11" fill="#c96442"/>
+<text x="40" y="80" font-family="system-ui,-apple-system,sans-serif" font-size="12" fill="#faf9f5" text-anchor="middle" font-weight="700">1</text>
+<line x1="90" y1="144" x2="90" y2="174" stroke="#c96442" stroke-width="2" marker-end="url(#arrA)"/>
+<circle cx="40" cy="174" r="11" fill="#c96442"/>
+<text x="40" y="178" font-family="system-ui,-apple-system,sans-serif" font-size="12" fill="#faf9f5" text-anchor="middle" font-weight="700">2</text>
+<line x1="90" y1="242" x2="90" y2="256" stroke="#c96442" stroke-width="2" marker-end="url(#arrA)"/>
+<circle cx="40" cy="256" r="11" fill="#c96442"/>
+<text x="40" y="260" font-family="system-ui,-apple-system,sans-serif" font-size="12" fill="#faf9f5" text-anchor="middle" font-weight="700">3</text>
+<line x1="420" y1="290" x2="430" y2="290" stroke="#c96442" stroke-width="2" marker-end="url(#arrA)"/>
+<line x1="90" y1="324" x2="90" y2="338" stroke="#c96442" stroke-width="2" marker-end="url(#arrA)"/>
+<circle cx="40" cy="338" r="11" fill="#c96442"/>
+<text x="40" y="342" font-family="system-ui,-apple-system,sans-serif" font-size="12" fill="#faf9f5" text-anchor="middle" font-weight="700">4</text>
+<rect x="720" y="76" width="600" height="68" rx="10" fill="#faf9f5" stroke="#e8e6dc" stroke-width="1"/>
+<text x="1020.0" y="106.4" font-family="Georgia,'Anthropic Serif',serif" font-size="17" fill="#141413" text-anchor="middle" font-weight="normal">Batch Scheduler</text>
+<text x="1020.0" y="126.9" font-family="system-ui,-apple-system,sans-serif" font-size="12" fill="#5e5d59" text-anchor="middle">nightly queue-ahead, CPU</text>
+<rect x="720" y="158" width="370" height="68" rx="10" fill="#faf9f5" stroke="#e8e6dc" stroke-width="1"/>
+<text x="905.0" y="188.4" font-family="Georgia,'Anthropic Serif',serif" font-size="17" fill="#141413" text-anchor="middle" font-weight="normal">LLM API</text>
+<text x="905.0" y="208.9" font-family="system-ui,-apple-system,sans-serif" font-size="12" fill="#5e5d59" text-anchor="middle">criterion mapping</text>
+<rect x="810.0" y="216" width="190" height="22" rx="11" fill="rgba(154,101,32,0.10)" stroke="#9a6520" stroke-width="1"/>
+<text x="905.0" y="231" font-family="system-ui,-apple-system,sans-serif" font-size="10.5" fill="#9a6520" text-anchor="middle" font-weight="600">model version-pinned</text>
+<rect x="1100" y="158" width="220" height="68" rx="10" fill="#faf9f5" stroke="#e8e6dc" stroke-width="1"/>
+<text x="1210.0" y="188.4" font-family="Georgia,'Anthropic Serif',serif" font-size="15.5" fill="#141413" text-anchor="middle" font-weight="normal">Versioned Policy Corpus</text>
+<text x="1210.0" y="208.9" font-family="system-ui,-apple-system,sans-serif" font-size="12" fill="#5e5d59" text-anchor="middle">pinned to effective date</text>
+<rect x="720" y="256" width="600" height="68" rx="10" fill="#faf9f5" stroke="#e8e6dc" stroke-width="1"/>
+<text x="1020.0" y="286.4" font-family="Georgia,'Anthropic Serif',serif" font-size="17" fill="#141413" text-anchor="middle" font-weight="normal">Groundedness Gate</text>
+<text x="1020.0" y="306.9" font-family="system-ui,-apple-system,sans-serif" font-size="12" fill="#5e5d59" text-anchor="middle">every quote verified</text>
+<rect x="870.0" y="314" width="300" height="22" rx="11" fill="rgba(154,101,32,0.10)" stroke="#9a6520" stroke-width="1"/>
+<text x="1020.0" y="329" font-family="system-ui,-apple-system,sans-serif" font-size="10.5" fill="#9a6520" text-anchor="middle" font-weight="600">≥95% — fail → withhold packet</text>
+<rect x="720" y="354" width="600" height="68" rx="10" fill="#faf9f5" stroke="#e8e6dc" stroke-width="1"/>
+<text x="1020.0" y="384.4" font-family="Georgia,'Anthropic Serif',serif" font-size="17" fill="#141413" text-anchor="middle" font-weight="normal">Packet Store + Audit Log</text>
+<text x="1020.0" y="404.9" font-family="system-ui,-apple-system,sans-serif" font-size="12" fill="#5e5d59" text-anchor="middle">WORM · 7-yr: inputs, outputs, policy versions</text>
+<path d="M615,372 L667.5,372 L667.5,110 L720,110" fill="none" stroke="#9a6520" stroke-width="2" marker-end="url(#arrAmb)"/>
+<circle cx="720" cy="76" r="11" fill="#c96442"/>
+<text x="720" y="80" font-family="system-ui,-apple-system,sans-serif" font-size="12" fill="#faf9f5" text-anchor="middle" font-weight="700">5</text>
+<line x1="770" y1="144" x2="770" y2="158" stroke="#c96442" stroke-width="2" marker-end="url(#arrA)"/>
+<circle cx="720" cy="158" r="11" fill="#c96442"/>
+<text x="720" y="162" font-family="system-ui,-apple-system,sans-serif" font-size="12" fill="#faf9f5" text-anchor="middle" font-weight="700">6</text>
+<line x1="1070" y1="226" x2="1070" y2="238" stroke="#9a6520" stroke-width="1.4"/>
+<line x1="1070" y1="238" x2="1090" y2="238" stroke="#9a6520" stroke-width="1.4"/>
+<line x1="1090" y1="238" x2="1090" y2="226" stroke="#9a6520" stroke-width="1.4" marker-end="url(#arrAmb)"/>
+<line x1="1070" y1="238" x2="1070" y2="226" stroke="#9a6520" stroke-width="1.4" marker-end="url(#arrAmb)"/>
+<line x1="770" y1="226" x2="770" y2="256" stroke="#c96442" stroke-width="2" marker-end="url(#arrA)"/>
+<circle cx="720" cy="256" r="11" fill="#c96442"/>
+<text x="720" y="260" font-family="system-ui,-apple-system,sans-serif" font-size="12" fill="#faf9f5" text-anchor="middle" font-weight="700">7</text>
+<line x1="770" y1="324" x2="770" y2="354" stroke="#c96442" stroke-width="2" marker-end="url(#arrA)"/>
+<circle cx="720" cy="354" r="11" fill="#c96442"/>
+<text x="720" y="358" font-family="system-ui,-apple-system,sans-serif" font-size="12" fill="#faf9f5" text-anchor="middle" font-weight="700">8</text>
+<text x="667.5" y="480" font-family="system-ui,-apple-system,sans-serif" font-size="11.3" fill="#87867f" text-anchor="middle">mTLS between services &#183; IAM least-privilege &#183; encrypted at rest &#8212; both zones</text>
+<rect x="20" y="496" width="1320" height="186" rx="16" fill="rgba(42,107,66,0.05)" stroke="#2a6b42" stroke-width="1.3"/>
+<text x="44" y="520" font-family="Georgia,'Anthropic Serif',serif" font-size="15" fill="#141413" text-anchor="start" font-weight="500">HUMAN DECISION PLANE &#8212; on-prem web app</text>
+<rect x="40" y="548" width="413" height="86" rx="10" fill="#faf9f5" stroke="#2a6b42" stroke-width="1.3"/>
+<text x="246.5" y="587.4" font-family="Georgia,'Anthropic Serif',serif" font-size="17" fill="#141413" text-anchor="middle" font-weight="normal">Nurse worklist</text>
+<text x="246.5" y="607.9" font-family="system-ui,-apple-system,sans-serif" font-size="12" fill="#5e5d59" text-anchor="middle">verify spans, approve/pend</text>
+<rect x="473" y="548" width="413" height="86" rx="10" fill="#faf9f5" stroke="#2a6b42" stroke-width="1.3"/>
+<text x="679.5" y="587.4" font-family="Georgia,'Anthropic Serif',serif" font-size="17" fill="#141413" text-anchor="middle" font-weight="normal">Medical-director queue</text>
+<text x="679.5" y="607.9" font-family="system-ui,-apple-system,sans-serif" font-size="12" fill="#5e5d59" text-anchor="middle">owns denials · conflicts</text>
+<rect x="906" y="548" width="413" height="86" rx="10" fill="#faf9f5" stroke="#2a6b42" stroke-width="1.3"/>
+<text x="1112.5" y="587.4" font-family="Georgia,'Anthropic Serif',serif" font-size="17" fill="#141413" text-anchor="middle" font-weight="normal">Executive dashboard</text>
+<text x="1112.5" y="607.9" font-family="system-ui,-apple-system,sans-serif" font-size="12" fill="#5e5d59" text-anchor="middle">queue counts, throughput</text>
+<rect x="40" y="644" width="1280" height="26" rx="8" fill="rgba(154,101,32,0.08)" stroke="#9a6520" stroke-width="1"/>
+<text x="680" y="661.5" font-family="system-ui,-apple-system,sans-serif" font-size="12" fill="#9a6520" text-anchor="middle" font-weight="600">Monitoring &#8212; drift &#183; bias &#183; traffic anomalies, pinned to the decision plane</text>
+<line x1="1020" y1="422" x2="1020" y2="534" stroke="#c96442" stroke-width="2"/>
+<circle cx="1020" cy="478" r="11" fill="#c96442"/>
+<text x="1020" y="482" font-family="system-ui,-apple-system,sans-serif" font-size="12" fill="#faf9f5" text-anchor="middle" font-weight="700">9</text>
+<line x1="246.5" y1="534" x2="1112.5" y2="534" stroke="#c96442" stroke-width="1.6"/>
+<line x1="246.5" y1="534" x2="246.5" y2="548" stroke="#c96442" stroke-width="2" marker-end="url(#arrA)"/>
+<line x1="679.5" y1="534" x2="679.5" y2="548" stroke="#c96442" stroke-width="2" marker-end="url(#arrA)"/>
+<line x1="1112.5" y1="534" x2="1112.5" y2="548" stroke="#c96442" stroke-width="2" marker-end="url(#arrA)"/>
+<line x1="850" y1="548" x2="850" y2="422" stroke="#2a6b42" stroke-width="1.8" stroke-dasharray="4,4" marker-end="url(#arrGrn)"/>
+<text x="862" y="436" font-family="system-ui,-apple-system,sans-serif" font-size="10.5" fill="#2a6b42" text-anchor="start" font-weight="600">decisions logged</text>
+</svg>
+<p style="text-align:center;color:var(--muted);font-size:14px;margin-top:6px">Every hop labeled; PHI never crosses the amber line &#8212; the packet is the only thing that travels.</p>
+<div class="pnotes"><div class="pn"><div><b>This slide answers:</b> Thejas’s deep-dive for infra Q&amp;A — every hop, named, with the security controls that ride along.<div style="margin-top:5px"><b>Class concepts on this slide:</b><br><span class="chip">Zero-trust boundaries</span><span class="chip">Data minimization</span><span class="chip">Version pinning</span><span class="chip">Immutable audit</span></div><div style="margin-top:5px"><b>Segue:</b> “That boundary is also where security monitoring lives — next slide.”</div></div><div><b>Leadership questions to expect:</b><div class="qa">Q: What’s the single point of failure? <em>→ the nightly batch — a failed run degrades to yesterday’s packets, humans keep working off the queue; the availability budget is hours, not milliseconds, so a missed run is a delay, not an outage.</em></div><b>Concept questions to expect:</b><div class="qa">Q: Why does the token vault never leave the PHI zone? <em>→ the re-identification map is the crown jewel — if the cloud side is ever compromised, an attacker gets only de-identified text, not a name.</em></div></div></div></div>
+</section>
+
+<!-- 12c &#183; DEPLOYMENT ARCHITECTURE DETAIL -->
 <!-- 13 · RAI 1 -->
 <section class="slide">
 <div class="kicker">Responsible AI · 1 of 2</div>
@@ -602,7 +718,7 @@ body.shownotes .pnotes{display:block;position:fixed;left:0;right:0;bottom:0;back
 <div class="pnotes"><div class="pn"><div><b>This slide answers:</b> what we want from the room — the three asks. Then stop talking.<div style="margin-top:5px"><b>Class concepts on this slide:</b><br><span class="chip">Decision asks</span><span class="chip">Q&A ownership</span></div><div style="margin-top:5px"><b>Segue:</b> Q&A.</div></div><div><b>Leadership questions to expect:</b><div class="qa">Q: Prof: “What did you learn as LEADERS from this? <em>→ we learned to pre-commit our kill criteria — the discipline of writing down, before any result, the number at which we walk away; everything else (Fermi, guardrails, staging) is that one principle applied</em></div><b>Concept questions to expect:</b><div class="qa">Q: Q&A routing: <em>→ explainability/demo → Sanjay · GPU/cost/scale → Thejas · bias/stakeholders/jobs → Ashish · economics & prototype-discipline → anyone</em></div></div></div></div>
 </section>
 
-<div id="hud">1 / 21 · ← → keys · N = presenter notes</div>
+<div id="hud">1 / 22 · ← → keys · N = presenter notes</div>
 <div id="navlinks"><a href="prototype/index.html" target="_blank" rel="noopener">Prototype ↗</a><a href="video.html" target="_blank" rel="noopener">Demo video ▶</a></div>
 <script>
 const slides=[...document.querySelectorAll('.slide')];let i=0;
