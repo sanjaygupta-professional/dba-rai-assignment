@@ -120,8 +120,12 @@ body.shownotes .pnotes{display:block;position:fixed;left:0;right:0;bottom:0;back
 <section class="slide">
 <div class="kicker">Where we left off</div>
 <h2>Assignment 1 — the business case, in one picture</h2>
-<p style="color:var(--muted);font-size:13px;margin:2px 0 6px">The A1 concept — a decision packet, not a decision machine</p>
-<svg viewBox="0 0 1360 254" width="100%" style="display:block;margin-top:80px" xmlns="http://www.w3.org/2000/svg">
+<div style="display:flex;gap:14px;margin:26px 0 0 0">
+<div class="card" style="flex:1;padding:18px 20px"><h4>Context</h4><div style="font-size:13.5px;line-height:1.45;color:var(--text)">US healthcare payer · utilization management. 650K prior-auth requests a year; ~390K need a licensed UM nurse review before care is approved.</div></div>
+<div class="card" style="flex:1;padding:18px 20px"><h4>Problem</h4><div style="font-size:13.5px;line-height:1.45;color:var(--text)">Nurse touch-time goes to assembling evidence, not deciding — $4.1M/yr of licensed labor sits on assembly, and members wait on the backlog.</div></div>
+<div class="card" style="flex:1;padding:18px 20px"><h4>Stakeholders</h4><div style="font-size:13.5px;line-height:1.45;color:var(--text)">UM nurses · medical director · members awaiting care · internal &amp; external regulators · the executives funding the build.</div></div>
+</div>
+<svg viewBox="0 0 1360 254" width="100%" style="display:block;margin-top:70px" xmlns="http://www.w3.org/2000/svg">
 <defs>
 <marker id="arrRecap" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#c96442"/></marker>
 </defs>
@@ -155,13 +159,13 @@ body.shownotes .pnotes{display:block;position:fixed;left:0;right:0;bottom:0;back
 <line x1="795" y1="113" x2="840" y2="113" stroke="#c96442" stroke-width="2" marker-end="url(#arrRecap)"/>
 <line x1="1070" y1="113" x2="1115" y2="113" stroke="#c96442" stroke-width="2" marker-end="url(#arrRecap)"/>
 </svg>
-<div style="display:flex;gap:14px;margin:85px 0 0 0">
-<div class="card" style="flex:1;padding:26px 24px"><h4>Hypothesis</h4><span class="bignum sm">−35%</span> <small>touch-time</small><br><small>kill line &lt;25%</small></div>
-<div class="card" style="flex:1;padding:26px 24px"><h4>Retro test</h4><span class="bignum sm">$35K · 4 wk</span><br><small>zero patient risk</small></div>
-<div class="card" style="flex:1;padding:26px 24px"><h4>Scale</h4><span class="bignum sm">500 + 6</span><br><small>cases + RN crossover</small></div>
-<div class="card" style="flex:1;padding:26px 24px"><h4>Guardrails</h4><span class="bignum sm">≥95% / ≤5%</span><br><small>groundedness hard stop · overturn flag</small></div>
+<div style="display:flex;gap:14px;margin:75px 0 0 0">
+<div class="card" style="flex:1;padding:19px 20px"><h4>Hypothesis</h4><span class="bignum sm">−35%</span> <small>touch-time</small><br><small>kill line &lt;25%</small></div>
+<div class="card" style="flex:1;padding:19px 20px"><h4>Retro test</h4><span class="bignum sm">$35K · 4 wk</span><br><small>zero patient risk</small></div>
+<div class="card" style="flex:1;padding:19px 20px"><h4>Scale</h4><span class="bignum sm">500 + 6</span><br><small>cases + RN crossover</small></div>
+<div class="card" style="flex:1;padding:19px 20px"><h4>Guardrails</h4><span class="bignum sm">≥95% / ≤5%</span><br><small>groundedness hard stop · overturn flag</small></div>
 </div>
-<div class="callout" style="margin:75px 0 0 0">The discipline the course grades: <strong>a prototype is not a product</strong> — disposable, fail-fast, validates the business case before the $1.6M build.</div>
+<div class="callout" style="margin:70px 0 0 0">The discipline the course grades: <strong>a prototype is not a product</strong> — disposable, fail-fast, validates the business case before the $1.6M build.</div>
 <div class="pnotes"><div class="pn"><div><b>This slide answers:</b> what A1 established and the discipline we carry — without re-presenting A1.<div style="margin-top:5px"><b>Class concepts on this slide:</b><br><span class="chip">Prototype ≠ product</span><span class="chip">Falsifiable hypothesis</span><span class="chip">Powered endpoint vs guardrail</span><span class="chip">Statistical power</span><span class="chip">Crossover design</span></div><div style="margin-top:5px"><b>Segue:</b> “You just saw the workflow in miniature — next slide walks it at full size, showing exactly where the AI sits and where humans own.” Keep this slide to 60 seconds.</div></div><div><b>Leadership questions to expect:</b><div class="qa">Q: As leaders, how did you decide what NOT to test? <em>→ by power analysis — rare events (overturn, subgroup fairness) cannot be settled at N=500, so we refused to pretend and pre-committed a powered follow-up instead; knowing the limits of your own evidence is the leadership act</em></div><b>Concept questions to expect:</b><div class="qa">Q: Why is groundedness a hard stop but overturn only a flag? <em>→ unit of analysis — groundedness is measured per assertion (thousands at N=500 → powered), overturn is a ~5% rare event per case (underpowered → directional only)</em></div><div class="qa">Q: What made the hypothesis falsifiable? <em>→ a numeric kill line (<25%) set above the Fermi breakeven (~21.5%), committed before seeing results</em></div></div></div></div>
 </section>
 
