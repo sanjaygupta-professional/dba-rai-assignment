@@ -72,6 +72,7 @@ small{color:var(--text3)}
 /* KPI numerals */
 .bignum{font-family:Georgia,serif;font-size:34px;color:var(--accent)}
 .bignum small{font-size:14px;color:var(--text3)}
+.bignum.sm{font-size:27px}
 /* presenter notes (hidden — press N) */
 .pnotes{display:none}
 body.shownotes .pnotes{display:block;position:fixed;left:0;right:0;bottom:0;background:var(--dark);color:var(--text-light);padding:12px 24px 14px;font-size:13px;line-height:1.5;z-index:8;border-top:3px solid var(--accent);max-height:48vh;overflow:auto}
@@ -118,19 +119,50 @@ body.shownotes .pnotes{display:block;position:fixed;left:0;right:0;bottom:0;back
 <!-- 3 · CONTINUATION FROM A1 -->
 <section class="slide">
 <div class="kicker">Where we left off</div>
-<h2>Assignment 1 in one slide — what CareBridge established</h2>
-<div class="steps">
-<div class="step ai"><b>The problem, falsified-able</b><small>Nurse touch-time is assembly, not judgment. Claim: packet removes 35–45% of it.</small></div>
-<div class="step ai"><b>The packet concept</b><small>Criteria met/unmet/uncertain, every assertion cited to its source span.</small></div>
-<div class="step human"><b>The authority constraint</b><small>AI can pend or route — never deny. Licensed clinician owns every adverse decision.</small></div>
-<div class="step rules"><b>The test design</b><small>500 historical cases, 6 RN crossover, ~$35K, 4 weeks. Retrospective — zero patient risk.</small></div>
+<h2>Assignment 1 — the business case, in one picture</h2>
+<p style="color:var(--muted);font-size:13px;margin:2px 0 6px">The A1 concept — a decision packet, not a decision machine</p>
+<svg viewBox="0 0 1360 254" width="100%" style="display:block;margin-top:80px" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<marker id="arrRecap" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#c96442"/></marker>
+</defs>
+<rect x="15" y="48" width="230" height="130" rx="10" fill="#faf9f5" stroke="#e8e6dc" stroke-width="1"/>
+<text x="130" y="96" font-family="Georgia,'Anthropic Serif',serif" font-size="20" fill="#141413" text-anchor="middle">Case arrives</text>
+<text x="130" y="128" font-family="system-ui,-apple-system,sans-serif" font-size="14" fill="#5e5d59" text-anchor="middle">notes, labs,</text>
+<text x="130" y="148" font-family="system-ui,-apple-system,sans-serif" font-size="14" fill="#5e5d59" text-anchor="middle">claims</text>
+<rect x="290" y="48" width="230" height="130" rx="10" fill="#faf9f5" stroke="#87867f" stroke-width="1.5"/>
+<path d="M290 58 Q290 48 300 48 L510 48 Q520 48 520 58 L520 53 L290 53 Z" fill="#87867f"/>
+<text x="405" y="96" font-family="Georgia,'Anthropic Serif',serif" font-size="20" fill="#141413" text-anchor="middle">Rules gate</text>
+<text x="405" y="128" font-family="system-ui,-apple-system,sans-serif" font-size="14" fill="#5e5d59" text-anchor="middle">deterministic checks</text>
+<text x="405" y="148" font-family="system-ui,-apple-system,sans-serif" font-size="14" fill="#5e5d59" text-anchor="middle">first</text>
+<rect x="565" y="48" width="230" height="130" rx="10" fill="#faf9f5" stroke="#c96442" stroke-width="1.5"/>
+<path d="M565 58 Q565 48 575 48 L785 48 Q795 48 795 58 L795 53 L565 53 Z" fill="#c96442"/>
+<text x="680" y="96" font-family="Georgia,'Anthropic Serif',serif" font-size="20" fill="#141413" text-anchor="middle">AI reads &amp; cites</text>
+<text x="680" y="128" font-family="system-ui,-apple-system,sans-serif" font-size="14" fill="#5e5d59" text-anchor="middle">evidence → criteria</text>
+<text x="680" y="148" font-family="system-ui,-apple-system,sans-serif" font-size="14" fill="#5e5d59" text-anchor="middle">every assertion cited</text>
+<rect x="840" y="48" width="230" height="130" rx="10" fill="#faf9f5" stroke="#e8e6dc" stroke-width="1"/>
+<text x="955" y="96" font-family="Georgia,'Anthropic Serif',serif" font-size="20" fill="#141413" text-anchor="middle">The packet</text>
+<text x="955" y="128" font-family="system-ui,-apple-system,sans-serif" font-size="14" fill="#5e5d59" text-anchor="middle">met / unmet /</text>
+<text x="955" y="148" font-family="system-ui,-apple-system,sans-serif" font-size="14" fill="#5e5d59" text-anchor="middle">uncertain</text>
+<rect x="805" y="196" width="300" height="38" rx="19" fill="rgba(154,101,32,0.08)" stroke="#9a6520" stroke-width="1"/>
+<text x="955" y="220" font-family="system-ui,-apple-system,sans-serif" font-size="13" fill="#9a6520" text-anchor="middle" font-weight="600">groundedness ≥95% or packet withheld</text>
+<rect x="1115" y="48" width="230" height="130" rx="10" fill="#faf9f5" stroke="#2a6b42" stroke-width="1.5"/>
+<path d="M1115 58 Q1115 48 1125 48 L1335 48 Q1345 48 1345 58 L1345 53 L1115 53 Z" fill="#2a6b42"/>
+<text x="1230" y="96" font-family="Georgia,'Anthropic Serif',serif" font-size="20" fill="#141413" text-anchor="middle">Human decides</text>
+<text x="1230" y="128" font-family="system-ui,-apple-system,sans-serif" font-size="14" fill="#2a6b42" text-anchor="middle" font-weight="600">approve / pend / route</text>
+<text x="1230" y="148" font-family="system-ui,-apple-system,sans-serif" font-size="14" fill="#2a6b42" text-anchor="middle" font-weight="600">AI can never deny</text>
+<line x1="245" y1="113" x2="290" y2="113" stroke="#c96442" stroke-width="2" marker-end="url(#arrRecap)"/>
+<line x1="520" y1="113" x2="565" y2="113" stroke="#c96442" stroke-width="2" marker-end="url(#arrRecap)"/>
+<line x1="795" y1="113" x2="840" y2="113" stroke="#c96442" stroke-width="2" marker-end="url(#arrRecap)"/>
+<line x1="1070" y1="113" x2="1115" y2="113" stroke="#c96442" stroke-width="2" marker-end="url(#arrRecap)"/>
+</svg>
+<div style="display:flex;gap:14px;margin:85px 0 0 0">
+<div class="card" style="flex:1;padding:26px 24px"><h4>Hypothesis</h4><span class="bignum sm">−35%</span> <small>touch-time</small><br><small>kill line &lt;25%</small></div>
+<div class="card" style="flex:1;padding:26px 24px"><h4>Retro test</h4><span class="bignum sm">$35K · 4 wk</span><br><small>zero patient risk</small></div>
+<div class="card" style="flex:1;padding:26px 24px"><h4>Scale</h4><span class="bignum sm">500 + 6</span><br><small>cases + RN crossover</small></div>
+<div class="card" style="flex:1;padding:26px 24px"><h4>Guardrails</h4><span class="bignum sm">≥95% / ≤5%</span><br><small>groundedness hard stop · overturn flag</small></div>
 </div>
-<div class="grid2">
-<div class="card"><h4>One powered hypothesis</h4><span class="bignum">−35%<small> touch-time</small></span><br><small>kill line &lt;25% — below Fermi breakeven ~21.5% plus margin</small></div>
-<div class="card"><h4>Tiered guardrails</h4><span class="ok">Groundedness ≥95%</span> — powered hard stop<br><span class="warn">Overturn ≤5%</span> — directional flag → powered safety study before pilot</div>
-</div>
-<div class="callout">The discipline the course grades: <strong>a prototype is not a product</strong> — disposable, fail-fast, validates the business case. A2 = putting it together: the prototype→MVP transition.</div>
-<div class="pnotes"><div class="pn"><div><b>This slide answers:</b> what A1 established and the discipline we carry — without re-presenting A1.<div style="margin-top:5px"><b>Class concepts on this slide:</b><br><span class="chip">Prototype ≠ product</span><span class="chip">Falsifiable hypothesis</span><span class="chip">Powered endpoint vs guardrail</span><span class="chip">Statistical power</span><span class="chip">Crossover design</span></div><div style="margin-top:5px"><b>Segue:</b> “That hypothesis lives inside a workflow — here is where the AI sits and where humans own.” Keep this slide to 60 seconds.</div></div><div><b>Leadership questions to expect:</b><div class="qa">Q: As leaders, how did you decide what NOT to test? <em>→ by power analysis — rare events (overturn, subgroup fairness) cannot be settled at N=500, so we refused to pretend and pre-committed a powered follow-up instead; knowing the limits of your own evidence is the leadership act</em></div><b>Concept questions to expect:</b><div class="qa">Q: Why is groundedness a hard stop but overturn only a flag? <em>→ unit of analysis — groundedness is measured per assertion (thousands at N=500 → powered), overturn is a ~5% rare event per case (underpowered → directional only)</em></div><div class="qa">Q: What made the hypothesis falsifiable? <em>→ a numeric kill line (<25%) set above the Fermi breakeven (~21.5%), committed before seeing results</em></div></div></div></div>
+<div class="callout" style="margin:75px 0 0 0">The discipline the course grades: <strong>a prototype is not a product</strong> — disposable, fail-fast, validates the business case before the $1.6M build.</div>
+<div class="pnotes"><div class="pn"><div><b>This slide answers:</b> what A1 established and the discipline we carry — without re-presenting A1.<div style="margin-top:5px"><b>Class concepts on this slide:</b><br><span class="chip">Prototype ≠ product</span><span class="chip">Falsifiable hypothesis</span><span class="chip">Powered endpoint vs guardrail</span><span class="chip">Statistical power</span><span class="chip">Crossover design</span></div><div style="margin-top:5px"><b>Segue:</b> “You just saw the workflow in miniature — next slide walks it at full size, showing exactly where the AI sits and where humans own.” Keep this slide to 60 seconds.</div></div><div><b>Leadership questions to expect:</b><div class="qa">Q: As leaders, how did you decide what NOT to test? <em>→ by power analysis — rare events (overturn, subgroup fairness) cannot be settled at N=500, so we refused to pretend and pre-committed a powered follow-up instead; knowing the limits of your own evidence is the leadership act</em></div><b>Concept questions to expect:</b><div class="qa">Q: Why is groundedness a hard stop but overturn only a flag? <em>→ unit of analysis — groundedness is measured per assertion (thousands at N=500 → powered), overturn is a ~5% rare event per case (underpowered → directional only)</em></div><div class="qa">Q: What made the hypothesis falsifiable? <em>→ a numeric kill line (<25%) set above the Fermi breakeven (~21.5%), committed before seeing results</em></div></div></div></div>
 </section>
 
 <!-- 4 · APP SUMMARY / WORKFLOW -->
