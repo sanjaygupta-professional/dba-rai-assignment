@@ -3,83 +3,106 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CareBridge — UM Prototype (Demo · Synthetic Data)</title>
+<title>CareBridge · Utilization Management</title>
 <style>
-:root{--bg:#f5f4ed;--bg2:#faf9f5;--bg3:#e8e6dc;--border:#f0eee6;--border-warm:#e8e6dc;--accent:#c96442;--accent2:#d97757;--green:#2a6b42;--yellow:#9a6520;--red:#b53333;--text:#141413;--muted:#5e5d59;--text3:#87867f;--text-light:#b0aea5;--dark:#141413;--dark2:#30302e}
+:root{--bg:oklch(0.16 0.008 60);--bg2:oklch(0.20 0.010 60);--bg3:oklch(0.245 0.012 60);--border:oklch(0.28 0.012 60);--border-warm:oklch(0.33 0.014 60);--accent:oklch(0.80 0.045 75);--accent2:oklch(0.74 0.09 45);--green:oklch(0.72 0.15 148);--amber:oklch(0.80 0.16 80);--red:oklch(0.70 0.18 25);--violet:oklch(0.74 0.14 322);--text:oklch(0.93 0.010 60);--muted:oklch(0.72 0.012 60);--text3:oklch(0.60 0.012 60);--text-light:oklch(0.80 0.012 60);--dark:oklch(0.12 0.006 60);--dark2:oklch(0.235 0.010 60)}
 *{box-sizing:border-box;margin:0;padding:0}
-body{background:var(--bg);color:var(--text);font:14.5px/1.55 system-ui,-apple-system,sans-serif;min-height:100vh}
-header{background:var(--dark);color:var(--text-light);padding:10px 22px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
-header .brand{font-family:Georgia,serif;font-size:18px;color:var(--bg2)}
-header .brand b{color:var(--accent2)}
-.demo-badge{background:var(--dark2);border:1px solid #4a4a46;color:var(--text-light);font-size:11px;padding:2px 10px;border-radius:12px;letter-spacing:.06em}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:3px}
+body{background:var(--bg);color:var(--text);font:14.5px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif;font-variant-numeric:tabular-nums;min-height:100vh}
+header{background:var(--dark);color:var(--text-light);padding:10px 22px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;border-bottom:1px solid var(--border)}
+header .brand{font-family:Georgia,'Anthropic Serif',serif;font-size:17px;color:var(--text);letter-spacing:.01em}
+header .brand b{color:var(--accent2);font-weight:600}
+.demo-badge{background:var(--bg3);border:1px solid var(--border-warm);color:var(--text3);font-size:10.5px;padding:2px 9px;border-radius:4px;letter-spacing:.06em}
 .personas{margin-left:auto;display:flex;gap:6px;align-items:center}
-.personas button{background:var(--dark2);color:var(--text-light);border:1px solid #4a4a46;border-radius:8px;padding:6px 12px;cursor:pointer;font-size:13px}
-.personas button.active{background:var(--accent);border-color:var(--accent);color:#fff}
-.personas .badge{display:inline-block;background:var(--red);color:#fff;border-radius:10px;font-size:10.5px;padding:0 6px;margin-left:5px;vertical-align:1px}
-.reset{background:none;border:none;color:var(--text3);font-size:11px;cursor:pointer;text-decoration:underline}
+.personas button{background:transparent;color:var(--text-light);border:1px solid var(--border);border-radius:6px;padding:6px 12px;cursor:pointer;font-size:13px;transition:background-color .15s ease-out,border-color .15s ease-out}
+.personas button:hover{background:var(--bg3);border-color:var(--border-warm)}
+.personas button.active{background:var(--bg3);border-color:var(--text-light);color:var(--text)}
+.personas .badge{display:inline-block;background:var(--border-warm);color:var(--text);font-weight:700;border-radius:9px;font-size:10px;padding:0 6px;margin-left:5px;vertical-align:1px}
+#bx.badge,span#bx{background:var(--violet);color:oklch(0.16 0.008 60)}
+.reset{background:none;border:none;color:var(--text3);font-size:11px;cursor:pointer;text-decoration:underline;padding:2px}
 .navlink{color:var(--text3);font-size:11px;text-decoration:underline;margin-left:10px}
 .navlink:hover{color:var(--accent2)}
 main{max-width:1180px;margin:0 auto;padding:26px 22px}
-h1,h2,h3{font-family:Georgia,'Anthropic Serif',serif;font-weight:500}
-h1{font-size:24px;margin-bottom:4px}
-h2{font-size:19px;color:var(--accent);margin:18px 0 10px}
-h3{font-size:15px;color:var(--muted);margin:12px 0 6px}
-.sub{color:var(--text3);font-size:13px;margin-bottom:18px}
-table{border-collapse:collapse;width:100%;background:var(--bg2);font-size:13.5px}
-th{background:var(--bg3);text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
-th,td{padding:8px 11px;border:1px solid var(--border-warm)}
-tr.row{cursor:pointer}
+h1,h2,h3{font-weight:600;line-height:1.2}
+h1{font-size:23px;margin-bottom:4px;color:var(--text);font-family:system-ui,-apple-system,sans-serif}
+h2{font-size:18px;color:var(--text);margin:20px 0 10px;font-weight:600;font-family:system-ui,sans-serif}
+h3{font-size:12.5px;color:var(--muted);margin:14px 0 6px;font-family:system-ui,sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:.05em}
+.sub{color:var(--text3);font-size:13px;margin-bottom:18px;max-width:75ch}
+table{border-collapse:collapse;width:100%;background:var(--bg2);font-size:13.5px;border:1px solid var(--border);border-radius:8px;overflow:hidden}
+th{background:var(--bg3);text-align:left;font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--text3);font-weight:600}
+th,td{padding:8px 11px;border-bottom:1px solid var(--border)}
+tr:last-child td{border-bottom:none}
+tr.row{cursor:pointer;transition:background-color .12s ease-out}
 tr.row:hover td{background:var(--bg3)}
-.pill{display:inline-block;border-radius:20px;padding:1px 10px;font-size:11.5px;font-weight:600}
-.p-high{background:#f3ded7;color:var(--red)}.p-med{background:#efe6d0;color:var(--yellow)}.p-low{background:#dde7de;color:var(--green)}
-.p-pend{background:#efe6d0;color:var(--yellow)}.p-route{background:#f3ded7;color:var(--red)}.p-appr{background:#dde7de;color:var(--green)}
-.p-open{background:var(--bg3);color:var(--muted)}.p-done{background:#dde7de;color:var(--green)}.p-deny{background:#f3ded7;color:var(--red)}.p-info{background:#efe6d0;color:var(--yellow)}
+.pill{display:inline-block;border-radius:5px;padding:2px 9px;font-size:11px;font-weight:600;letter-spacing:.02em;background:color-mix(in oklch,var(--c,var(--text3)) 18%,var(--bg2));color:var(--c,var(--text3));border:1px solid color-mix(in oklch,var(--c,var(--border-warm)) 42%,transparent)}
+.p-high{--c:var(--red)}.p-med{--c:var(--amber)}.p-low{--c:var(--green)}
+.p-pend{--c:var(--amber)}.p-route{--c:var(--violet)}.p-appr{--c:var(--green)}
+.p-open{--c:var(--text3)}.p-done{--c:var(--green)}.p-deny{--c:var(--red)}.p-info{--c:var(--amber)}
 .grid{display:grid;gap:16px}.g2{grid-template-columns:1fr 1fr}.g3{grid-template-columns:1fr 1fr 1fr}.g4{grid-template-columns:repeat(4,1fr)}
-.card{background:var(--bg2);border:1px solid var(--border-warm);border-radius:10px;padding:14px 16px;box-shadow:rgba(0,0,0,.05) 0 4px 24px}
-.card h4{font-size:11.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--text3);margin-bottom:4px;font-weight:600}
-.kpi{font-family:Georgia,serif;font-size:28px}
-.kpi small{font-size:13px;color:var(--text3);font-family:system-ui}
-.crit{border:1px solid var(--border-warm);border-radius:10px;background:var(--bg2);margin:10px 0;overflow:hidden}
-.crit .head{display:flex;gap:10px;align-items:center;padding:10px 14px;cursor:pointer}
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:14px 16px}
+.card h4{font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:var(--text3);margin-bottom:6px;font-weight:600}
+.kpi{font-family:system-ui,-apple-system,sans-serif;font-weight:600;font-size:21px;font-variant-numeric:tabular-nums;color:var(--text)}
+.kpi small{font-size:12.5px;color:var(--text3);font-family:system-ui}
+.stats{display:flex;background:var(--bg2);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.stat{flex:1;min-width:0;padding:12px 16px;border-right:1px solid var(--border)}
+.stat:last-child{border-right:none}
+.stat.wide{flex:1.4}
+.stat .label{font-size:10.5px;text-transform:uppercase;letter-spacing:.07em;color:var(--text3);margin-bottom:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.stat .val{font-variant-numeric:tabular-nums;font-size:21px;font-weight:600;color:var(--text);line-height:1.15}
+.stat .val small{font-size:12px;color:var(--text3);font-weight:400;margin-left:2px}
+.stat .meta{font-size:11.5px;color:var(--text3);margin-top:4px}
+.crit{border:1px solid var(--border);border-radius:8px;background:var(--bg2);margin:10px 0;overflow:hidden}
+.crit .head{display:flex;gap:10px;align-items:center;padding:10px 14px;cursor:pointer;transition:background-color .12s ease-out}
 .crit .head:hover{background:var(--bg3)}
-.crit .st{font-size:18px;width:24px;text-align:center}
-.crit .body{display:none;border-top:1px solid var(--border-warm);padding:10px 14px;background:var(--bg)}
+.crit .st{font-size:16px;width:22px;text-align:center;flex-shrink:0}
+.crit .st.st-met{color:var(--green)}.crit .st.st-uncertain{color:var(--amber)}.crit .st.st-conflict{color:var(--violet)}.crit .st.st-unmet{color:var(--red)}
+.crit .head small{color:var(--text3);font-size:12px}
+.crit .body{display:none;border-top:1px solid var(--border);padding:12px 14px;background:var(--bg)}
 .crit.open .body{display:block}
-.src{border-left:3px solid var(--accent);background:var(--bg2);padding:8px 12px;margin:8px 0;border-radius:0 8px 8px 0;font-size:13px}
-.src .ref{color:var(--text3);font-size:11.5px;margin-top:3px}
+.crit.open .head{background:var(--bg3)}
+.src{position:relative;background:var(--bg3);border:1px solid var(--border-warm);padding:9px 14px 9px 30px;margin:8px 0;border-radius:6px;font-size:13px;max-width:72ch}
+.src::before{content:"\201C";position:absolute;left:9px;top:5px;font-family:Georgia,serif;font-size:22px;color:var(--text3);line-height:1}
+.src .ref{display:inline-block;margin-top:6px;font-size:11px;color:var(--text3);background:var(--bg2);border:1px solid var(--border);border-radius:4px;padding:2px 8px}
 .actions{display:flex;gap:10px;margin:16px 0;flex-wrap:wrap}
-.btn{border:1px solid var(--border-warm);background:var(--bg2);border-radius:8px;padding:9px 18px;cursor:pointer;font-size:14px}
-.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
-.btn:hover{box-shadow:0 0 0 1px var(--accent)}
+.btn{border:1px solid var(--border-warm);background:var(--bg2);color:var(--text);border-radius:6px;padding:9px 18px;cursor:pointer;font-size:13.5px;transition:background-color .12s ease-out,box-shadow .12s ease-out}
+.btn.primary{background:var(--text);border-color:var(--text);color:var(--bg)}
+.btn:hover{background:var(--bg3)}
+.btn.primary:hover{background:var(--text-light)}
+.btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .btn:disabled{opacity:.4;cursor:not-allowed}
-.note{border-left:3px solid var(--yellow);background:var(--bg2);padding:9px 13px;margin:12px 0;border-radius:0 8px 8px 0;font-size:13px;color:var(--muted)}
-.decided{border-left:3px solid var(--green);background:var(--bg2);padding:9px 13px;margin:12px 0;border-radius:0 8px 8px 0;font-size:13.5px}
-.audit{font-size:12.5px;color:var(--muted);background:var(--bg2);border:1px solid var(--border-warm);border-radius:10px;padding:10px 14px;max-height:220px;overflow:auto}
-.audit div{padding:3px 0;border-bottom:1px dashed var(--border-warm)}
+.note{background:var(--bg2);border:1px solid var(--border);padding:9px 13px;margin:12px 0;border-radius:6px;font-size:13px;color:var(--muted)}
+
+.decided{background:var(--bg2);border:1px solid var(--border-warm);padding:9px 13px;margin:12px 0;border-radius:6px;font-size:13.5px}
+.decided::before{content:"\25CF  ";color:var(--text3);font-size:9px;vertical-align:2px}
+.audit{font-size:12px;color:var(--muted);background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:10px 14px;max-height:220px;overflow:auto;font-variant-numeric:tabular-nums}
+.audit div{padding:3px 0;border-bottom:1px dashed var(--border)}
 .audit div:last-child{border-bottom:0}
-.back{color:var(--accent);cursor:pointer;font-size:13px;margin-bottom:10px;display:inline-block}
-.bar{height:8px;background:var(--bg3);border-radius:4px;overflow:hidden;margin-top:6px}
+.back{color:var(--text3);cursor:pointer;font-size:13px;margin-bottom:10px;display:inline-block}
+.back:hover{color:var(--text)}
+.bar{height:6px;background:var(--bg3);border-radius:3px;overflow:hidden;margin-top:6px}
 .bar i{display:block;height:100%;background:var(--green)}
-.stack{display:flex;height:26px;border-radius:6px;overflow:hidden;margin-top:8px;font-size:11px;color:#fff;text-align:center;line-height:26px}
+.stack{display:flex;height:24px;border-radius:5px;overflow:hidden;margin-top:8px;font-size:11px;color:var(--dark);font-weight:600;text-align:center;line-height:24px}
 footer{max-width:1180px;margin:10px auto 30px;padding:0 22px;color:var(--text3);font-size:12px}
-@media(max-width:860px){.g2,.g3,.g4{grid-template-columns:1fr}}
+footer span.wrap{display:inline-block;max-width:75ch}
+@media(prefers-reduced-motion:reduce){*{transition-duration:0.001ms!important;animation-duration:0.001ms!important}}
+@media(max-width:860px){.g2,.g3,.g4{grid-template-columns:1fr}.stats{flex-wrap:wrap}.stat{flex:1 1 50%;border-bottom:1px solid var(--border)}}
 </style>
 </head>
 <body>
 <header>
-<span class="brand">Care<b>Bridge</b> UM</span>
+<span class="brand">Care<b>Bridge</b></span>
 <span class="demo-badge">DEMO · SYNTHETIC DATA · PACKETS = REAL PIPELINE OUTPUT</span>
 <nav class="personas">
-<button data-p="nurse" class="active">👩‍⚕️ Nurse<span class="badge" id="bn"></span></button>
-<button data-p="exceptions">⚖️ Exceptions<span class="badge" id="bx"></span></button>
-<button data-p="exec">📊 Executive</button>
+<button data-p="nurse" class="active">Nurse<span class="badge" id="bn"></span></button>
+<button data-p="exceptions">Exceptions<span class="badge" id="bx"></span></button>
+<button data-p="exec">Executive</button>
 <button class="reset" onclick="resetDemo()" title="Clear all decisions">reset demo</button>
 <a class="navlink" href="../deck.html" target="_blank" rel="noopener">Deck</a>
 <a class="navlink" href="../video.html" target="_blank" rel="noopener">Video</a>
 </nav>
 </header>
 <main id="app"></main>
-<footer>CareBridge prototype v2 · Group 5, Cohort 8 · Responsible AI A2 · The AI prepares — the human decides. AI's most adverse action is pend/route; every denial is owned by a licensed clinician. Packets on this site were generated by the offline retrieval+LLM pipeline on 2026-07-23 — 22/22 assertions (100.0%) verified verbatim against source documents; nothing AI-shown is hand-written. Decisions you make here move cases between queues live (stored locally in your browser — use "reset demo" to start over).</footer>
+<footer><span class="wrap">CareBridge · The AI prepares: the human decides. AI's most adverse action is pend or route; every denial is owned by a licensed clinician. Packets on this page were generated by an offline retrieval + LLM pipeline on 2026-07-23 (22/22 assertions, 100.0%, verified verbatim against source documents); nothing AI-shown is hand-written. Decisions you make here move cases between queues live, stored locally in your browser (use "reset demo" to start over).</span></footer>
 
 <script>
 const CASES=[{"rec": "PEND", "criteria": [{"t": "A1. Confirmed RA diagnosis by rheumatologist", "s": "met", "why": "Rheumatologist documented moderate-to-severe RA diagnosis with serology and exam findings.", "src": [{"q": "Assessment: moderate-to-severe rheumatoid arthritis", "r": "note_id 88231, Dr. Rao, 2026-03-02, p.1"}]}, {"t": "A2. 3+ month conventional DMARD trial, inadequate response/intolerance", "s": "met", "why": "Methotrexate used 5+ months with documented inadequate response despite tolerance.", "src": [{"q": "Tolerating methotrexate without adverse effects but response inadequate", "r": "note_id 90114, Dr. Rao, 2026-02-18"}, {"q": "methotrexate 20 mg weekly since September 2025", "r": "note_id 90114, Dr. Rao, 2026-02-18"}, {"q": "2025-09-14, 2025-10-12, 2025-11-09, 2025-12-07, 2026-01-04, 2026-02-01", "r": "rx_claim 7741, Pharmacy claims extract"}]}, {"t": "A3. Negative TB screening within 12 months", "s": "uncertain", "why": "No TB test result present anywhere in record; screening status undocumented.", "src": [{"q": "No tuberculosis screening result on file", "r": "lab_panel 5520, Laboratory results 2025-09 to 2026-03"}]}], "rationale": "A1 and A2 fully met with direct rheumatologist documentation and claims-verified DMARD trial. A3 missing \u2014 no TB screening result documented anywhere in record, so PEND pending TB test.", "confidence": {"policy": "high", "evidence": "medium (TB screening data absent, not just negative)"}, "id": "PA-88231", "member": "Jordan Blake", "age": 41, "service": "Adalimumab (J0135)", "code": "J0135", "dx": "Rheumatoid arthritis (M06.9)", "line": "Specialty pharmacy", "provider": "Dr. Rao, Rheumatology", "due": "42 min", "risk": "high", "policy": "RX-1142 v4.2 (eff 2026-01-15) \u2014 Biologic immunomodulator step-therapy", "section": "A"}, {"rec": "APPROVE", "criteria": [{"t": "6+ wks conservative therapy, failed", "s": "met", "why": "8 wks PT + NSAIDs completed, pain unchanged.", "src": [{"q": "8 wks PT completed, pain unchanged 7/10", "r": "note_id 91520"}, {"q": "NSAIDs used throughout course with minimal relief", "r": "note_id 91520"}]}, {"t": "Objective neuro deficit/radicular signs", "s": "met", "why": "Positive SLR + dermatomal sensory loss on exam.", "src": [{"q": "SLR positive at 40 degrees, decreased sensation L5 dermatome left foot", "r": "note_id 91877 p.1-2"}]}, {"t": "No red flags (urgent workup)", "s": "met", "why": "ROS negative for fever/trauma/malignancy, no cauda equina signs.", "src": [{"q": "Review of systems negative for fever, weight loss, trauma, or history of malignancy", "r": "note_id 91877 p.2"}, {"q": "No bowel or bladder dysfunction", "r": "note_id 91877 p.2"}]}], "rationale": "All three criteria met: documented conservative therapy failure, objective radicular findings, no red flags. MRI ordering physician also confirmed conservative management failed.", "confidence": {"policy": "high", "evidence": "high"}, "id": "PA-90447", "member": "Amara Lewis", "age": 57, "service": "MRI lumbar spine (72148)", "code": "72148", "dx": "Radiculopathy (M54.16)", "line": "Advanced imaging", "provider": "Dr. Okafor, Orthopedics", "due": "2.1 h", "risk": "med", "policy": "IMG-0221 v2.1 (eff 2025-11-01) \u2014 Lumbar spine MRI medical necessity", "section": "M"}, {"rec": "ROUTE", "criteria": [{"t": "B1: Confirmed PsA diagnosis (CASPAR) by rheumatologist", "s": "met", "why": "Rheumatologist documents CASPAR-criteria PsA diagnosis with exam findings.", "src": [{"q": "Meets CASPAR criteria, dactylitis present, nail pitting", "r": "note_id 93001"}]}, {"t": "B2: 3-month conventional DMARD trial, inadequate response, verifiable in medication/claims history", "s": "conflict", "why": "Clinician note reports a sulfasalazine trial with inadequate response, but pharmacy claims show no sulfasalazine fill in the same period.", "src": [{"q": "tolerated sulfasalazine x4 months from an outside provider with inadequate response", "r": "note_id 93001"}, {"q": "No sulfasalazine claims found 2024-2026", "r": "rx_claim 8102"}]}, {"t": "B3: Negative TB screening within 12 months preceding request", "s": "met", "why": "QuantiFERON-TB Gold negative result on file within the required window.", "src": [{"q": "QuantiFERON-TB Gold 2026-04-11: negative", "r": "lab_panel 6034"}]}], "rationale": "B1 and B3 are satisfied, but B2 is contradicted by conflicting sources (self-reported DMARD trial vs. absent claims history), so this requires clinician review rather than auto-approval or a documentation-pend.", "confidence": {"policy": "high", "evidence": "medium (conflict between self-report and claims data on DMARD trial)"}, "id": "PA-90512", "member": "Sam Ortiz", "age": 66, "service": "Etanercept (J1438)", "code": "J1438", "dx": "Psoriatic arthritis (L40.52)", "line": "Specialty pharmacy", "provider": "Dr. Mehta, Rheumatology", "due": "5.4 h", "risk": "high", "policy": "RX-1142 v4.2 (eff 2026-01-15) \u2014 Biologic immunomodulator step-therapy", "section": "B"}, {"rec": "APPROVE", "criteria": [{"t": "Nodule documented on prior imaging", "s": "met", "why": "Radiograph found solid nodule, confirmed in pulm note.", "src": [{"q": "7 mm solid nodule right upper lobe, incidentally noted", "r": "note_id 94002"}, {"q": "7 mm nodule seen on chest radiograph December 2025", "r": "note_id 94180"}]}, {"t": "Follow-up interval per Fleischner guidance", "s": "met", "why": "High-risk pt, 6-8mm nodule, guidance 6-12mo, requested at 7mo fits.", "src": [{"q": "Per Fleischner guidance for a 6-8 mm solid nodule in a high-risk patient, CT follow-up at 6-12 months is indicated; now at 7 months", "r": "note_id 94180"}]}, {"t": "No duplicate chest CT within 3 months", "s": "met", "why": "Imaging history confirms no chest CT on record at all.", "src": [{"q": "No chest CT on record 2023-2026", "r": "imaging_history 4410"}]}], "rationale": "All three criteria met with concordant prior-imaging, Fleischner-interval, and duplicate-check evidence, so approve. No missing docs.", "confidence": {"policy": "high", "evidence": "high"}, "id": "PA-90533", "member": "Linh Nguyen", "age": 62, "service": "CT chest w/ contrast (71260)", "code": "71260", "dx": "Pulmonary nodule (R91.1)", "line": "Advanced imaging", "provider": "Dr. Silva, Pulmonology", "due": "6.0 h", "risk": "low", "policy": "IMG-0450 v1.3 (eff 2025-08-01) \u2014 Chest CT with contrast for pulmonary nodule follow-up", "section": "N"}, {"rec": "APPROVE", "criteria": [{"t": "C1 Confirmed moderate-to-severe Crohn's dx by GI", "s": "met", "why": "Gastroenterologist documents SES-CD 12, exceeding threshold of 7.", "src": [{"q": "moderate-to-severe Crohn's disease, SES-CD 12 on colonoscopy 2026-06-10", "r": "note_id 95120, Gastroenterology consult, Dr. Feld"}]}, {"t": "C2 3mo conventional therapy inadequate response", "s": "met", "why": "Azathioprine trial ~5 months with persistent symptoms confirms inadequate response.", "src": [{"q": "On azathioprine since January 2026 with partial improvement; symptoms persist", "r": "note_id 95120, Gastroenterology consult, Dr. Feld"}, {"q": "azathioprine 100 mg daily: fills 2026-01-20, 2026-02-17, 2026-03-17, 2026-04-14, 2026-05-12, 2026-06-09 (5 months continuous)", "r": "rx_claim 9251, Pharmacy claims extract"}]}, {"t": "C3 Negative TB screening within 12mo", "s": "met", "why": "QuantiFERON negative result dated within 12 months of request.", "src": [{"q": "QuantiFERON-TB Gold 2026-05-02: negative", "r": "lab_panel 7180, Laboratory results"}]}], "rationale": "All three Section C criteria met with direct verbatim documentation \u2014 confirmed dx w/ SES-CD, adequate DMARD trial duration w/ persistent symptoms, negative TB screen. No gaps, no conflicts.", "confidence": {"policy": "high", "evidence": "high"}, "id": "PA-90561", "member": "Priya Kaur", "age": 48, "service": "Infliximab (J1745)", "code": "J1745", "dx": "Crohn's disease (K50.90)", "line": "Specialty pharmacy", "provider": "Dr. Feld, Gastroenterology", "due": "1.2 d", "risk": "med", "policy": "RX-1142 v4.2 (eff 2026-01-15) \u2014 Biologic immunomodulator step-therapy", "section": "C"}];
@@ -93,10 +116,11 @@ function save(){localStorage.setItem(KEY,JSON.stringify(S));}
 function log(msg){S.log.unshift(new Date().toLocaleTimeString()+" · "+msg);save();}
 window.resetDemo=function(){localStorage.removeItem(KEY);S=initState();render();};
 
-const stIcon={met:"✅",uncertain:"⚠️",unmet:"❌",conflict:"🔀"};
+const stIcon={met:"\u2713",uncertain:"!",unmet:"\u2717",conflict:"\u21C4"};
+const stClass={met:"st-met",uncertain:"st-uncertain",unmet:"st-unmet",conflict:"st-conflict"};
 const recPill=r=>({APPROVE:"p-appr",PEND:"p-pend",ROUTE:"p-route"})[r]||"p-pend";
 const riskPill=r=>({high:"p-high",med:"p-med",low:"p-low"})[r];
-const stPill={open:["p-open","OPEN"],pended:["p-info","PENDED — awaiting info"],routed:["p-route","ROUTED TO MD"],approved:["p-done","APPROVED"],denied:["p-deny","DENIED (human-owned)"],info_requested:["p-info","MD REQUESTED INFO"]};
+const stPill={open:["p-open","OPEN"],pended:["p-info","PENDED, awaiting info"],routed:["p-route","ROUTED TO MD"],approved:["p-done","APPROVED"],denied:["p-deny","DENIED (human-owned)"],info_requested:["p-info","MD REQUESTED INFO"]};
 const app=document.getElementById('app');
 let view={p:"nurse"};
 
@@ -108,17 +132,17 @@ function nurseList(){
  const mine=CASES.filter(c=>["open","pended","info_requested"].includes(S.cases[c.id].st));
  const done=CASES.filter(c=>["approved","denied","routed"].includes(S.cases[c.id].st));
  app.innerHTML=`<h1>My Worklist</h1><p class="sub">Signed in as Maya Patel, RN · UM Clinical Reviewer · packets pre-assembled by pipeline (queue-ahead)</p>
- <div class="grid g4" style="margin-bottom:18px">
- <div class="card"><h4>Needs review</h4><div class="kpi">${n.open+n.info_requested}</div></div>
- <div class="card"><h4>Pended — awaiting info</h4><div class="kpi">${n.pended}</div></div>
- <div class="card"><h4>Routed to MD</h4><div class="kpi">${n.routed}</div></div>
- <div class="card"><h4>Packet groundedness (pipeline)</h4><div class="kpi">${REAL.pct}<small>%</small></div><div class="bar"><i style="width:${REAL.pct}%"></i></div></div>
+ <div class="stats" style="margin-bottom:18px">
+ <div class="stat"><div class="label">Needs review</div><div class="val">${n.open+n.info_requested}</div></div>
+ <div class="stat"><div class="label">Pended, awaiting info</div><div class="val">${n.pended}</div></div>
+ <div class="stat"><div class="label">Routed to MD</div><div class="val">${n.routed}</div></div>
+ <div class="stat wide"><div class="label">Packet groundedness (pipeline)</div><div class="val">${REAL.pct}<small>%</small></div><div class="bar"><i style="width:${REAL.pct}%"></i></div></div>
  </div>
  <table><tr><th>Case</th><th>Member</th><th>Service</th><th>AI recommendation</th><th>Risk</th><th>Status</th><th>Due</th></tr>
  ${mine.map(c=>{const sp=stPill[S.cases[c.id].st];return `<tr class="row" onclick="caseView('${c.id}')"><td>${c.id}</td><td>${c.member}</td><td>${c.service}</td><td><span class="pill ${recPill(c.rec)}">${c.rec}</span></td><td><span class="pill ${riskPill(c.risk)}">${c.risk}</span></td><td><span class="pill ${sp[0]}">${sp[1]}</span></td><td>${c.due}</td></tr>`}).join("")}
  </table>
  ${done.length?`<h3 style="margin-top:16px">Moved out of my queue</h3><table><tr><th>Case</th><th>Status</th><th>By</th></tr>${done.map(c=>{const sp=stPill[S.cases[c.id].st];return `<tr class="row" onclick="caseView('${c.id}')"><td>${c.id}</td><td><span class="pill ${sp[0]}">${sp[1]}</span></td><td>${S.cases[c.id].by||""}</td></tr>`}).join("")}</table>`:""}
- <p class="note">Deterministic checks (eligibility · codes · network · benefit) already passed upstream — rules engine, not AI.</p>`;
+ <p class="note">Deterministic checks (eligibility, codes, network, benefit) already passed upstream: rules engine, not AI.</p>`;
 }
 
 window.caseView=function(id,persona){
@@ -128,29 +152,29 @@ window.caseView=function(id,persona){
  const st=S.cases[id];const sp=stPill[st.st];
  const decided=["approved","denied"].includes(st.st);
  app.innerHTML=`<span class="back" onclick="${md?"mdQueue()":"nurseList()"}">← back to ${md?"exceptions queue":"worklist"}</span>
- <h1>${c.id} — ${c.member}, ${c.age} <span class="pill ${sp[0]}">${sp[1]}</span></h1>
+ <h1>${c.id} · ${c.member}, ${c.age} <span class="pill ${sp[0]}">${sp[1]}</span></h1>
  <p class="sub">${c.service} · ${c.dx} · ${c.provider} · ${c.line} · due in ${c.due}</p>
  <div class="grid g2">
  <div>
   <h2>AI Decision Packet <span class="pill ${recPill(c.rec)}">${c.rec==="PEND"?"PEND-FOR-INFO":c.rec==="ROUTE"?"ROUTE-FOR-REVIEW":"RECOMMEND APPROVE"}</span></h2>
-  <p style="font-size:13px;color:var(--muted)">Policy applied: <strong>${c.policy}</strong></p>
+  <p class="sub" style="margin-bottom:12px"><span class="pill p-open" style="font-family:ui-monospace,monospace">${c.policy}</span></p>
   ${c.criteria.map((k,i)=>`<div class="crit"><div class="head" onclick="this.parentNode.classList.toggle('open')">
-   <span class="st">${stIcon[k.s]||"•"}</span><div><strong>${k.t}</strong><div style="font-size:12px;color:var(--text3)">${k.s.toUpperCase()} — click to inspect evidence</div></div></div>
-   <div class="body"><p>${k.why}</p>${k.src.map(s=>`<div class="src">${s.q}<div class="ref">Source: ${s.r}</div></div>`).join("")}</div></div>`).join("")}
+   <span class="st ${stClass[k.s]||""}">${stIcon[k.s]||"•"}</span><div><strong>${k.t}</strong><small style="display:block">${k.s.toUpperCase()}, click to inspect evidence</small></div></div>
+   <div class="body"><p>${k.why}</p>${k.src.map(s=>`<div class="src">${s.q}<div class="ref">${s.r}</div></div>`).join("")}</div></div>`).join("")}
   <div class="note"><strong>Rationale:</strong> ${c.rationale}<br><strong>Confidence:</strong> policy-mapping ${c.confidence.policy} · evidence-completeness ${c.confidence.evidence}</div>
  </div>
  <div>
   <h2>${md?"Medical Director decision":"Reviewer decision"}</h2>
-  <p style="font-size:13px;color:var(--muted)">${md?"You own this decision. The AI routed it because it will not resolve evidence conflicts against the member.":"Verify the citations, then decide. The AI cannot deny — you can."}</p>
+  <p style="font-size:13px;color:var(--muted)">${md?"You own this decision. The AI routed it because it will not resolve evidence conflicts against the member.":"Verify the citations, then decide. The AI cannot deny; you can."}</p>
   ${decided?`<div class="decided"><strong>${sp[1]}</strong> by ${st.by} at ${st.at||""}. Logged to immutable audit.</div>`:`
   <div class="actions">
   ${md
-   ?`<button class="btn primary" onclick="decide('${c.id}','approved','Dr. Chen, MD','md')">Approve</button><button class="btn" onclick="decide('${c.id}','denied','Dr. Chen, MD','md')">Deny — MD authority</button><button class="btn" onclick="decide('${c.id}','info_requested','Dr. Chen, MD','md')">Request info</button>`
+   ?`<button class="btn primary" onclick="decide('${c.id}','approved','Dr. Chen, MD','md')">Approve</button><button class="btn" onclick="decide('${c.id}','denied','Dr. Chen, MD','md')">Deny (MD authority)</button><button class="btn" onclick="decide('${c.id}','info_requested','Dr. Chen, MD','md')">Request info</button>`
    :`<button class="btn primary" ${st.st==="routed"?"disabled":""} onclick="decide('${c.id}','approved','M. Patel, RN','nurse')">Approve</button><button class="btn" ${st.st==="routed"?"disabled":""} onclick="decide('${c.id}','pended','M. Patel, RN','nurse')">Pend for info</button><button class="btn" ${st.st==="routed"?"disabled":""} onclick="decide('${c.id}','routed','M. Patel, RN','nurse')">Route to medical director</button>`}
   </div>`}
   <h3>Why you can trust this packet</h3>
   <ul style="font-size:13px;margin-left:18px">
-  <li>Every assertion cites its exact source span — verify in one click.</li>
+  <li>Every assertion cites its exact source span: verify in one click.</li>
   <li>Statuses are honest: <em>uncertain</em> and <em>conflict</em> are surfaced, never smoothed over.</li>
   <li>Groundedness checked per assertion before the packet reached you (${REAL.grounded}/${REAL.total} verified this run).</li>
   </ul>
@@ -174,33 +198,33 @@ window.mdQueue=function(){
  const routed=CASES.filter(c=>S.cases[c.id].st==="routed");
  const decidedByMd=CASES.filter(c=>["approved","denied"].includes(S.cases[c.id].st)&&(S.cases[c.id].by||"").includes("MD"));
  app.innerHTML=`<h1>Exceptions Queue</h1><p class="sub">Signed in as Dr. Chen, MD · Medical Director · cases the AI or the nurse routed for clinical judgment</p>
- <div class="grid g3" style="margin-bottom:18px">
- <div class="card"><h4>Routed to you — live</h4><div class="kpi">${n.routed}</div></div>
- <div class="card"><h4>Pended awaiting info</h4><div class="kpi">${n.pended}</div></div>
- <div class="card"><h4>Denials — all human-owned</h4><div class="kpi">${n.denied}<small> / ${n.denied}</small></div></div>
+ <div class="stats" style="margin-bottom:18px">
+ <div class="stat"><div class="label">Routed to you (live)</div><div class="val">${n.routed}</div></div>
+ <div class="stat"><div class="label">Pended, awaiting info</div><div class="val">${n.pended}</div></div>
+ <div class="stat"><div class="label">Denials (all human-owned)</div><div class="val">${n.denied}<small> / ${n.denied}</small></div></div>
  </div>
  ${routed.length?`<table><tr><th>Case</th><th>Member</th><th>Service</th><th>Why routed</th><th>Due</th></tr>
- ${routed.map(c=>`<tr class="row" onclick="caseView('${c.id}','md')"><td>${c.id}</td><td>${c.member}</td><td>${c.service}</td><td>${S.cases[c.id].by&&S.cases[c.id].by.includes("pipeline")?"Evidence conflict — AI will not resolve against member":"Routed by reviewer for clinical judgment"}</td><td>${c.due}</td></tr>`).join("")}</table>`
+ ${routed.map(c=>`<tr class="row" onclick="caseView('${c.id}','md')"><td>${c.id}</td><td>${c.member}</td><td>${c.service}</td><td>${S.cases[c.id].by&&S.cases[c.id].by.includes("pipeline")?"Evidence conflict: AI will not resolve against member":"Routed by reviewer for clinical judgment"}</td><td>${c.due}</td></tr>`).join("")}</table>`
  :`<p class="note">Queue empty. Route a case from the Nurse persona and it appears here instantly.</p>`}
  ${decidedByMd.length?`<h3 style="margin-top:16px">Your decisions this session</h3><table><tr><th>Case</th><th>Decision</th><th>At</th></tr>${decidedByMd.map(c=>{const s=S.cases[c.id];const sp=stPill[s.st];return `<tr><td>${c.id}</td><td><span class="pill ${sp[0]}">${sp[1]}</span></td><td>${s.at||""}</td></tr>`}).join("")}</table>`:""}
- <p class="note"><strong>Design constraint, not policy:</strong> the AI's most adverse possible action is pend/route. Every denial in this system is made — and owned — by a licensed clinician.</p>`;
+ <p class="note"><strong>Design constraint, not policy:</strong> the AI's most adverse possible action is pend/route. Every denial in this system is made, and owned, by a licensed clinician.</p>`;
 };
 
 function execView(){
  const n=counts();const total=CASES.length;
  const decided=n.approved+n.denied;
- const segs=[["open",n.open,"var(--text3)"],["pended",n.pended,"var(--yellow)"],["routed",n.routed,"var(--red)"],["approved",n.approved,"var(--green)"],["denied",n.denied,"var(--dark2)"]].filter(s=>s[1]>0);
- app.innerHTML=`<h1>Executive Dashboard</h1><p class="sub">Signed in as R. Iyer, VP Utilization Management · queue numbers below are LIVE — they move when the nurse or MD decides</p>
- <div class="grid g4" style="margin-bottom:18px">
- <div class="card"><h4>In queue (live)</h4><div class="kpi">${n.open+n.pended+n.info_requested}</div></div>
- <div class="card"><h4>Decisions this session (live)</h4><div class="kpi">${decided}</div><div style="font-size:12px;color:var(--muted)">${n.approved} approved · ${n.denied} denied (100% human-owned)</div></div>
- <div class="card"><h4>Escalated to MD (live)</h4><div class="kpi">${n.routed}</div></div>
- <div class="card"><h4>Packet groundedness (pipeline run ${REAL.run})</h4><div class="kpi">${REAL.pct}<small>%</small></div><div class="bar"><i style="width:${REAL.pct}%"></i></div><div style="font-size:12px;color:var(--muted)">${REAL.grounded}/${REAL.total} assertions verified</div></div>
+ const segs=[["open",n.open,"var(--text3)"],["pended",n.pended,"var(--amber)"],["routed",n.routed,"var(--violet)"],["approved",n.approved,"var(--green)"],["denied",n.denied,"var(--red)"]].filter(s=>s[1]>0);
+ app.innerHTML=`<h1>Executive Dashboard</h1><p class="sub">Signed in as R. Iyer, VP Utilization Management. Queue numbers below are live: they move when the nurse or MD decides.</p>
+ <div class="stats" style="margin-bottom:18px">
+ <div class="stat"><div class="label">In queue (live)</div><div class="val">${n.open+n.pended+n.info_requested}</div></div>
+ <div class="stat"><div class="label">Decisions this session (live)</div><div class="val">${decided}</div><div class="meta">${n.approved} approved · ${n.denied} denied (100% human-owned)</div></div>
+ <div class="stat"><div class="label">Escalated to MD (live)</div><div class="val">${n.routed}</div></div>
+ <div class="stat wide"><div class="label">Packet groundedness (run ${REAL.run})</div><div class="val">${REAL.pct}<small>%</small></div><div class="bar"><i style="width:${REAL.pct}%"></i></div><div class="meta">${REAL.grounded}/${REAL.total} assertions verified</div></div>
  </div>
- <div class="card" style="margin-bottom:16px"><h4>Case flow — live composition of all ${total} demo cases</h4>
+ <div class="card" style="margin-bottom:16px"><h4>Case flow: live composition of all ${total} demo cases</h4>
  <div class="stack">${segs.map(s=>`<div style="flex:${s[1]};background:${s[2]}" title="${s[0]}">${s[0]} ${s[1]}</div>`).join("")}</div></div>
  <div class="grid g2">
- <div class="card"><h4>Touch-time per case (A1 test targets)</h4><div class="kpi">14 → 9.1<small> min at the −35% floor</small></div><div class="bar"><i style="width:65%"></i></div><p style="font-size:13px;color:var(--muted)">Assembly minutes converted to judgment minutes. Powered endpoint of the A1 test — not measured in this demo.</p></div>
+ <div class="card"><h4>Touch-time per case (pilot test targets)</h4><div class="kpi">14 → 9.1<small> min at the −35% floor</small></div><div class="bar"><i style="width:65%"></i></div><p style="font-size:13px;color:var(--muted)">Assembly minutes converted to judgment minutes. Powered endpoint of the planned pilot study; not measured in this demo.</p></div>
  <div class="card"><h4>Value model (Fermi)</h4><p style="font-size:13px;color:var(--muted)">At the −35% floor: net annual value ≈ <strong>$0.55M</strong> (mid cost, B=60%); upside at −45% ≈ $0.96M. AI cost/case <strong>$0.17</strong> vs <strong>$10.50</strong> labor. Prototype ($35K) gates the build ($1.2–2.0M).</p></div>
  </div>
  <div class="grid g2" style="margin-top:16px">
