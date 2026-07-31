@@ -124,31 +124,19 @@ body.shownotes .pnotes{display:block;position:fixed;left:0;right:0;bottom:0;back
 .ggate{padding:7px 9px}
 .dnum{font-size:36px}
 }
-/* Dark marketing closer (slide 15) */
-.slide.close{background:radial-gradient(1100px 640px at 72% -10%,rgba(201,100,66,.22),transparent 60%),radial-gradient(900px 600px at 8% 112%,rgba(42,107,66,.18),transparent 60%),#101010;color:var(--text-light)}
-.slide.close .kicker{color:var(--accent2)}
-.slide.close h2{color:#f5f4ed;font-size:40px}
-.slide.close .gstage{background:#1c1c1a;border-color:#3a3a36;box-shadow:0 4px 24px rgba(0,0,0,.4)}
-.slide.close .gstage b{color:#f5f4ed}
-.slide.close .gstage small{color:#a8a69e}
-.slide.close .gstage.done{border-color:var(--green);box-shadow:0 0 0 1px var(--green),0 4px 24px rgba(0,0,0,.4)}
-.slide.close .gstage.done b{color:#7ec79a}
-.slide.close .gstage.money{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent),0 4px 24px rgba(0,0,0,.4)}
-.slide.close .gstage.money b{color:var(--accent2)}
-.slide.close .ggate{border-color:var(--yellow);color:#a8a69e;background:repeating-linear-gradient(45deg,#1c1c1a,#1c1c1a 7px,#232320 7px,#232320 14px)}
-.slide.close .ggate b{color:#e0aa4e}
-.slide.close .ccard{background:#1c1c1a;border:1px solid #3a3a36;border-radius:10px;padding:16px 18px;border-top:4px solid var(--accent2)}
-.slide.close .ccard.c2{border-top-color:#e0aa4e}
-.slide.close .ccard.c3{border-top-color:#7ec79a}
-.slide.close .ccard h4{color:#f5f4ed}
-.slide.close .ccard{color:#c9c7be}
-.slide.close .cdnum{font-family:Georgia,serif;font-size:44px;line-height:1;color:var(--accent2)}
-.slide.close .ccard.c2 .cdnum{color:#e0aa4e}
-.slide.close .ccard.c3 .cdnum{color:#7ec79a}
-.slide.close .cpill{display:inline-block;background:#262623;border:1px solid #3f3f3a;border-radius:20px;padding:3px 14px;font-size:14px;color:#c9c7be;margin:0 6px 6px 0}
-.slide.close .closebar{margin-top:auto;padding-top:18px;border-top:1px solid #33332f}
-.slide.close .closeline{font-family:Georgia,'Anthropic Serif',serif;font-size:23px;background:linear-gradient(90deg,#d97757,#e0aa4e,#7ec79a);-webkit-background-clip:text;background-clip:text;color:transparent}
-.slide.close .foot{color:#87867f}
+/* Light finale closer (slide 15) — deck palette, distinct closing treatment */
+.slide.close{background:radial-gradient(1100px 640px at 72% -10%,rgba(201,100,66,.10),transparent 60%),radial-gradient(900px 600px at 8% 112%,rgba(42,107,66,.07),transparent 60%),var(--bg);box-shadow:inset 0 6px 0 0 var(--accent)}
+.slide.close h2{font-size:40px}
+.slide.close .ccard{background:var(--bg2);border:1px solid var(--border-warm);border-radius:10px;padding:16px 18px;border-top:4px solid var(--accent);color:var(--muted);box-shadow:rgba(0,0,0,.06) 0 4px 20px}
+.slide.close .ccard.c2{border-top-color:var(--yellow)}
+.slide.close .ccard.c3{border-top-color:var(--green)}
+.slide.close .cdnum{font-family:Georgia,serif;font-size:44px;line-height:1;color:var(--accent)}
+.slide.close .ccard.c2 .cdnum{color:var(--yellow)}
+.slide.close .ccard.c3 .cdnum{color:var(--green)}
+.slide.close .cpill{display:inline-block;background:var(--bg2);border:1px solid var(--border-warm);border-radius:20px;padding:3px 14px;font-size:14px;color:var(--muted);margin:0 6px 6px 0}
+.slide.close .closebar{margin-top:auto;padding-top:18px;border-top:1px solid var(--border-warm)}
+.slide.close .closeline{font-family:Georgia,'Anthropic Serif',serif;font-size:23px;background:linear-gradient(90deg,#c96442,#9a6520,#2a6b42);-webkit-background-clip:text;background-clip:text;color:transparent}
+.slide.close .foot{color:var(--text3)}
 </style>
 </head>
 <body>
@@ -628,7 +616,7 @@ body.shownotes .pnotes{display:block;position:fixed;left:0;right:0;bottom:0;back
 <div class="ggate"><b>Gate 3</b>pilot metrics hold — else we stop cheap</div>
 <div class="gstage money"><b>$1.6M build</b><small>full MVP rollout, 2–3 quarters</small></div>
 </div>
-<p style="color:#a8a69e;font-size:15.5px">Every gate is a stop condition committed in advance — <strong style="color:#e8e6dc">four cheap ways out (two inside Gate 1), not one expensive way in.</strong></p>
+<p style="color:var(--muted);font-size:15.5px">Every gate is a stop condition committed in advance — <strong style="color:var(--text)">four cheap ways out (two inside Gate 1), not one expensive way in.</strong></p>
 <p style="margin-top:10px"><small style="color:#87867f;text-transform:uppercase;letter-spacing:.1em;font-size:12.5px">Three next steps this approach prescribes — each conditional, none automatic</small></p>
 <div class="grid3" style="margin-top:8px">
 <div class="ccard"><div style="display:flex;align-items:baseline;gap:10px"><div class="cdnum">1</div><h4>Scope the MVP — through Gate 1</h4></div>Only if Gate 1 passes. The $1.2–2.0M band buys the PHI boundary, FHIR/X12 intake, version-pinning and the immutable audit — the pipeline logic is unchanged.</div>
